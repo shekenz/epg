@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Order;
 use App\Models\ShippingMethod;
+use App\Models\Coupon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 
@@ -46,6 +47,13 @@ class OrderFactory extends Factory
 		$shippingMethods->each(function($shippingMethod) use (&$shippingMethodsArray) {
 			array_push($shippingMethodsArray, $shippingMethod->id);
 		});
+		
+		$couponsArray = [];
+		$coupons = Coupon::get();
+		$coupons->each(function($shippingMethod) use (&$couponsArray) {
+			array_push($couponsArray, $shippingMethod->id);
+		});
+		array_unshift($couponsArray, null);
 
         return [
             'order_id' => $randomId,
@@ -62,7 +70,7 @@ class OrderFactory extends Factory
 			'admin_area_1' => $this->faker->city(),
 			'postal_code' => $this->faker->postcode(),
 			'country_code' => 'FR',
-			'coupon_id' => null,
+			'coupon_id' => $this->faker->randomElement($couponsArray),
 			'shipping_method_id' => $this->faker->randomElement($shippingMethodsArray),
 			'shipped_at' => null,
 			'tracking_url' => null,
