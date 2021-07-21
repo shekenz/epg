@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Coupon;
+use App\Models\Order;
 use Carbon\Carbon;
 
 class CouponsController extends Controller
@@ -64,7 +65,15 @@ class CouponsController extends Controller
 	}
 
 	public function delete(Coupon $coupon) {
-		$coupon->delete();
+		$order = Order::where('coupon_id', $coupon->id)->first();
+
+		// Soft delete if shipping method is still linked to an order.
+		if($order) {
+			$coupon->delete();
+		} else {
+			$coupon->forceDelete();
+		}
+
 		return back();
 	}
 }

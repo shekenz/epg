@@ -109,7 +109,7 @@
 			@foreach ($order->books as $book)
 				@php $total += round($book->pivot->quantity * $book->price, 2) @endphp
 				<tr>
-					<td>{{ $book->title }}</td>
+					<td>@if($book->trashed())<span title="{{ __('Book is archived') }}"><x-tabler-alert-triangle class="inline-block text-yellow-500" /></span>@endif {{ $book->title }}</td>
 					<td>{{ $book->author }}</td>
 					<td>{{ $book->pivot->quantity }}</td>
 					@if($order->pre_order)

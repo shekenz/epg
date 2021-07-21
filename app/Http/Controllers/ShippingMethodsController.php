@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ShippingMethod;
 use App\Traits\ShopControls;
+use App\Models\Order;
 
 class ShippingMethodsController extends Controller
 {
@@ -24,7 +25,14 @@ class ShippingMethodsController extends Controller
 	}
 	
 	public function delete(ShippingMethod $shippingMethod) {
-		$shippingMethod->delete();
+		$order = Order::where('shipping_method_id', $shippingMethod->id)->first();
+
+		// Soft delete if shipping method is still linked to an order.
+		if($order) {
+			$shippingMethod->delete();
+		} else {
+			$shippingMethod->forceDelete();
+		}
 
 		if($this->isShopNotAvailable()) {
 			$this->shopOff();

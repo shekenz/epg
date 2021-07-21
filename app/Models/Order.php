@@ -42,14 +42,14 @@ class Order extends Model
 	}
 
 	public function books() {
-		return $this->belongsToMany(Book::class)->withPivot('quantity');
+		return $this->belongsToMany(Book::class)->withTrashed()->withPivot('quantity');
 	}
 
 	public function shippingMethods() {
-		return $this->belongsTo(ShippingMethod::class, 'shipping_method_id');
+		return $this->belongsTo(ShippingMethod::class, 'shipping_method_id')->withTrashed();
 	}
 
 	public function coupons() {
-		return $this->belongsTo(Coupon::class, 'coupon_id');
+		return $this->belongsTo(Coupon::class, 'coupon_id')->withTrashed();
 	}
 }

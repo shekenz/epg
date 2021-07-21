@@ -54,8 +54,8 @@ class OrdersController extends Controller
      */
     public function list() {
 		$orders = Order::where('hidden', false)->orderBy('created_at', 'DESC')->get();
-		$coupons = Coupon::get();
-		$shippingMethods = ShippingMethod::get();
+		$coupons = Coupon::withTrashed()->get();
+		$shippingMethods = ShippingMethod::withTrashed()->orderBy('price', 'ASC')->get();
 		return view('orders.list', compact('orders', 'coupons', 'shippingMethods'));
 	}
 

@@ -31,12 +31,12 @@
 				</select>
 				<select class="input-inline hidden" id="filter-data-coupons">
 					@foreach ($coupons as $coupon)
-						<option value="{{ $coupon->id }}">{{ $coupon->label }}</option>
+						<option value="{{ $coupon->id }}">{{ $coupon->label }}@if($coupon->trashed()) ({{ __('Trashed') }})@endif</option>
 					@endforeach
 				</select>
 				<select class="input-inline hidden" id="filter-data-shipping">
 					@foreach ($shippingMethods as $shippingMethod)
-						<option value="{{ $shippingMethod->id }}">{{ $shippingMethod->label }}</option>
+						<option value="{{ $shippingMethod->id }}">{{ $shippingMethod->label }}@if($shippingMethod->trashed()) ({{ __('Trashed') }})@endif</option>
 					@endforeach
 				</select>
 				<label for="start-date">{{ __('from') }}</label>
