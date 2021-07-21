@@ -30,11 +30,11 @@ $couponPrice = 0;
 @endif
 <br>----------------------------------------------------<br>
 {{ __('mails.orders.confirmation.method', [
-	'method' => $order->shipping_method,
-	'shipping_price' => $order->shipping_price
+	'method' => $order->shippingMethods->label,
+	'shipping_price' => $order->shippingMethods->price
 ]) }} €
 <br>----------------------------------------------------<br>
-Total : {{ round($total + $order->shipping_price + $couponPrice, 2) }} €
+Total : {{ round($total + $order->shippingMethods->price + $couponPrice, 2) }} €
 <br>----------------------------------------------------<br><br>
 
 {{ __('mails.orders.confirmation.shipping') }}.<br><br><br>

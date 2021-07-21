@@ -2,8 +2,6 @@ import { arrayByClass } from '../shared/helpers.mjs';
 
 window.addEventListener('load', () => {
 
-	console.log('menu');
-
 	let blackSquare = document.createElement('div');
 	blackSquare.setAttribute('id', 'black-square');
 	document.body.insertBefore(blackSquare, document.getElementById('menu-wrapper').nextElementSibling);

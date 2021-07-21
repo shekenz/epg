@@ -46,15 +46,15 @@ let updateCartTotal = (value = 0) => {
 	// Update cart total element
 	let total = setCartTotal(cartTotalDisplay);
 
-	console.table({
-		'Cart': cartTotal,
-		'Shipping': shippingPrice,
-		'Coupon ID': couponId,
-		'Coupon Value': couponValue,
-		'Pourcentage': couponPercentage,
-		'Coupon Price': couponPrice,
-		'TOTAL': total
-	});
+	// console.table({
+	// 	'Cart': cartTotal,
+	// 	'Shipping': shippingPrice,
+	// 	'Coupon ID': couponId,
+	// 	'Coupon Value': couponValue,
+	// 	'Pourcentage': couponPercentage,
+	// 	'Coupon Price': couponPrice,
+	// 	'TOTAL': total
+	// });
 }
 
 // Empty cart verification
@@ -186,13 +186,11 @@ shippingMethodInputs.forEach(input => {
 
 couponInput.addEventListener('input', coolDown(
 	e => {
-		console.log('Executed');
 		e.target.value = e.target.value.toUpperCase();
 		couponAlert.classList.add('hidden');
 		couponLoader.classList.remove('hidden');
 	}, 
 	e => {
-		console.log('Throttled');
 		if(e.target.value !== '') {
 			window.fetch(`/api/coupon/get/${e.target.value}`, {
 				method: 'post',
@@ -284,7 +282,6 @@ if(checkCartButton) {
 							).then( // Create fetch response JSON
 								createResponseJSON => {
 									if(createResponseJSON.id && !createResponseJSON.error) {
-										console.log(createResponseJSON);
 										return createResponseJSON.id;
 									} else if(createResponseJSON.error) {
 										// We have error details
@@ -327,7 +324,7 @@ if(checkCartButton) {
 					}, fetchErrorHandler
 				).then(jsonResponse => {
 					if(jsonResponse.id && !jsonResponse.error) {
-						window.location.href = `${window.location.origin}/order/success/${jsonResponse.id}`;
+						window.location.href = `${window.location.origin}/cart/success`;
 					} else if(jsonResponse.error) {
 						if(jsonResponse.error.name == 'INSTRUMENT_DECLINED') {
 							// If payment refused
@@ -337,7 +334,7 @@ if(checkCartButton) {
 						}
 					} else {
 						//--------------------------------------------------------- ERROR AT CAPTURING ORDER
-						popUp('An internal error has occured while processing your order. Don\'t panic, your payment has been successfull and your cart has been saved. Our team has been notified and we will contact you as soon as possible on your payapal e-mail address to finalise your order. We are sorry for the inconvenience.');
+						popUp('An internal error has occured while processing your order. Don\'t panic, your payment has been successfull and your cart has been saved. Our team has been notified and we will contact you as soon as possible on your payapal e-mail address to finalise your order. We are sorry for the inconvenience.', () => { window.location.href = window.location.origin });
 					}
 				});
 			},

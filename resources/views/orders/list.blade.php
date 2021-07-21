@@ -36,7 +36,7 @@
 				</select>
 				<select class="input-inline hidden" id="filter-data-shipping">
 					@foreach ($shippingMethods as $shippingMethod)
-						<option value="{{ $shippingMethod->label }}">{{ $shippingMethod->label }}</option>
+						<option value="{{ $shippingMethod->id }}">{{ $shippingMethod->label }}</option>
 					@endforeach
 				</select>
 				<label for="start-date">{{ __('from') }}</label>

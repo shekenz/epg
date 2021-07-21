@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Order;
+use App\Models\ShippingMethod;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 
@@ -40,6 +41,12 @@ class OrderFactory extends Factory
 				break;
 		}
 
+		$shippingMethodsArray = [];
+		$shippingMethods = ShippingMethod::get();
+		$shippingMethods->each(function($shippingMethod) use (&$shippingMethodsArray) {
+			array_push($shippingMethodsArray, $shippingMethod->id);
+		});
+
         return [
             'order_id' => $randomId,
             'transaction_id' => $randomId2,
@@ -56,8 +63,7 @@ class OrderFactory extends Factory
 			'postal_code' => $this->faker->postcode(),
 			'country_code' => 'FR',
 			'coupon_id' => null,
-			'shipping_method' => 'La Poste',
-			'shipping_price' => 8.95,
+			'shipping_method_id' => $this->faker->randomElement($shippingMethodsArray),
 			'shipped_at' => null,
 			'tracking_url' => null,
 			'status' => $status,

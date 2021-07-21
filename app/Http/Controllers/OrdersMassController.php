@@ -112,7 +112,7 @@ class OrdersMassController extends Controller
 				case 'status' : return $this->exact($data, 'status'); break;
 				case 'book' : return $this->book($data); break;
 				case 'coupon' : return $this->exact($data, 'coupon_id'); break;
-				case 'shipping' : return $this->exact($data, 'shipping_method'); break;
+				case 'shipping' : return $this->exact($data, 'shipping_method_id'); break;
 				default : return response()->json()->setStatusCode(400, '"'.$method.'" method not supported');
 			}
 		} else {

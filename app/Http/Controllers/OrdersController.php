@@ -46,16 +46,6 @@ class OrdersController extends Controller
 		$this->provider->setApiCredentials($this->credentials);
 		$this->provider->getAccessToken();
 	}
-    
-    /**
-     * list
-     *
-     * @return void
-     */
-    public function index($orderID) {
-		$order = Order::where('order_id', $orderID)->firstOrFail();
-		return view('index.order', compact('order'));
-	}
 
     /**
      * List all visible & active orders
@@ -86,11 +76,10 @@ class OrdersController extends Controller
 	 * @return void
 	 */
 	public function display($id) {
-		$order = Order::with(['books', 'coupons'])->where('id', $id)->first();
+		$order = Order::with(['books', 'coupons', 'shippingMethods'])->where('id', $id)->first();
 		$order->read = 1;
 		$order->save();
-		$shippingMethod = ShippingMethod::where('label', $order->shipping_method)->first();
-		return view('orders.display', compact('order', 'shippingMethod'));
+		return view('orders.display', compact('order'));
 	}
 	
 	/**
@@ -197,16 +186,14 @@ class OrdersController extends Controller
 			$order = Order::create([
 				'order_id' => $paypalOrder['id'],
 				'status' => $paypalOrder['status'],
-				'shipping_method' => $shippingMethod->label,
-				'shipping_price' => $shippingMethod->price,
+				'shipping_method_id' => $shippingMethod->id,
 				'pre_order' => ($preOrder),
 				'coupon_id' => ($couponID !== 0) ? $couponID : null,
 			]);
 		} catch(Exception $e) {
 			$order = Order::create([
 				'status' => 'FAILED',
-				'shipping_method' => $shippingMethod->label,
-				'shipping_price' => $shippingMethod->price,
+				'shipping_method_id' => $shippingMethod->id,
 				'pre_order' => ($preOrder),
 				'coupon_id' => ($couponID !== 0) ? $couponID : null,
 			]);
@@ -266,7 +253,7 @@ class OrdersController extends Controller
 		try{
 			if(!isset($paypalOrder['error'])) {
 				// process order
-				$order = Order::with('coupons')->where('order_id', $paypalOrder['id'])->first();
+				$order = Order::with(['coupons', 'shippingMethods'])->where('order_id', $paypalOrder['id'])->first();
 
 				// Check those optional fields, log if empty
 				if(!empty($paypalOrder['payer']['name']['surname'])) {
@@ -309,6 +296,21 @@ class OrdersController extends Controller
 					$order->email_address = $paypalOrder['payer']['email_address'];
 					$order->transaction_id = $paypalOrder['purchase_units'][0]['payments']['captures'][0]['id'];
 
+					// Updating coupons count
+					if($order->coupons) {
+						$order->coupons->used++;
+						$order->coupons->save();
+					}
+
+					// Notify admins
+					$admins = User::where('role', 'admin')->get();
+					$admins->each(function($admin) {
+						Mail::to($admin->email)->send(new NewOrder());
+					});
+
+					//Notify client
+					Mail::to($order->email_address)->send(new OrderConfirmation($order));
+
 				} catch(Exception $e) { 
 
 					$transactionId = (isset($paypalOrder['purchase_units'][0]['payments']['captures'][0]['id'])) ? $paypalOrder['purchase_units'][0]['payments']['captures'][0]['id'] : 'TransactionID not found.';
@@ -339,25 +341,10 @@ class OrdersController extends Controller
 						'custom-message' => $customMessage,
 						'paypal-data' => $paypalOrder,
 					]] : [];
-				
 				} finally {
-
-					// Updating coupons count
-					if($order->coupons) {
-						$order->coupons->used++;
-						$order->coupons->save();
-					}
-
 					// Saving order in database
 					$order->save();
-
-					// Notify admins
-					$admins = User::where('role', 'admin')->get();
-					$admins->each(function($admin) {
-						Mail::to($admin->email)->send(new NewOrder());
-					});
 				}
-
 			} else {
 				Throw new Exception($paypalOrder['error']['name']);
 			}
@@ -396,21 +383,6 @@ class OrdersController extends Controller
 		return (in_array($countryCode, setting('app.shipping.allowed-countries')) || empty(setting('app.shipping.allowed-countries')))
 			? [ 'country' => true ]
 			: response()->json()->setStatusCode(500, 'Country code not accepted by the store.');
-	}
-	
-	/**
-	 * success
-	 * Sends a confirmation mail upon successfull order.
-	 *
-	 * @param  mixed $orderID
-	 * @return void
-	 */
-	public function success($orderID) {
-		$order = Order::where('order_id', $orderID)->first();
-
-		Mail::to($order->email_address)->send(new OrderConfirmation($order));
-
-		return redirect()->route('cart.success');
 	}
 	
 	/**
@@ -509,8 +481,7 @@ class OrdersController extends Controller
 			$order->shipped_at = Carbon::now();
 			$order->tracking_url = $data['tracking_url'];
 
-			//Mail::to($order->email_address)->send(new OrderShipped($order));
-			Mail::to('aureltrotebas@icloud.com')->send(new OrderShipped($order));
+			Mail::to($order->email_address)->send(new OrderShipped($order));
 		} else {
 			$order->status = 'COMPLETED';
 			$order->shipped_at = null;

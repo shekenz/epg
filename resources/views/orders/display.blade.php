@@ -83,7 +83,7 @@
 				<h2 class="text-lg border-b border-black font-bold">{{ __('Shipping info') }} : </h2>
 				<div class="p-4">
 					<p class="my-2"><span class="font-bold">{{ __('Shipped at') }} : </span>{{ $order->shipped_at }}</p>
-					<p class="my-2"><span class="font-bold">{{ __('Shipping method') }} : </span>{{ $order->shipping_method }}</p>
+					<p class="my-2"><span class="font-bold">{{ __('Shipping method') }} : </span>{{ $order->shippingMethods->label }}</p>
 					@isset($order->tracking_url)
 					<p class="my-2"><span class="font-bold">{{ __('Tracking URL') }} : </span><a class="new-tab hover:underline" href="{{ $order->tracking_url }}">{{ $order->tracking_url }}</a></p>
 					@endif
@@ -142,12 +142,12 @@
 				@endif
 				<tr class="border-b-2 border-t-2 border-black">
 					<td>{{ __('Shipping method') }}</td>
-					<td>{{ $order->shipping_method }}</td>
+					<td>{{ $order->shippingMethods->label }}</td>
 					<td></td>
 					@if($order->pre_order)
 						<td></td>
 					@endif
-					<td>{{ $order->shipping_price }} €</td>
+					<td>{{ $order->shippingMethods->price }} €</td>
 				</tr>
 				<tfoot>
 					<td>{{ __('Total') }}</td>
@@ -156,7 +156,7 @@
 					@if($order->pre_order)
 						<td></td>
 					@endif
-					<td class="font-bold">{{ round($order->shipping_price + $total + $couponPrice, 2) }} €</td>
+					<td class="font-bold">{{ round($order->shippingMethods->price + $total + $couponPrice, 2) }} €</td>
 				</tfoot>
 			</table>
 		</div>
