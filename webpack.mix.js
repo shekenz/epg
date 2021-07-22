@@ -48,14 +48,14 @@ mix.postCss('resources/css/index.css', 'public/css', [
     require('postcss-import'),
     require('tailwindcss'),
     require('autoprefixer'),
-])
+]);
 
 // LabelsPreview CSS (Frontend)
 mix.postCss('resources/css/labels.css', 'public/css', [
     require('postcss-import'),
     require('tailwindcss'),
     require('autoprefixer'),
-])
+]);
 
 // Move imgages
 mix.copyDirectory('resources/img', 'public/img');

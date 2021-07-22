@@ -2,18 +2,21 @@
 	font-family: "Monument Grotesk";
 	font-weight: 400;
 	src: url(/fonts/MonumentGroteskTrial-Regular.woff) format("woff");
+	font-display: swap;
 }
 
 @font-face {
 	font-family: "Monument Grotesk";
 	font-weight: 500;
 	src: url(/fonts/MonumentGroteskTrial-Medium.woff) format("woff");
+	font-display: swap;
 }
 
 @font-face {
 	font-family: "Monument Grotesk";
 	font-weight: 700;
 	src: url(/fonts/MonumentGroteskTrial-Bold.woff) format("woff");
+	font-display: swap;
 }
 
 @font-face {
@@ -21,6 +24,7 @@
 	font-weight: 400;
 	font-style: italic;
 	src: url(/fonts/MonumentGroteskTrial-Italic.woff) format("woff");
+	font-display: swap;
 }
 
 @font-face {
@@ -28,6 +32,7 @@
 	font-weight: 500;
 	font-style: italic;
 	src: url(/fonts/MonumentGroteskTrial-MediumItalic.woff) format("woff");
+	font-display: swap;
 }
 
 @font-face {
@@ -35,4 +40,5 @@
 	font-weight: 700;
 	font-style: italic;
 	src: url(/fonts/MonumentGroteskTrial-BoldItalic.woff) format("woff");
+	font-display: swap;
 }

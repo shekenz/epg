@@ -8,6 +8,9 @@
         <title>Dashboard | {{ $title }}</title>
 
         <!-- Styles -->
+		<link rel="preload" href="{{ asset('fonts/Nunito-Regular.ttf') }}" as="font" type="font/truetype">
+		<link rel="preload" href="{{ asset('fonts/Nunito-Bold.ttf') }}" as="font" type="font/truetype">
+		<link rel="preload" href="{{ asset('fonts/Roboto-Bold.ttf') }}" as="font" type="font/truetype">
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
         <!-- Scripts -->
