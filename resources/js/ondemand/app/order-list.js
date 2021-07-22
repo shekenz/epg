@@ -13,7 +13,6 @@ let filterDataInputShipping = document.getElementById('filter-data-shipping');
 let filterDataInput = filterDataInputText;
 let startDate = document.getElementById('start-date');
 let endDate = document.getElementById('end-date');
-let visibilityInput = document.getElementById('visibility');
 let preorderInput = document.getElementById('preorder');
 let hideButton = document.getElementById('hide');
 let loader = document.getElementById('loader');
@@ -30,10 +29,10 @@ let coolDownFire = e => {
 	let data = filterDataInput.value;
 	let from = startDate.value;
 	let to = endDate.value;
-	let hidden = visibilityInput.checked;
+	let hidden = (window.location.pathname.match(/\/hidden$/)) ? true : false;
 	let preorder = preorderInput.checked;
 	let url = `/api/orders/get/${method}/${from}/${to}/${hidden}/${preorder}/${data}`;
-	console.log(url);
+	//console.log(url);
 	fetch(url, {
 		method: 'post',
 		headers: {
@@ -229,16 +228,6 @@ actions.forEach(action => {
 	});
 });
 
-visibilityInput.addEventListener('input', e => {
-	if(e.target.checked) {
-		hideButton.value = 'unhide';
-		hideButton.dataset.action = window.location.origin+'/dashboard/orders/unhide';
-	} else {
-		hideButton.value = 'hide';
-		hideButton.dataset.action = window.location.origin+'/dashboard/orders/hide';
-	}
-});
-
 filterInput.addEventListener('input', e => {
 	enableValueInput(e.target.value);
 	coolDownFire(e);
@@ -263,5 +252,4 @@ endDate.addEventListener('input', coolDown(() => {
 filterDataInputStatus.addEventListener('input', coolDownFire);
 filterDataInputCoupons.addEventListener('input', coolDownFire);
 filterDataInputShipping.addEventListener('input', coolDownFire);
-visibilityInput.addEventListener('input', coolDownFire);
 preorderInput.addEventListener('input', coolDownFire);

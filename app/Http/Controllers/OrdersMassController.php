@@ -89,7 +89,7 @@ class OrdersMassController extends Controller
 			});
 		}
 
-		return redirect()->route('orders');
+		return back();
 	}
 
 	public function get(Request $request, string $method, string $from, string $end, string $visibility, string $preorder, $data = null) {
