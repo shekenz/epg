@@ -17,12 +17,12 @@
         <meta charset=UTF-8>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-		<link rel="preload" href="{{ asset('fonts/MonumentGroteskTrial-Bold.woff') }}" as="font" type="font/woff">
 		<link rel="icon" type="image/png" href="{{ asset('img/favicon.png') }}">
-		<link rel="preload" href="{{ asset('fonts/MonumentGroteskTrial-Italic.woff') }}" as="font" type="font/woff">
-		<link rel="preload" href="{{ asset('fonts/MonumentGroteskTrial-Medium.woff') }}" as="font" type="font/woff">
-		<link rel="preload" href="{{ asset('fonts/MonumentGroteskTrial-MediumItalic.woff') }}" as="font" type="font/woff">
-		<link rel="preload" href="{{ asset('fonts/MonumentGroteskTrial-Regular.woff') }}" as="font" type="font/woff">
+		<link rel="preload" href="{{ asset('fonts/MonumentGroteskTrial-Bold.woff') }}" as="font" type="font/woff" crossorigin>
+		<link rel="preload" href="{{ asset('fonts/MonumentGroteskTrial-Italic.woff') }}" as="font" type="font/woff" crossorigin>
+		<link rel="preload" href="{{ asset('fonts/MonumentGroteskTrial-Medium.woff') }}" as="font" type="font/woff" crossorigin>
+		<link rel="preload" href="{{ asset('fonts/MonumentGroteskTrial-MediumItalic.woff') }}" as="font" type="font/woff" crossorigin>
+		<link rel="preload" href="{{ asset('fonts/MonumentGroteskTrial-Regular.woff') }}" as="font" type="font/woff" crossorigin>
 		
 		{{-- //TODO Fix the connection_refused error when deployed on VPS --}}
         {{-- @if(config('app.env') == 'local') --}}
