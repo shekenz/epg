@@ -16,7 +16,7 @@ class BooksController extends Controller
 
 	/** @var array $validation contains the validation rules for creating or updating a book */
 	protected $validation = [
-		'title' => ['required', 'string', 'max:128'],
+		'title' => ['required', 'string', 'max:128', 'not_regex:/[\{\}\\]/'],
 		'author' => ['nullable', 'string', 'max:64'],
 		'width' => ['nullable', 'integer'],
 		'height' => ['nullable', 'integer'],
@@ -117,7 +117,8 @@ class BooksController extends Controller
 	public function edit($id) {
 		$media = Medium::all();
 		$book = Book::with([
-			'media' => function($q) { $q->orderBy('pivot_order', 'asc'); }
+			'media' => function($q) { $q->orderBy('pivot_order', 'asc'); },
+			'orders',
 		])->findOrFail($id);
 		return view('books/edit', compact('book', 'media'));
 	}
@@ -197,25 +198,48 @@ class BooksController extends Controller
 	// Permanently deletes a book from archives.
 	public function delete($id) {
 		// Can't bind a deleted model, will throw a 404
-		$book = Book::with('media')->onlyTrashed()->findOrFail($id);
-		$book->media()->detach();
-		$book->forceDelete();
-		return redirect()->route('books.archived')->with([
-			'flash' => __('flash.book.deleted'),
-			'flash-type' => 'success'
-		]);
+		$book = Book::with(['media', 'orders'])->onlyTrashed()->findOrFail($id);
+
+		// Check if book is still attached to an order
+		if($book->orders->isEmpty()) {
+			$book->media()->detach();
+			$book->forceDelete();
+			return redirect()->route('books.archived')->with([
+				'flash' => __('flash.book.deleted'),
+				'flash-type' => 'success'
+			]);
+		} else {
+			return redirect()->route('books.archived')->with([
+				'flash' => __('flash.book.still-linked'),
+				'flash-type' => 'error'
+			]);
+		}
 	}
 
 	// Permanently deletes ALL books from archives.
 	public function deleteAll() {
-		$books = Book::with('media')->onlyTrashed()->get();
-		foreach($books as $book) {
+		$books = Book::with(['media', 'orders'])->onlyTrashed()->get();
+		$booksForDeletion = $books->filter(function($book) {
+			return $book->orders->isEmpty();
+		});
+
+		$booksNotDeleted = $books->diff($booksForDeletion);
+		$booksForDeletion->each(function($book) {
 			$book->media()->detach();
+			$book->forceDelete();
+		});
+
+		if($booksNotDeleted->isEmpty()) {
+			return redirect()->route('books')->with([
+				'flash' => __('flash.book.all-deleted'),
+				'flash-type' => 'success'
+			]);
+		} else {
+			return redirect()->back()->with([
+				'flash' => __('flash.book.some-still-linked'),
+				'flash-type' => 'error'
+			]);
 		}
-		Book::with('media')->onlyTrashed()->forceDelete();
-		return redirect()->route('books')->with([
-			'flash' => __('flash.book.all-deleted'),
-			'flash-type' => 'success'
-		]);
+		
 	}
 }
