@@ -212,7 +212,9 @@ let enableValueInput = value => {
 	}
 }
 
-enableValueInput(filterInput.value);
+window.addEventListener('pageshow', e => {
+	enableValueInput(filterInput.value);
+});
 
 selectAllButton.addEventListener('click', e => {
 	let checkboxes = arrayByClass('checkbox');
