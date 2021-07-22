@@ -66,8 +66,8 @@
 			@else
 			<input id="hide" class="button-small cursor-pointer action" type="button" data-action="{{ route('orders.hide') }}" value="{{ __('Hide') }}">
 			@endif
-			<input class="button-small cursor-pointer action" type="button" data-action="{{ route('orders.csv') }}" value="CSV">
-			<input id="hide" class="button-small cursor-pointer action" type="button" data-action="{{ route('orders.labelsPreview') }}" value="PDF">
+			<input id="csv" class="button-small cursor-pointer action" type="button" data-action="{{ route('orders.csv') }}" value="CSV">
+			<input id="pdf" class="button-small cursor-pointer action" type="button" data-action="{{ route('orders.labelsPreview') }}" value="PDF">
 		</div>
 	</div>
 	
@@ -96,7 +96,7 @@
 					@endisset</a></td>
 					<td>{{ $order->full_name }}</td>
 					<td>{{ $order->email_address }}</td>
-					<td class="text-center">@if($order->pre_order === 1)<x-tabler-forklift />@endif</td>
+					<td class="text-center">@if($order->pre_order === 1)<x-tabler-clock />@endif</td>
 					<td><span class="font-bold text-center inline-block w-full text-white px-2 py-1 rounded @switch($order->status)
 						@case('FAILED') {{ 'bg-red-500' }} @break
 						@case('CREATED') {{ 'bg-yellow-500' }} @break

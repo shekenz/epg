@@ -14,7 +14,6 @@ let filterDataInput = filterDataInputText;
 let startDate = document.getElementById('start-date');
 let endDate = document.getElementById('end-date');
 let preorderInput = document.getElementById('preorder');
-let hideButton = document.getElementById('hide');
 let loader = document.getElementById('loader');
 let recycleBlueprint = document.getElementById('recycle-blueprint');
 let trashBlueprint = document.getElementById('trash-blueprint');
@@ -225,6 +224,11 @@ selectAllButton.addEventListener('click', e => {
 
 actions.forEach(action => {
 	action.addEventListener('click', e => {
+		if(e.target.id === 'pdf') {
+			ordersForm.target = '_blank';
+		} else if(ordersForm.hasAttribute('target')) {
+			ordersForm.removeAttribute('target')
+		}
 		ordersForm.action = e.target.dataset.action;
 		ordersForm.submit();
 	});

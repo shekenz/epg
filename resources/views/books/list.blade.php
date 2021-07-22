@@ -33,7 +33,7 @@
 					</a>
 					@endif
 					@if($book->pre_order)
-						<span title="{{ __('Pre-order') }}"><x-tabler-forklift class="inline-block" /></span>
+						<span title="{{ __('Pre-order') }}"><x-tabler-clock class="inline-block" /></span>
 					@endif
 				</td>
 				<td><a href="{{ route('books.display', $book->id) }}" class="default">{{ $book->title }}</a></td>
