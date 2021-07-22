@@ -15,6 +15,8 @@ return [
 		'archived' => 'Livre archivé.',
 		'restored' => 'Livre restauré.',
 		'deleted' => 'Livre supprimé.',
+		'still-linked' => 'Impossible de supprimer le livre car il est lié à une commande active. Archivez d\'abord la commande.',
+		'some-still-linked' => 'Impossible de supprimer certain livres car ils sont toujours liés à une commande active. Archivez d\'abord la commande.',
 		'all-deleted' => 'Tous les livres archivés ont été supprimés.',
 	],
 	'media' => [

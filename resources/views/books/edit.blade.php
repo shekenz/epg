@@ -68,7 +68,15 @@
 			</div>
 			<div class="md:row-start-5 md:col-start-2">
             	<label class="label-shared lg:text-lg" for="price">{{ __('Price') }} :</label>
+				@if($book->orders->isNotEmpty())
+            	<input class="input-shared" disabled="true" type="text" value="{{ $book->price }}">
+            	<input name="price" type="hidden" value="{{ $book->price }}">
+				<div class="mt-1  leading-[0.4rem]">
+					<span class="text-gray-400 italic text-sm">{{ __('app.price-frozen') }}.</span>
+				</div>
+				@else
             	<input class="input-shared" id="price" name="price" type="text" value="{{ old('price') ?? $book->price }}" maxlength="10">
+				@endif
 			</div>
 			<div class="col-start-3 col-span-2 row-start-1 row-span-5">
             	<label class="label-shared lg:text-lg" for="description">{{ __('Description') }} :</label>

@@ -76,7 +76,7 @@ class OrdersController extends Controller
 	 * @return void
 	 */
 	public function display($id) {
-		$order = Order::with(['books', 'coupons', 'shippingMethods'])->where('id', $id)->first();
+		$order = Order::with(['books', 'coupons', 'shippingMethods'])->where('id', $id)->firstOrFail();
 		$order->read = 1;
 		$order->save();
 		return view('orders.display', compact('order'));
