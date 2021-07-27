@@ -1,26 +1,31 @@
 import { arrayByClass, coolDown } from '../../shared/helpers.mjs';
 import { isThisHour } from 'date-fns';
+import { el } from 'date-fns/locale';
 
-let ordersForm = document.getElementById('orders-selection');
-let orderRowsContainer = document.getElementById('order-rows');
-let selectAllButton = document.getElementById('checkall');
-let actions = arrayByClass('action');
-let filterInput = document.getElementById('filter');
-let filterDataInputText = document.getElementById('filter-data-text');
-let filterDataInputStatus = document.getElementById('filter-data-status');
-let filterDataInputCoupons = document.getElementById('filter-data-coupons');
-let filterDataInputShipping = document.getElementById('filter-data-shipping');
-let filterDataInput = filterDataInputText;
-let startDate = document.getElementById('start-date');
-let endDate = document.getElementById('end-date');
-let preorderInput = document.getElementById('preorder');
-let loader = document.getElementById('loader');
-let recycleBlueprint = document.getElementById('recycle-blueprint');
-let trashBlueprint = document.getElementById('trash-blueprint');
-let forkliftBlueprint = document.getElementById('forklift-blueprint');
-let noResult = document.getElementById('no-result');
+const ordersForm = document.getElementById('orders-selection');
+const orderRowsContainer = document.getElementById('order-rows');
+const selectAllButton = document.getElementById('checkall');
+const actions = arrayByClass('action');
 
-let coolDownFire = e => {
+const filterInput = document.getElementById('filter');
+const filterDataInputIDs = ['filter-data-text', 'filter-data-book', 'filter-data-status', 'filter-data-coupon', 'filter-data-shipping'];
+const filterDataInputs = new Object();
+filterDataInputIDs.forEach(id => {
+	const propName = id.match(/[a-z]+$/g)[0];
+	filterDataInputs[propName] = document.getElementById(id);	
+});
+let filterDataInput = filterDataInputs.text;
+
+const startDate = document.getElementById('start-date');
+const endDate = document.getElementById('end-date');
+const preorderInput = document.getElementById('preorder');
+const loader = document.getElementById('loader');
+const recycleBlueprint = document.getElementById('recycle-blueprint');
+const trashBlueprint = document.getElementById('trash-blueprint');
+const forkliftBlueprint = document.getElementById('forklift-blueprint');
+const noResult = document.getElementById('no-result');
+
+const coolDownFire = e => {
 	if(loader.classList.contains('hidden')) {
 		loader.classList.remove('hidden');
 	}
@@ -163,50 +168,50 @@ let coolDownFire = e => {
 	});
 };
 
-let enableValueInput = value => {
+const switchInput = (inputName, callback = function() {}) => {
+	// Add hidden class to all filterDataInputs
+	Object.keys(filterDataInputs).forEach(input => {
+		if(!filterDataInputs[input].classList.contains('hidden')) {
+			filterDataInputs[input].classList.add('hidden');
+		}
+	});
+	// Switch visibility on if inputName exists in filterDataInputs (and run callback)
+	if(filterDataInputs[inputName]) {
+		filterDataInputs[inputName].classList.remove('hidden');
+		filterDataInput = filterDataInputs[inputName];
+		callback(filterDataInputs[inputName]);
+	} else {
+		throw new Error(`${inputName} not found in data inputs object`);
+	}
+}
+
+const enableValueInput = value => {
+
 	switch(value) {
 		case('all'):
-			filterDataInputText.classList.remove('hidden');
-			filterDataInputStatus.classList.add('hidden');
-			filterDataInputCoupons.classList.add('hidden');
-			filterDataInputShipping.classList.add('hidden');
-			filterDataInput = filterDataInputText; 
-			filterDataInputText.disabled = true;
-			filterDataInputText.setAttribute('disabled', true);
+			switchInput('text', input => {
+				input.disabled = true;
+				input.setAttribute('disabled', true);
+			});
+			break;
+		case('book'): 
+			switchInput(value);
 			break;
 		case('status'): 
-			filterDataInputText.classList.add('hidden');
-			filterDataInputStatus.classList.remove('hidden');
-			filterDataInputCoupons.classList.add('hidden');
-			filterDataInputShipping.classList.add('hidden');
-			filterDataInput = filterDataInputStatus;
+			switchInput(value);
 			break;
 		case('coupon'): 
-			filterDataInputText.classList.add('hidden');
-			filterDataInputStatus.classList.add('hidden');
-			filterDataInputCoupons.classList.remove('hidden');
-			filterDataInputShipping.classList.add('hidden');
-			filterDataInput = filterDataInputCoupons;
+			switchInput(value);
 			break;
 		case('shipping'): 
-			filterDataInputText.classList.add('hidden');
-			filterDataInputStatus.classList.add('hidden');
-			filterDataInputCoupons.classList.add('hidden');
-			filterDataInputShipping.classList.remove('hidden');
-			filterDataInput = filterDataInputShipping;
+			switchInput(value);
 			break;
 		default:
-			filterDataInputText.classList.remove('hidden');
-			filterDataInputStatus.classList.add('hidden');
-			filterDataInputCoupons.classList.add('hidden');
-			filterDataInputShipping.classList.add('hidden');
-			filterDataInput = filterDataInputText; 
-			if(value !== 'all') {
-				if(filterDataInput.hasAttribute('disabled')) {
-					filterDataInput.removeAttribute('disabled');
-				}
-				filterDataInput.focus();
+			switchInput('text');
+			if(filterDataInput.hasAttribute('disabled')) {
+				filterDataInput.removeAttribute('disabled');
 			}
+			filterDataInput.focus();
 			break;
 	}
 }
@@ -240,22 +245,27 @@ filterInput.addEventListener('input', e => {
 });
 
 
-filterDataInputText.addEventListener('input', coolDown(() => {
+
+filterDataInputs.text.addEventListener('input', coolDown(() => {
 	if(loader.classList.contains('hidden')) {
 		loader.classList.remove('hidden');
 	}
 }, coolDownFire, 500));
+
 startDate.addEventListener('input', coolDown(() => {
 	if(loader.classList.contains('hidden')) {
 		loader.classList.remove('hidden');
 	}
 }, coolDownFire, 500));
+
 endDate.addEventListener('input', coolDown(() => {
 	if(loader.classList.contains('hidden')) {
 		loader.classList.remove('hidden');
 	}
 }, coolDownFire, 500));
-filterDataInputStatus.addEventListener('input', coolDownFire);
-filterDataInputCoupons.addEventListener('input', coolDownFire);
-filterDataInputShipping.addEventListener('input', coolDownFire);
+
+filterDataInputs.book.addEventListener('input', coolDownFire);
+filterDataInputs.status.addEventListener('input', coolDownFire);
+filterDataInputs.coupon.addEventListener('input', coolDownFire);
+filterDataInputs.shipping.addEventListener('input', coolDownFire);
 preorderInput.addEventListener('input', coolDownFire);

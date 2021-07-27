@@ -56,7 +56,8 @@ class OrdersController extends Controller
 		$orders = Order::where('hidden', false)->orderBy('created_at', 'DESC')->get();
 		$coupons = Coupon::withTrashed()->get();
 		$shippingMethods = ShippingMethod::withTrashed()->orderBy('price', 'ASC')->get();
-		return view('orders.list', compact('orders', 'coupons', 'shippingMethods'));
+		$books = Book::withTrashed()->orderBy('title', 'ASC')->get();
+		return view('orders.list', compact('orders', 'coupons', 'shippingMethods', 'books'));
 	}
 
     /**
@@ -68,7 +69,8 @@ class OrdersController extends Controller
 		$orders = Order::with('books')->where('hidden', true)->orderBy('created_at', 'DESC')->get();
 		$coupons = Coupon::withTrashed()->get();
 		$shippingMethods = ShippingMethod::withTrashed()->orderBy('price', 'ASC')->get();
-		return view('orders.list', compact('orders', 'coupons', 'shippingMethods'));
+		$books = Book::withTrashed()->orderBy('title', 'DESC')->get();
+		return view('orders.list', compact('orders', 'coupons', 'shippingMethods', 'books'));
 	}
 	
 	/**

@@ -25,7 +25,7 @@
 				<option selected value="all">{{ __('None') }}</option>
 				<option value="book">{{ __('Book') }}</option>
 				<option value="order">{{ __('Order ID') }}</option>
-				<option value="name">{{ __('Name') }}</option>
+				<option value="name">{{ __('Client name') }}</option>
 				<option value="email">{{ __('Email') }}</option>
 				<option value="status">{{ __('Status') }}</option>
 				<option value="coupon">{{ __('Coupon') }}</option>
@@ -33,13 +33,19 @@
 			</select>
 			<label for="filter-data">{{ __('with') }}</label>
 			<input class="input-inline" id="filter-data-text" type="text" disabled="true">
+			<select class="input-inline hidden max-w-[16rem]" id="filter-data-book">
+				<option value=""></option>
+				@foreach ($books as $book)	
+					<option value="{{ $book->id }}">{{ $book->title }}</option>
+				@endforeach
+			</select>
 			<select class="input-inline hidden" id="filter-data-status">
 				<option value="FAILED">{{ __('paypal.status.FAILED') }}</option>
 				<option value="CREATED">{{ __('paypal.status.CREATED') }}</option>
 				<option value="COMPLETED" selected="selected">{{ __('paypal.status.COMPLETED') }}</option>
 				<option value="SHIPPED">{{ __('paypal.status.SHIPPED') }}</option>
 			</select>
-			<select class="input-inline hidden" id="filter-data-coupons">
+			<select class="input-inline hidden" id="filter-data-coupon">
 				@foreach ($coupons as $coupon)
 					<option value="{{ $coupon->id }}">{{ $coupon->label }}@if($coupon->trashed()) ({{ __('Trashed') }})@endif</option>
 				@endforeach

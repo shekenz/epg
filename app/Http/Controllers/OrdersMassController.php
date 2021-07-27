@@ -68,7 +68,6 @@ class OrdersMassController extends Controller
 		$data = $request->validate($this->validation);
 			if(!empty($data)) {
 			$orders = Order::find($data['ids']);
-
 			$orders->each(function($order) {
 				$order->hidden = true;
 				$order->save();
@@ -110,7 +109,7 @@ class OrdersMassController extends Controller
 				case 'name' : return $this->like($data, 'full_name'); break;
 				case 'email' : return $this->like($data, 'email_address'); break;
 				case 'status' : return $this->exact($data, 'status'); break;
-				case 'book' : return $this->book($data); break;
+				case 'book' : return $this->exact(intval($data), 'id'); break;
 				case 'coupon' : return $this->exact($data, 'coupon_id'); break;
 				case 'shipping' : return $this->exact($data, 'shipping_method_id'); break;
 				default : return response()->json()->setStatusCode(400, '"'.$method.'" method not supported');
@@ -135,16 +134,6 @@ class OrdersMassController extends Controller
 	protected function exact($data, string $column) {
 		if($data) {
 			return Order::with('books')->where(array_merge($this->globalConditions, [[$column, $data]]))->orderBy('created_at', 'DESC')->get();
-		} else {
-			return $this->all();
-		}
-	}
-
-	protected function book($data) {
-		if($data) {
-			return Order::with(['books' => function($query) use ($data) {
-				$query->where('title', 'like', '%'.$data.'%');
-			}])->where($this->globalConditions)->orderBy('created_at', 'DESC')->get();
 		} else {
 			return $this->all();
 		}
