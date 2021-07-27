@@ -22,7 +22,7 @@
 			@php $maxDate = \Carbon\Carbon::now()->toDateString(); @endphp
 			<label for="filter">{{ __('Filter') }}</label>
 			<select class="input-inline" id="filter" placeholder="Filter">
-				<option selected value="all"></option>
+				<option selected value="all">{{ __('None') }}</option>
 				<option value="book">{{ __('Book') }}</option>
 				<option value="order">{{ __('Order ID') }}</option>
 				<option value="name">{{ __('Name') }}</option>
@@ -126,6 +126,7 @@
 
 	<x-tabler-recycle class="hidden" id="recycle-blueprint"/>
 	<x-tabler-trash class="hidden" id="trash-blueprint"/>
-	<x-tabler-forklift class="hidden" id="forklift-blueprint"/>
+	{{-- Used to be a forkilft icon, hence the id (used in order-list.js) --}}
+	<x-tabler-clock class="hidden" id="forklift-blueprint"/>
 
 </x-app-layout>
