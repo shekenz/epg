@@ -16,7 +16,7 @@ class BooksController extends Controller
 
 	/** @var array $validation contains the validation rules for creating or updating a book */
 	protected $validation = [
-		'title' => ['required', 'string', 'max:128', 'not_regex:/[\{\}\\]/'],
+		'title' => ['required', 'string', 'max:128'],
 		'author' => ['nullable', 'string', 'max:64'],
 		'width' => ['nullable', 'integer'],
 		'height' => ['nullable', 'integer'],
