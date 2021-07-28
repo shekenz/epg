@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Order;
+use App\Models\Book;
 use App\Models\ShippingMethod;
 use App\Models\Coupon;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -16,6 +17,20 @@ class OrderFactory extends Factory
      * @var string
      */
     protected $model = Order::class;
+	
+	/**
+	 * booksCount
+	 *
+	 * @var int
+	 */
+	public $booksCount;
+	
+	/**
+	 * booksIDS
+	 *
+	 * @var array
+	 */
+	public $booksIDs;
 
     /**
      * Define the model's default state.
@@ -34,11 +49,7 @@ class OrderFactory extends Factory
 			case(0) : $status = 'FAILED'; break;
 			case(1) : $status = 'CREATED'; break;
 			default : 
-				if($randomStatus > 15) {
-					$status = 'SHIPPED';
-				} else {
-					$status = 'COMPLETED';
-				}
+				$status = 'COMPLETED';
 				break;
 		}
 
@@ -75,9 +86,36 @@ class OrderFactory extends Factory
 			'shipped_at' => null,
 			'tracking_url' => null,
 			'status' => $status,
-			'pre_order' => $this->faker->numberBetween(0, 1),
+			'pre_order' => 0,
 			'read' => $this->faker->numberBetween(0, 1),
 			'hidden' => 0,
+			'created_at' => $this->faker->dateTimeBetween($startDate = '-1 years', $endDate = 'now', $timezone = null)
         ];
     }
+
+	public function configure()
+	{
+		$this->booksCount = Book::count();
+
+		return $this->afterCreating(function(Order $order) {
+			$preOrder = 0;
+			$this->booksIDs = Book::all()->random(rand(1, $this->booksCount));
+
+			$this->booksIDs->each(function($book) use (&$preOrder) {
+				if($book->pre_order) {
+					$preOrder = 1;
+				}
+			});
+
+			$this->booksIDs = $this->booksIDs->keyBy('id')->transform(function() {
+				return ['quantity' => rand(1,3)];
+			})->toArray();
+
+			$order->pre_order = $preOrder;
+			$order->save();
+
+			$order->books()->attach($this->booksIDs);
+
+		});
+	}
 }
