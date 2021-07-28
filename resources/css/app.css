@@ -135,17 +135,28 @@
 		@apply text-red-500;
 	}
 
+	/* --------------------------------------------------------------------------------------------- TABLES */
+
+	/* --------------------------- Base Table */
+
 	table {
 		@apply border-collapse table-auto box-border border border-gray-300 w-full;
 	}
 
-	.app-table-small td {
-		@apply p-0 px-1;
-	}
 
 	table th {
 		@apply border-b border-current text-left p-2;
 	}
+
+	table td {
+		@apply border-b p-2;
+	}
+
+	table tbody tr:nth-child(2n-1) {
+		@apply bg-gray-100;
+	}
+
+	/* --------------------------- Orders unread rows */
 
 	table tr.unread, table tr:nth-child(2n-1).unread {
 		@apply
@@ -158,13 +169,13 @@
 			font-bold;
 	}
 
-	table td {
-		@apply border-b p-2;
+	/* --------------------------- Small row Table */
+
+	table.app-table-small td {
+		@apply p-0 px-1;
 	}
 
-	table tbody tr:nth-child(2n-1) {
-		@apply bg-gray-100;
-	}
+	/* --------------------------- Shipping methods Table */
 
 	table.shipping-method td {
 		@apply
@@ -183,16 +194,71 @@
 
 	table.shipping-method tr:last-child{
 		@apply
-			border-none
+			border-none;
 	}
 
 	table.shipping-method tr:nth-child(2n-1) {
 		@apply bg-transparent;
 	}
-	
-	table.shipping-method td {
 
+	/* --------------------------- Shipping methods Table 2 */
+	table.shipping-method-2 thead td {
+		@apply text-center font-bold py-2;
 	}
+
+	table.shipping-method-2 td {
+		@apply border border-black;
+	}
+
+	table.shipping-method-2 tbody tr {
+		@apply h-24;
+	}
+
+	td.shipping-method-label {
+		white-space: nowrap;
+	}
+
+	div.shipping-range-price-wrapper, div.shipping-range-label-wrapper {
+		@apply text-sm;
+	}
+
+	div.shipping-range-price-wrapper {
+		@apply border border-black flex;
+	}
+
+	div.shipping-range-label-wrapper {
+		@apply px-[1px];
+	}
+
+	div.shipping-range-stop, div.shipping-range-label {
+		@apply border-r border-black flex-1;
+	}
+
+	div.shipping-range-stop {
+		@apply text-center py-1;
+	}
+	
+	div.shipping-range-label {
+		@apply text-right pb-2;
+	}
+
+	div.shipping-range-label-inner {
+		transform: translateX(50%); 
+		@apply inline-block bg-gray-100;
+	}
+
+	div.shipping-range-stop:nth-child(even) {
+		@apply bg-blue-200;
+	}
+
+	div.shipping-range-stop:last-child {
+		@apply border-none;
+	}
+	
+	div.shipping-range-label:last-child {
+		@apply border-none;
+	}
+	/* --------------------------------------------------------------------------------------------- SWITCHES */
 
 	.switch {
 		width: 2em;

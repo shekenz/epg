@@ -64,6 +64,34 @@
 			<a id="add-coupon" href="{{ route('coupons.add') }}" class="bg-green-300 hover:bg-green-400 transition duration-300 rounded text-white text-center font-bold uppercase py-2">{{ __('Add coupon') }}</a>
 		</div>
 	</div>
+	{{-------------------------------------- Shipping methods 2 --------------------------------------}}
+	<div class="mt-10">
+		<h2 class="label-shared lg:text-lg">{{ __('Shipping methods') }} 2 : </h2>
+		@foreach ($shippingMethods as $shippingMethod)
+		<h4>{{ $shippingMethod->label }}</h4>
+		<div class="border border-gray-300 pt-4 px-4">
+			@foreach(['Colis', 'Lettre'] as $index => $label)
+			<div class="flex items-center gap-x-4 mb-4">
+				<div class="font-bold font-xl w-16 text-center"><x-tabler-grid-dots class="inline-block text-gray-400 hover:text-gray-900 cursor-pointer" />&nbsp;{{ $index + 1 }}<br>{{ $label }}</div>
+				<div class="shipping-range-wrapper flex-1 bg-gray-100 border border-gray-300 px-4 py-2 rounded-md ">
+					<div class="shipping-range-label-wrapper flex">
+						<div class="shipping-range-label"><div class="shipping-range-label-inner">250g</div></div>
+						<div class="shipping-range-label"><div class="shipping-range-label-inner">500g</div></div>
+						<div class="shipping-range-label"><div class="shipping-range-label-inner">750g</div></div>
+						<div class="shipping-range-label"><div class="shipping-range-label-inner"></div></div>
+					</div>
+					<div class="shipping-range-price-wrapper flex">
+						<div class="shipping-range-stop">5.95€</div>
+						<div class="shipping-range-stop">8.95€</div>
+						<div class="shipping-range-stop">10.95€</div>
+						<div class="shipping-range-stop">12.65€</div>
+					</div>
+				</div>
+			</div>
+			@endforeach
+		</div>
+		@endforeach
+	</div>
 	{{-------------------------------------- Shipping methods --------------------------------------}}
 	<div class="mt-10">
 		<h2 class="label-shared lg:text-lg">{{ __('Shipping methods') }} : </h2>
