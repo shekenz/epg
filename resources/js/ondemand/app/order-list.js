@@ -25,7 +25,7 @@ const trashBlueprint = document.getElementById('trash-blueprint');
 const forkliftBlueprint = document.getElementById('forklift-blueprint');
 const noResult = document.getElementById('no-result');
 
-const coolDownFire = e => {
+const coolDownFire = () => {
 	if(loader.classList.contains('hidden')) {
 		loader.classList.remove('hidden');
 	}
@@ -36,7 +36,7 @@ const coolDownFire = e => {
 	let hidden = (window.location.pathname.match(/\/hidden$/)) ? true : false;
 	let preorder = preorderInput.checked;
 	let url = `/api/orders/get/${method}/${from}/${to}/${hidden}/${preorder}/${data}`;
-	//console.log(url);
+	console.log(url);
 	fetch(url, {
 		method: 'post',
 		headers: {
@@ -218,6 +218,7 @@ const enableValueInput = value => {
 
 window.addEventListener('pageshow', e => {
 	enableValueInput(filterInput.value);
+	coolDownFire();
 });
 
 selectAllButton.addEventListener('click', e => {
