@@ -46,6 +46,7 @@
 				<option value="SHIPPED">{{ __('paypal.status.SHIPPED') }}</option>
 			</select>
 			<select class="input-inline hidden" id="filter-data-coupon">
+				<option value="">{{ __('None') }}</option>
 				@foreach ($coupons as $coupon)
 					<option value="{{ $coupon->id }}">{{ $coupon->label }}@if($coupon->trashed()) ({{ __('Trashed') }})@endif</option>
 				@endforeach
