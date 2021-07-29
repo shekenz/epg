@@ -1,6 +1,5 @@
 import { arrayByClass, coolDown } from '../../shared/helpers.mjs';
 import { isThisHour } from 'date-fns';
-import { el } from 'date-fns/locale';
 
 const ordersForm = document.getElementById('orders-selection');
 const orderRowsContainer = document.getElementById('order-rows');
@@ -8,12 +7,16 @@ const selectAllButton = document.getElementById('checkall');
 const actions = arrayByClass('action');
 
 const filterInput = document.getElementById('filter');
-const filterDataInputIDs = ['filter-data-text', 'filter-data-book', 'filter-data-status', 'filter-data-coupon', 'filter-data-shipping'];
-const filterDataInputs = new Object();
-filterDataInputIDs.forEach(id => {
-	const propName = id.match(/[a-z]+$/g)[0];
-	filterDataInputs[propName] = document.getElementById(id);	
-});
+const filterDataInputIDs = ['filter-data-text', 'filter-data-book', 'filter-data-status', 'filter-data-coupon', 'filter-data-shipping']
+const filterDataInputs = function() {
+	let elements = new Object();
+	filterDataInputIDs.forEach(id => {
+		const propName = id.match(/[a-z]+$/g)[0];
+		elements[propName] = document.getElementById(id);	
+	});
+	return elements;
+}();
+
 let filterDataInput = filterDataInputs.text;
 
 const startDate = document.getElementById('start-date');
@@ -168,6 +171,11 @@ const request = () => {
 	});
 };
 
+/**
+ * Displays the corresponding filterDataInput depending on the selected filter
+ * @param {string} inputName - The filter name
+ * @param {function} callback - A callback function to be called after input display
+ */
 const switchInput = (inputName, callback = function() {}) => {
 	// Add hidden class to all filterDataInputs
 	Object.keys(filterDataInputs).forEach(input => {
@@ -185,6 +193,10 @@ const switchInput = (inputName, callback = function() {}) => {
 	}
 }
 
+/**
+ * Check input value to determine which filter is selected
+ * @param {string} value - The input value or the filter name in our case
+ */
 const enableValueInput = value => {
 
 	switch(value) {
@@ -222,6 +234,7 @@ window.addEventListener('pageshow', () => {
 	request();
 });
 
+// Form events
 selectAllButton.addEventListener('click', e => {
 	let checkboxes = arrayByClass('checkbox');
 	checkboxes.forEach(checkbox => {
@@ -241,12 +254,11 @@ actions.forEach(action => {
 	});
 });
 
+// Filter events
 filterInput.addEventListener('input', e => {
 	enableValueInput(e.target.value);
 	request();
 });
-
-
 
 filterDataInputs.text.addEventListener('input', coolDown(() => {
 	if(loader.classList.contains('hidden')) {
