@@ -19,3 +19,4 @@ workspace.code-workspace
 config/settings.json
 todo.txt
 resources/js/ondemand/app/media-library-dragdrop-custom.js
+resources/views/orders/list.blade.php.backup

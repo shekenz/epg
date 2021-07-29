@@ -25,7 +25,7 @@ const trashBlueprint = document.getElementById('trash-blueprint');
 const forkliftBlueprint = document.getElementById('forklift-blueprint');
 const noResult = document.getElementById('no-result');
 
-const coolDownFire = () => {
+const request = () => {
 	if(loader.classList.contains('hidden')) {
 		loader.classList.remove('hidden');
 	}
@@ -216,9 +216,10 @@ const enableValueInput = value => {
 	}
 }
 
-window.addEventListener('pageshow', e => {
+// Initialization
+window.addEventListener('pageshow', () => {
 	enableValueInput(filterInput.value);
-	coolDownFire();
+	request();
 });
 
 selectAllButton.addEventListener('click', e => {
@@ -242,7 +243,7 @@ actions.forEach(action => {
 
 filterInput.addEventListener('input', e => {
 	enableValueInput(e.target.value);
-	coolDownFire(e);
+	request();
 });
 
 
@@ -251,22 +252,22 @@ filterDataInputs.text.addEventListener('input', coolDown(() => {
 	if(loader.classList.contains('hidden')) {
 		loader.classList.remove('hidden');
 	}
-}, coolDownFire, 500));
+}, request, 500));
 
 startDate.addEventListener('input', coolDown(() => {
 	if(loader.classList.contains('hidden')) {
 		loader.classList.remove('hidden');
 	}
-}, coolDownFire, 500));
+}, request, 500));
 
 endDate.addEventListener('input', coolDown(() => {
 	if(loader.classList.contains('hidden')) {
 		loader.classList.remove('hidden');
 	}
-}, coolDownFire, 500));
+}, request, 500));
 
-filterDataInputs.book.addEventListener('input', coolDownFire);
-filterDataInputs.status.addEventListener('input', coolDownFire);
-filterDataInputs.coupon.addEventListener('input', coolDownFire);
-filterDataInputs.shipping.addEventListener('input', coolDownFire);
-preorderInput.addEventListener('input', coolDownFire);
+filterDataInputs.book.addEventListener('input', request);
+filterDataInputs.status.addEventListener('input', request);
+filterDataInputs.coupon.addEventListener('input', request);
+filterDataInputs.shipping.addEventListener('input', request);
+preorderInput.addEventListener('input', request);
