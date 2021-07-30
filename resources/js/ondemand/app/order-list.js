@@ -41,7 +41,7 @@ const request = () => {
 	let url = `/api/orders/get/${method}/${from}/${to}/${hidden}/${preorder}/${data}`;
 	console.log(url);
 	fetch(url, {
-		method: 'post',
+		method: 'get',
 		headers: {
 			'accept': 'application/json',
 		}

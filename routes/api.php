@@ -42,4 +42,4 @@ Route::post('/orders/unread/count', [OrdersController::class, 'countUnread']);
 Route::post('/coupon/get/{couponLabel}', [CouponsController::class, 'get'])->middleware('shop');
 
 // Backend API
-Route::post('/orders/get/{method}/{from}/{to}/{visibility}/{preorder}/{data?}', [OrdersMassController::class, 'get']);
+Route::get('/orders/get/{method}/{from}/{to}/{visibility}/{preorder}/{data?}', [OrdersMassController::class, 'get']);
