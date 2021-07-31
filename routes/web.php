@@ -27,7 +27,7 @@ use App\Http\Controllers\OrdersMassController;
 // Main index route
 Route::get('/', [BooksController::class, 'index'])->middleware('published')->name('index');
 Route::get('/about', [IndexController::class, 'about'])->middleware('published')->name('about');
-Route::view('/contact', 'index/contact')->middleware('published')->name('messages');
+Route::view('/contact', 'index.contact')->middleware('published')->name('messages');
 Route::post('/contact', [MessagesController::class, 'forward'])->middleware('published')->name('messages.forward');
 Route::get('/order/{orderID}', [OrdersController::class, 'index'])->middleware(['published', 'shop'])->name('orders.index');
 
@@ -35,6 +35,7 @@ Route::get('/order/{orderID}', [OrdersController::class, 'index'])->middleware([
 Route::get('/cart', [CartController::class, 'viewCart'])->middleware(['published', 'shop'])->name('cart');
 Route::get('/cart/clear', [CartController::class, 'clearCart'])->middleware(['published', 'shop'])->name('cart.clear');
 Route::get('/cart/success', [CartController::class, 'success'])->middleware(['published', 'shop'])->name('cart.success');
+Route::view('/cart/checkout', 'index.cart.shipping')->middleware(['published', 'shop'])->name('cart.checkout');
 
 // Dashboard
 Route::get('/dashboard', function () {
