@@ -7,18 +7,22 @@
 			dark:text-dark-200;
 	}
 
+	/*--------------- Reset outlines ---------------*/
 	a, input, textarea, button {
 		@apply
 			focus:outline-none
 			dark:focus:outline-none;
 	}
 
-	input[type=text], input[type=email], textarea {
+	/*--------------- Inputs ---------------*/
+	input::placeholder, textarea::placeholder {
+		@apply text-gray-400;
+	}
+
+	input[type=text], input[type=email], input[type=tel], textarea {
 		@apply
-			shadow-md
 			border
 			border-gray-800
-			dark:shadow-none
 			dark:border-dark-200
 			dark:bg-black
 
@@ -30,6 +34,85 @@
 			dark:focus:border-gray-200;
 	}
 
+	input[type=text].error, input[type=email].error, input[type=tel].error, textarea.error {
+		@apply border-red-500;
+	}
+
+	input.error::placeholder, textarea.error::placeholder {
+		@apply text-red-300;
+	}
+
+	#contact-form {
+		@apply w-full md:w-1/2 xl:w-1/3 m-auto mb-10;
+	}
+
+	#contact-form .input-wrapper {
+		@apply my-4 xl:my-6;
+	}
+
+	#contact-form input, #contact-form textarea {
+		@apply w-full block;
+	}
+
+	#contact-form textarea {
+		@apply min-h-[16rem];
+	}
+
+	/*--------------- Checkboxes ---------------*/
+	input[type=checkbox] {
+		@apply hidden;
+	}
+
+	input[type=checkbox] + label:before {
+		content: '';
+		@apply border border-black h-4 w-4 mr-2 mb-1 align-middle inline-block cursor-pointer;
+	}
+
+	input[type=checkbox]:checked + label:before {
+		/* background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 100 100' %3E%3Cline stroke='white' stroke-width='15' x1='20' y1='20' x2='80' y2='80'/%3E%3Cline stroke='white' stroke-width='15' x1='80' y1='20' x2='20' y2='80'/%3E%3C/svg%3E");
+		background-size: contain;
+		background-position: center; */
+		@apply bg-black;
+	}
+
+	input[type=checkbox].classic:checked + label:before {
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 100 100' %3E%3Crect fill='black' x='15' y='15' width='70' height='70' /%3E%3C/svg%3E");
+		background-size: contain;
+		background-position: center;
+		@apply bg-white;
+	}
+	
+	/*--------------- Options (Radio) ---------------*/
+	input[type=radio] {
+		@apply hidden;
+	}
+
+	input[type=radio] + label:before {
+		content: '';
+		@apply border border-black h-4 w-4 mr-2 mb-1 align-middle inline-block cursor-pointer rounded-full;
+	}
+
+	input[type=radio] + label:before {
+		content: '';
+		@apply border border-black h-4 w-4 mr-2 mb-1 align-middle inline-block cursor-pointer rounded-full;
+	}
+
+	input[type=radio]:checked + label:before {
+		@apply bg-black;
+	}
+
+	input[type=radio].classic:checked + label:before {
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 100 100' %3E%3Ccircle fill='black' cx='50' cy='50' r='35' /%3E%3C/svg%3E");
+		background-size: contain;
+		background-position: center;
+		@apply bg-white;
+	}
+
+	span.highlight {
+		@apply text-inherit;
+	}
+
+	/*--------------- Images ---------------*/
 	.about img {
 		@apply inline-block;
 	}
@@ -43,6 +126,10 @@
 			hover:bg-black
 			dark:hover:text-black
 			dark:hover:bg-dark-200;
+	}
+
+	a#fun {
+		@apply hover:bg-black dark:hover:bg-white;
 	}
 
 }
@@ -141,6 +228,22 @@
 			button;
 	}
 
+	.square-button {
+		@apply border border-black bg-white h-6 w-6 inline-block text-center no-underline align-text-bottom;
+	}
+
+	.square-button svg {
+		@apply stroke-[black] hover:stroke-[white];
+	}
+
+	.difference {
+		@apply border-white mix-blend-difference;
+	}
+
+	.square-button.difference svg {
+		@apply stroke-[white] hover:stroke-[black] hover:bg-white;
+	}
+
 	/*--------------- #user-menu ---------------*/
 	#user-menu {
 		@apply
@@ -189,6 +292,9 @@
 	}
 
 	/*--------------- Shipping form ---------------*/
+	
+
+	/*--------------- Shipping form (OLD) ---------------*/
 	input:read-only, input:disabled, select:disabled {
 		@apply 
 			bg-gray-200 

@@ -37,3 +37,7 @@ export const randomString = (stringLength = 8) => {
 export const arrayOf = (length, fn) => {
 	return Array.apply(null, Array(length)).map(fn);
 }
+
+export const roundPrice = (price) => {
+	return Math.round(price * 100) / 100;
+}

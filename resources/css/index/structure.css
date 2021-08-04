@@ -1,3 +1,15 @@
+@layer base {
+	
+	h5 {
+		@apply py-1;
+	}
+
+	h5.subdivision {
+		@apply border-b border-black;
+	}
+
+}
+
 @layer components {
 
 	/*--------------- Main menu ---------------*/
@@ -78,4 +90,8 @@
 	#pop-up {
 	}
 
+	/*--------------- Shipping form ---------------*/
+	input[type=text].cart, input[type=email].cart, input[type=tel].cart {
+		@apply py-1 px-2 mt-4 w-full;
+	}
 }

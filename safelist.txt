@@ -4,4 +4,4 @@ hover
 mb-6
 border-gray-900
 coupon-input
-h-24
+h-32

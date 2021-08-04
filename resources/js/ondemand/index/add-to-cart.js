@@ -11,14 +11,14 @@ let toggleAddedFlash = (open = false) => {
 		
 		setTimeout(() => {
 			addedFlash.classList.remove('h-0');
-			addedFlash.classList.add('h-24');
+			addedFlash.classList.add('h-32');
 		}, 50);
 	} else {
-		addedFlash.classList.remove('h-24');
+		addedFlash.classList.remove('h-32');
 		addedFlash.classList.add('h-0');
 		setTimeout(() => {
 			addedFlash.classList.add('hidden');
-		}, 150);
+		}, 500);
 	}
 };
 

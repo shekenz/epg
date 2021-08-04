@@ -49,11 +49,11 @@
 
 		@include('index.menu')
 		@include('index.menu-under')
-		<div id="content" class="mx-4 pb-16 mt-16 md:pb-12 md:mt-24 xl:mt-40 md:mx-12 xl:mx-20">
+		<div id="content" class="mx-4 pb-16 mt-16 md:pb-12 md:mt-24 lg:mt-32 xl:mt-40 md:mx-12 xl:mx-20">
 			{{ $slot }}
 		</div>
-		<div id="footer" class="fixed bottom-4 right-4  md:bottom-8 md:right-12 xl:bottom-12 xl:right-20">
-			<a id="fun" href="{{ route('about') }}"><img  class="block dark:hidden w-10 md:w-14 xl:w-auto" srcset="{{ asset('img/logo.png') }} 1x, {{ asset('img/logo@2x.png') }} 2x" src="{{ asset('img/logo.png') }}" alt="epg logo"><img  class="hidden dark:block w-10 md:w-14 xl:w-auto" srcset="{{ asset('img/logo-dark.png') }} 1x, {{ asset('img/logo-dark@2x.png') }} 2x" src="{{ asset('img/logo-dark.png') }}" alt="epg logo"></a>
+		<div id="footer" class="fixed bottom-4 right-4 md:bottom-8 md:right-12 xl:bottom-12 xl:right-20">
+			<a id="fun" class="bg-black dark:bg-white hover:bg-white w-16 h-16 md:w-24 md:h-24 block p-2 md:p-4" href="{{ route('about') }}"><img class="inline-block w-full" src="{{ asset('img/frog_logo.svg') }}" alt="epg logo"></a>
 		</div>
 		<div id="pop-up-wrapper" class="hidden bg-black bg-opacity-80 fixed top-0 left-0 w-full h-full z-[9001]">
 			<div id="pop-up" class="pop-up border border-black py-8 px-10 bg-white max-w-[640px] m-auto mt-[30vh]">
