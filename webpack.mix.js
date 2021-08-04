@@ -75,3 +75,16 @@ mix.webpackConfig({
 
 // Notifications off
 mix.disableSuccessNotifications();
+
+// Live server (hot reload)
+if (!mix.inProduction()) {
+	mix.browserSync({
+		ui: {
+			port: 8002,
+		},
+		port: 8001,
+		proxy: 'localhost:8000',
+		notify: false,
+		open: false,
+	});
+}
