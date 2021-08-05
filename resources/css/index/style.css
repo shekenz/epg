@@ -112,9 +112,17 @@
 		@apply text-inherit;
 	}
 
-	/*--------------- Images ---------------*/
+	/*--------------- Cart form misc. ---------------*/
 	.about img {
 		@apply inline-block;
+	}
+
+	h5 {
+		@apply py-1;
+	}
+
+	h5.subdivision {
+		@apply border-b border-black;
 	}
 
 	/*--------------- Links ---------------*/
@@ -145,10 +153,24 @@
 	#black-square {
 		@apply
 			bg-black
-			dark:bg-white;
+			dark:bg-white
+
+			fixed
+			w-0
+			h-0
+			top-0
+			left-0
+			z-[2];
+	}
+
+	#black-square.animated {
+		@apply
+			transition-all
+			duration-300;
 	}
 
 	#menu-wrapper {
+		z-index: 3;	
 		@apply
 			no-underline
 			text-white
@@ -156,10 +178,30 @@
 	}
 
 	#menu-wrapper-under {
+		z-index: -1;
 		@apply
 			no-underline
 			text-white
 			dark:text-black;
+	}
+
+	.menu-wrapper {
+		@apply
+			fixed
+			w-full
+			top-0;
+	}
+
+	.menu {
+		@apply
+			grid
+			grid-cols-5
+			m-4
+			md:grid-cols-9
+			md:my-8
+			md:mx-12
+			xl:my-12
+			xl:mx-20;	
 	}
 
 	.menu a {
@@ -183,6 +225,8 @@
 		@apply
 			underline;
 	}
+
+	
 
 	/*-------------- Buttons ---------------*/
 	.button {
@@ -214,7 +258,11 @@
 
 			cursor-pointer
 			transition-colors
-			duration-200;
+			duration-200
+
+			inline-block
+			py-1
+			px-2.5;
 	}
 
 	.inverted {
@@ -230,7 +278,13 @@
 
 	.button-lg {
 		@apply
-			button;
+			button
+
+			inline-block
+			py-1
+			px-2
+			md:py-3
+			md:px-4;
 	}
 
 	.square-button {
@@ -258,7 +312,10 @@
 			text-green-900
 			bg-green-300
 			shadow
-			z-20;
+			z-20
+
+			px-2
+			py-1;
 	}
 
 	#user-menu a {
@@ -285,7 +342,12 @@
 			hover:bg-green-300
 			focus:border-green-900
 			focus:text-green-900
-			focus:bg-green-300;
+			focus:bg-green-300
+
+			inline-block
+			px-2
+			py-1
+			mr-2;
 	}
 
 	.notification::before {

@@ -14,8 +14,6 @@ document.getElementById('ship-form').addEventListener('submit', e => {
 
 		button.firstChild.nodeValue = 'Ship';
 
-		let trackingData = document.getElementById('tracking-data').dataset;
-
 		let title = document.createElement('h2');
 		title.appendChild(document.createTextNode('Confirm shipping'));
 
@@ -45,7 +43,7 @@ document.getElementById('ship-form').addEventListener('submit', e => {
 		return shipTrackingForm;
 	},
 	returned => {
-		document.getElementById('loader').classList.toggle('hidden');
+		document.getElementById('popup-loader').classList.toggle('hidden');
 		returned.submit();
 	});
 });

@@ -32,7 +32,7 @@ export function popUp(message, callback = function() {}) {
  * @param {run} Callback Fills up the popup's main wrapper.
  * @param {buttonCallback} Callback Called on accept button click.
  */
-export function popUpPlus(run = (el, button) => {}, buttonCallback = returned => {}) {
+export function popUpPlus(run = (el, button) => {}, buttonCallback = (returned) => {}) {
 	let button = document.getElementById('pop-up-button');
 	let innerWrapper = document.getElementById('pop-inner-wrapper');
 	let returned = run(innerWrapper, button);

@@ -63,7 +63,7 @@
 				<div id="pop-inner-wrapper"></div>
 				<div class="flex justify-between items-center mt-12">
 					<button id="pop-up-close" type="button" class="button-shared block">{{ __('Close') }}</button>
-					<img src="{{ asset('img/loader2.gif') }}" id="loader" class="w-6 hidden"/>
+					<img src="{{ asset('img/loader2.gif') }}" id="popup-loader" class="w-6 hidden"/>
 					<button id="pop-up-button" type="button" class="button-shared block">{{ __('OK') }}</button>
 				</div>
 			</div>

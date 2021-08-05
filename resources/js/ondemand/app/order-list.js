@@ -1,4 +1,5 @@
 import { arrayByClass, coolDown } from '../../shared/helpers.mjs';
+import { popUpPlus } from '../../shared/popup.mjs';
 import { isThisHour } from 'date-fns';
 
 const ordersForm = document.getElementById('orders-selection');
@@ -26,7 +27,18 @@ const loader = document.getElementById('loader');
 const recycleBlueprint = document.getElementById('recycle-blueprint');
 const trashBlueprint = document.getElementById('trash-blueprint');
 const forkliftBlueprint = document.getElementById('forklift-blueprint');
+const shippedBlueprint = document.getElementById('shipped-blueprint');
 const noResult = document.getElementById('no-result');
+
+const createToolButton = (href, blueprint) => {
+	const link = document.createElement('a');
+	link.setAttribute('href', href);
+	link.setAttribute('class', 'icon');
+	const icon = blueprint.cloneNode(true);
+	icon.classList.remove('hidden');
+	link.append(icon);
+	return link;
+}
 
 const request = () => {
 	if(loader.classList.contains('hidden')) {
@@ -39,7 +51,7 @@ const request = () => {
 	let hidden = (window.location.pathname.match(/\/hidden$/)) ? true : false;
 	let preorder = preorderInput.checked;
 	let url = `/api/orders/get/${method}/${from}/${to}/${hidden}/${preorder}/${data}`;
-	console.log(url);
+	//console.log(url);
 	fetch(url, {
 		method: 'get',
 		headers: {
@@ -66,14 +78,15 @@ const request = () => {
 						let orderCreationDate = new Date(order.created_at);
 
 						// Parent row
-						let row = document.createElement('tr');
+						const row = document.createElement('tr');
+						row.setAttribute('id', 'order-'+order.id);
 						if(!order.read) {
 							row.classList.add('unread');
 						}
 
 						// First cell with checkbox
-						let firstCell = document.createElement('td');
-						let firstCellInput = document.createElement('input');
+						const firstCell = document.createElement('td');
+						const firstCellInput = document.createElement('input');
 						firstCellInput.setAttribute('class', 'checkbox');
 						firstCellInput.setAttribute('type', 'checkbox');
 						firstCellInput.setAttribute('value', order.id);
@@ -82,13 +95,13 @@ const request = () => {
 						row.append(firstCell);
 
 						// Cells depending on their index
-						let rowCells = [order.order_id, order.full_name, order.email_address, order.pre_order, order.status, order.created_at_formated];
+						const rowCells = [order.order_id, order.full_name, order.email_address, order.pre_order, order.status, order.created_at_formated];
 						rowCells.forEach((cellData, index) => {
-							let cell = document.createElement('td');
+							const cell = document.createElement('td');
 							
 							switch(index) {
 								case 0: // order_id
-									let orderLink = document.createElement('a');
+									const orderLink = document.createElement('a');
 									orderLink.setAttribute('class', 'default');
 									orderLink.setAttribute('href', window.location.origin+'/dashboard/order/'+order.id);
 									if(!cellData) {
@@ -100,13 +113,13 @@ const request = () => {
 								case 3:
 									cell.setAttribute('class', 'text-center');
 									if(cellData === 1) {
-										let forkliftIcon = forkliftBlueprint.cloneNode(true);
+										const forkliftIcon = forkliftBlueprint.cloneNode(true);
 										forkliftIcon.classList.remove('hidden');
 										cell.append(forkliftIcon);
 									}
 									break;
 								case 4:
-									let label = document.createElement('span');
+									const label = document.createElement('span');
 									label.setAttribute('class', 'font-bold text-center inline-block w-full text-white px-2 py-1 rounded');
 									let bgClass = '';
 									switch(order.status) {
@@ -131,23 +144,75 @@ const request = () => {
 						});
 
 						// Last cell
-						let toolsCell = document.createElement('td');
+						const toolsCell = document.createElement('td');
 						if(order.status === 'FAILED') {
-							let trashLink = document.createElement('a');
-							trashLink.setAttribute('href', window.location.origin+'/dashboard/order/cancel/'+order.id);
-							trashLink.setAttribute('class', 'icon');
-							let trashIcon = trashBlueprint.cloneNode(true);
-							trashIcon.classList.remove('hidden');
-							trashLink.append(trashIcon);
-							toolsCell.append(trashLink);
+							toolsCell.append(createToolButton(window.location.origin+'/dashboard/order/cancel/'+order.id, trashBlueprint));
 						} else if(order.status === 'CREATED' && order.order_id && !isThisHour(orderCreationDate)) {
-							let recycleLink = document.createElement('a');
-							recycleLink.setAttribute('href', window.location.origin+'/dashboard/order/recycle/'+order.order_id);
-							recycleLink.setAttribute('class', 'icon');
-							let recycleIcon = recycleBlueprint.cloneNode(true);
-							recycleIcon.classList.remove('hidden');
-							recycleLink.append(recycleIcon);
-							toolsCell.append(recycleLink);
+							toolsCell.append(createToolButton(window.location.origin+'/dashboard/order/recycle/'+order.id, recycleBlueprint));
+						} else if(order.status === 'COMPLETED') {
+							const shippedLink = createToolButton('#', shippedBlueprint);
+							shippedLink.classList.add('shipped');
+							shippedLink.addEventListener('click', e => {
+								e.preventDefault();
+								popUpPlus((wrapper, button) => {
+
+									button.firstChild.nodeValue = 'Ship';
+														
+									const title = document.createElement('h2');
+									title.appendChild(document.createTextNode('Confirm shipping'));
+							
+									const shipTrackingForm = document.createElement('form');
+									shipTrackingForm.setAttribute('method', 'POST');
+									shipTrackingForm.setAttribute('action', window.location.origin+'/dashboard/order/shipped/'+order.order_id);
+									shipTrackingForm.appendChild(document.getElementsByName('_token')[0].cloneNode());
+									
+									// Tracking URL
+									const shipTrackingURL = document.createElement('input');
+									shipTrackingURL.setAttribute('type', 'text');
+									shipTrackingURL.setAttribute('name', 'tracking_url');
+									shipTrackingURL.classList.add('input-shared');
+									const shipTrackingURLLabel = document.createElement('label');
+									shipTrackingURLLabel.classList.add('label-shared');
+									shipTrackingURLLabel.classList.add('block');
+									shipTrackingURLLabel.classList.add('text-lg');
+									shipTrackingURLLabel.classList.add('mt-4');
+									shipTrackingURLLabel.appendChild(document.createTextNode('Tracking URL :'))
+							
+									// Appending
+									shipTrackingForm.appendChild(shipTrackingURLLabel);
+									shipTrackingForm.appendChild(shipTrackingURL);
+									
+									wrapper.appendChild(title);
+									wrapper.appendChild(shipTrackingForm);
+									return shipTrackingForm;
+								},
+								returned => {
+									document.getElementById('popup-loader').classList.toggle('hidden');
+									
+									//TODO prevent enter from submiting form 
+									fetch(returned.action, {
+										method: 'post',
+										headers: {
+											accept: 'application/json',
+										},
+										body: new FormData(returned)
+									}).then(r => {
+										if( r.status === 200 ) {
+											return r.json();
+										}
+									}).then(rj => {
+										document.getElementById('popup-loader').classList.toggle('hidden');
+										document.getElementById('pop-up-wrapper').classList.add('hidden');
+										document.getElementById('pop-inner-wrapper').innerHTML = '';
+										const statusLabel = document.querySelector(`#order-${rj.id} td:nth-child(6) span`);
+										statusLabel.innerHTML = 'Envoyé'.toUpperCase();
+										statusLabel.classList.remove('bg-blue-500');
+										statusLabel.classList.add('bg-green-500');
+										document.querySelector(`#order-${rj.id} td:nth-child(8)`).removeChild(document.querySelector(`#order-${rj.id} td:nth-child(8) a.shipped`));
+									});
+								});
+							});
+							toolsCell.append(shippedLink);
 						}
 						toolsCell.setAttribute('class', 'text-right');
 						row.append(toolsCell);
@@ -236,7 +301,7 @@ window.addEventListener('pageshow', () => {
 
 // Form events
 selectAllButton.addEventListener('click', e => {
-	let checkboxes = arrayByClass('checkbox');
+	const checkboxes = arrayByClass('checkbox');
 	checkboxes.forEach(checkbox => {
 		checkbox.checked = e.target.checked;
 	});

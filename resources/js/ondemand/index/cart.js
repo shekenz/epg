@@ -111,7 +111,7 @@ articlesQuantityButtons.forEach(button => {
 		fetch(e.currentTarget.href, {
 			method: 'post',
 			headers: {
-				'accept': 'application/json'
+				accept: 'application/json'
 			}
 		})
 		.then(response => {

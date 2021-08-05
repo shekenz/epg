@@ -108,5 +108,6 @@
 	<x-tabler-trash class="hidden" id="trash-blueprint"/>
 	{{-- Used to be a forkilft icon, hence the id (used in order-list.js) --}}
 	<x-tabler-clock class="hidden" id="forklift-blueprint"/>
+	<x-tabler-truck-delivery class="hidden" id="shipped-blueprint"/>
 
 </x-app-layout>

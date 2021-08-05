@@ -168,7 +168,5 @@
 		</form>
 	</div>
 		
-	<span id="tracking-data" data-tracking-url="@isset($shippingMethod){{ $shippingMethod->tracking_url }}@endisset"></span>
-	
 
 </x-app-layout>

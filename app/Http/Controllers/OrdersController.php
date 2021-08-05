@@ -493,7 +493,15 @@ class OrdersController extends Controller
 		}
 		
 		$order->save();
-		return back();
+
+		if($request->wantsJson()) {
+			return [
+				'id' => $order->id,
+				'status' => $order->status
+			];
+		} else {
+			return back();
+		}
 	}
 
 }
