@@ -14,6 +14,9 @@
 			lg:grid-cols-3
 			xl:grid-cols-2 
 			gap-x-12
+			text-[1.05rem]
+			leading-[1.2rem]
+			md:text-base
 		">
 			<div id="cart" class="
 				cart-list
@@ -25,6 +28,8 @@
 				xl:grid-cols-2
 				xl:col-span-1
 				gap-6
+				border-black border-b md:border-b-0
+				pb-4 md:pb-0
 			">
 			@php
 				$total = 0;
@@ -38,7 +43,7 @@
 			</div>
 			<div class="xl:grid xl:grid-cols-2 gap-x-12 gap-y-6">
 				<div>
-					<form id="shipping-address-form">
+					<form id="shipping-address-form" class="mt-6 md:mt-0">
 						<h5 class="subdivision">{{ __('Contact information') }}</h5>
 						<input class="cart" type="text" placeholder="{{ __('Last name') }}" autocomplete="given-name" />
 						<input class="cart" type="text" placeholder="{{ __('First name') }}" autocomplete="family-name" />

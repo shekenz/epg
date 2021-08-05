@@ -39,7 +39,7 @@
 		xl:col-start-8
 		xl:col-span-2
 	">
-		<div class="">
+		<div class="mr-4 xl:mr-0">
 				{{ $book->title }}<br>
 				@if( !empty($book->author) )
 				{{ $book->author }}<br>

@@ -136,6 +136,11 @@
 
 @layer components {
 
+	/*--------------- Flash images ---------------*/
+	#dyna-flash img {
+		@apply h-16 my-1 md:my-3 md:h-20 lg:h-28 inline-block;
+	}
+
 	/*--------------- Main menu ---------------*/
 	#black-square {
 		@apply

@@ -1,5 +1,5 @@
 import { roundPrice, arrayByClass, coolDown } from '../../shared/helpers.mjs';
-import { popUp } from '../../shared/popup.mjs';
+import { popUp, popFlash } from '../../shared/popup.mjs';
 import { updateQuantityFor, updateSubTotalFor } from '../../shared/update-article.mjs';
 import { updateCartQuantity, setCartTotal } from '../../shared/update-cart.mjs';
 
@@ -117,6 +117,8 @@ articlesQuantityButtons.forEach(button => {
 		.then(response => {
 			if(response.status === 200) {
 				return response.json();
+			} else {
+				popFlash('<img class="h-28 inline-block" src="/img/frog_logo_warning.svg" alt="Frog that warns you"><span class="mx-4">'+response.statusText+'</span>')();
 			}
 		})
 		.catch(() => {

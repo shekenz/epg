@@ -9,7 +9,7 @@ module.exports = {
 			'./storage/framework/views/*.php',
 			'./resources/views/**/*.blade.php',
 			'./resources/js/**/*.js',
-			//'./safelist.txt'
+			'./safelist.txt'
 		],
 		options: {
 			safelist: ['black-square', 'animated'],
@@ -24,7 +24,8 @@ module.exports = {
             },
 			fontSize: {
 				custom: ['1.1em', '1.2em'],
-				'custom-md': ['0.8em', '1.1em'],
+				'custom-sm': ['0.8em', '1.1em'],
+				'custom-md': ['1em', '1.1em'],
 			},
 			colors: {
 				dark: colors.gray,

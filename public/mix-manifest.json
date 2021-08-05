@@ -19,7 +19,13 @@
     "/img/default-thumbnail.jpg": "/img/default-thumbnail.jpg",
     "/img/favicon.png": "/img/favicon.png",
     "/img/favicon32.png": "/img/favicon32.png",
+    "/img/frog_logo.svg": "/img/frog_logo.svg",
+    "/img/frog_logo_books.svg": "/img/frog_logo_books.svg",
+    "/img/frog_logo_cookies.svg": "/img/frog_logo_cookies.svg",
+    "/img/frog_logo_error.svg": "/img/frog_logo_error.svg",
     "/img/frog_logo_heart.svg": "/img/frog_logo_heart.svg",
+    "/img/frog_logo_question.svg": "/img/frog_logo_question.svg",
+    "/img/frog_logo_warning.svg": "/img/frog_logo_warning.svg",
     "/img/loader.gif": "/img/loader.gif",
     "/img/loader2.gif": "/img/loader2.gif",
     "/img/logo-dark.png": "/img/logo-dark.png",
@@ -43,7 +49,5 @@
     "/fonts/MonumentGroteskTrial-Regular.woff": "/fonts/MonumentGroteskTrial-Regular.woff",
     "/fonts/Nunito-Bold.ttf": "/fonts/Nunito-Bold.ttf",
     "/fonts/Nunito-Regular.ttf": "/fonts/Nunito-Regular.ttf",
-    "/fonts/Roboto-Bold.ttf": "/fonts/Roboto-Bold.ttf",
-    "/img/frog_logo_books.svg": "/img/frog_logo_books.svg",
-    "/img/frog_logo.svg": "/img/frog_logo.svg"
+    "/fonts/Roboto-Bold.ttf": "/fonts/Roboto-Bold.ttf"
 }

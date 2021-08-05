@@ -1,7 +1,2 @@
 black-square
-animated
-hover
-mb-6
-border-gray-900
-coupon-input
-h-32
+h-0

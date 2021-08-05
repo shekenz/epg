@@ -1,25 +1,15 @@
 
 import { arrayByClass } from '../../shared/helpers.mjs';
 import { updateCartQuantity } from '../../shared/update-cart.mjs';
+import { popFlash } from '../../shared/popup.mjs';
 
 const addToCartButtons = arrayByClass('add-to-cart-button');
-const addedFlash = document.getElementById('added-flash');
+const translationHelper = document.getElementById('translation-helper');
 
-let toggleAddedFlash = (open = false) => {
-	if(open) {
-		addedFlash.classList.remove('hidden');
-		
-		setTimeout(() => {
-			addedFlash.classList.remove('h-0');
-			addedFlash.classList.add('h-32');
-		}, 50);
-	} else {
-		addedFlash.classList.remove('h-32');
-		addedFlash.classList.add('h-0');
-		setTimeout(() => {
-			addedFlash.classList.add('hidden');
-		}, 500);
-	}
+const flashSuccessCooledDown = popFlash('<img src="/img/frog_logo_heart.svg" alt="Frog that loves you"><span class="mx-4">'+translationHelper.dataset.addedMessage+'</span><a class="button-lg" href="/cart">'+translationHelper.dataset.checkoutButton+'</a>');
+
+const flashErrorCooledDown = message => {
+	popFlash('<img src="/img/frog_logo_warning.svg" alt="Frog that warns you"><span class="mx-4">'+message+'</span>')();
 };
 
 addToCartButtons.map(buttons => {
@@ -31,12 +21,13 @@ addToCartButtons.map(buttons => {
 			headers: {
 				'accept': 'application/json'
 			}
-		}).then( () => {
-			updateCartQuantity(1);
-			toggleAddedFlash(true);
-			setTimeout(() => {
-				toggleAddedFlash();
-			}, 4000);
+		}).then( r => {
+			if(r.status === 200) {
+				updateCartQuantity(1);
+				flashSuccessCooledDown();
+			} else {
+				flashErrorCooledDown(r.statusText);
+			}
 		})
 		.catch(error => {
 			console.error(error);

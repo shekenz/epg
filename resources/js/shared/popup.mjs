@@ -61,3 +61,37 @@ export function popUpPlus(run = (el, button) => {}, buttonCallback = returned =>
 	}
 	document.getElementById('pop-up-close').addEventListener('click', closeHandler);
 }
+
+export const popFlash = (html, timeout = 5000) => {
+
+	// Outter-globals (Scopped to outter function)
+	let timeoutId = false;
+	const wrapper = document.getElementById('dyna-flash');
+
+	if(wrapper) {
+		// Closure
+		return () => {
+			// Init
+			wrapper.innerHTML = html;
+			wrapper.classList.remove('hidden');
+			setTimeout(() => {
+				wrapper.classList.remove('h-0');
+				wrapper.classList.add('h-32');
+			}, 10);
+
+			// Clear time out if muliple fire
+			if(timeoutId) { clearTimeout(timeoutId); }
+
+			// Fire after cooldown
+			timeoutId = setTimeout(() => {	
+				wrapper.classList.add('h-0');
+				wrapper.classList.remove('h-32');
+				setTimeout(() => {
+					wrapper.classList.add('hidden');
+				}, 500);
+			}, timeout);
+		}
+	} else {
+		throw new Error('Flash main wrapper element not found');
+	}
+}
