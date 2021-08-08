@@ -359,6 +359,9 @@
 	}
 
 	/*--------------- Shipping form ---------------*/
+	input[type=text].cart, input[type=email].cart, input[type=tel].cart {
+		@apply py-1 px-2 mt-4 w-full;
+	}
 	
 
 	/*--------------- Shipping form (OLD) ---------------*/
