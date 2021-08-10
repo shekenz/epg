@@ -6,10 +6,11 @@ hideButtons = new Array(document.getElementById('hide-button'), document.getElem
 
 for(const hideButton of hideButtons) {
 	hideButton.addEventListener('click', (e) => {
+		e.preventDefault();
 		elements = document.getElementsByClassName('hideable');
 		for(element of elements) {
 			element.classList.toggle('hidden');
-			userMenu.classList.toggle('w-full');
 		}
+		userMenu.classList.toggle('w-full');
 	});
 }
