@@ -21,6 +21,7 @@ export const coolDown = (init, callback, timeout) => {
 	}
 };
 
+// Generates a random string with alphanumeric values, excluding confusing characters like "O"
 export const randomString = (stringLength = 8) => {
 	let allowedGenerationChar = '';
 	let randomLabel = '';
@@ -34,10 +35,21 @@ export const randomString = (stringLength = 8) => {
 	return randomLabel;
 }
 
+// That I forgot what it does and why and where I needed it
+// I think it generates an array of a given length with values returned by fn callback
 export const arrayOf = (length, fn) => {
 	return Array.apply(null, Array(length)).map(fn);
 }
 
+// Round a value with 2 decimal, fixing rounding imprecisions (Mostly for price)
 export const roundPrice = (price) => {
 	return Math.round(price * 100) / 100;
+}
+
+// Applies a bounding rectangle to an element with possible offset
+export const matchDimension = (el, boundingRect, xOffset = 0, yOffset = 0) => {
+	el.style.left = `${boundingRect.left - xOffset}px`;
+	el.style.top = `${boundingRect.top - yOffset}px`;
+	el.style.width = `${boundingRect.width + (xOffset*2) }px`;
+	el.style.height = `${boundingRect.height + 2 + (yOffset*2) }px`;
 }

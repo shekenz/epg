@@ -1,9 +1,10 @@
+import { matchDimension } from './helpers.mjs';
+
 export function updateCartQuantity(relativeValue = 0) {
-	let el = document.getElementById('cart-menu-item').firstChild;
-	let elUnder = document.getElementById('cart-menu-item-under').firstChild;
-	let currentQuantityMatch = el.nodeValue.match(/[0-9]+/);
-	if (currentQuantityMatch) {
-		var currentQuantity = parseInt(currentQuantityMatch[0]);
+
+	let el = document.getElementById('cart-menu-count');
+	if (el.firstChild) {
+		var currentQuantity = parseInt(el.firstChild.nodeValue.match(/\d+/));
 	} else {
 		var currentQuantity = 0;
 	}
@@ -11,12 +12,11 @@ export function updateCartQuantity(relativeValue = 0) {
 	let newValue = currentQuantity + relativeValue;
 	if(!isNaN(newValue)) {
 		if(newValue > 0) {
-			el.nodeValue = `cart (${newValue})`;
-			elUnder.nodeValue = `cart (${newValue})`;
+			el.innerHTML = ` (${newValue})`;
 		} else {
-			el.nodeValue = 'cart';
-			elUnder.nodeValue = 'cart';
+			el.innerHTML = '';
 		}
+		matchDimension(document.getElementById('black-square'), el.parentElement.getBoundingClientRect(), 7, 1);
 	} else {
 		throw new TypeError('newValue is not a number');
 	}

@@ -181,31 +181,13 @@
 			duration-300;
 	}
 
-	#menu-wrapper {
-		z-index: 3;	
-		@apply
-			no-underline
-			text-white
-			mix-blend-difference;
-	}
-
-	#menu-wrapper-under {
-		z-index: -1;
-		@apply
-			no-underline
-			text-white
-			dark:text-black;
-	}
-
-	.menu-wrapper {
+	#menu {
+		/* Structure */
 		@apply
 			fixed
 			w-full
-			top-0;
-	}
-
-	.menu {
-		@apply
+			top-0
+			z-[3]
 			grid
 			grid-cols-5
 			m-4
@@ -213,31 +195,42 @@
 			md:my-8
 			md:mx-12
 			xl:my-12
-			xl:mx-20;	
-	}
-
-	.menu a {
+			xl:mx-20;
+		/* Style */
 		@apply
-			no-underline
-			hover:underline;
+			text-white
+			mix-blend-difference;
 	}
 
 	#menu a {
 		@apply
+			no-underline
+			hover:underline
 			hover:bg-transparent
-			dark:hover:text-white;
+			hover:text-inherit;
 	}
 
-	#menu a.active, #menu-under a.active {
+	#menu a.active {
 		@apply
 			no-underline;
 	}
 
-	#menu-under a.hover {
+	#artificial-background {
 		@apply
-			underline;
+			bg-white
+			dark:bg-black
+			z-[-1]
+			fixed
+			top-0
+			left-0
+			h-32
+			w-full;
+		/* Applying same height as content top margin to fix Safari not updating body backgound issue. */
+		@apply
+			md:h-24
+			lg:h-32
+			xl:h-40;
 	}
-
 	
 
 	/*-------------- Buttons ---------------*/
