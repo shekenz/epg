@@ -26,12 +26,12 @@
 			@endif
 		</div>
 		<div class="input-wrapper">
-			<textarea id="message" class="@if($errors->has('message')){{ 'error' }}@endif" name="message" placeholder="{{ __('Message') }}">{{ old('content') }}</textarea>
+			<textarea id="message" class="@if($errors->has('message')){{ 'error' }}@endif" name="message" placeholder="{{ __('Message') }}">{{ old('message') }}</textarea>
 			@if($errors->has('message'))
 				@foreach ($errors->get('message') as $error)
 					
 				@endforeach
-			<p class="error-info my-1 text-red-500 text-sm italic">{{ $error}}</p>
+			<p class="error-info my-1 text-red-500 text-sm italic">{{$error}}</p>
 			@endif
 		</div>
 		<div class="text-right w-full">
