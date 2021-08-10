@@ -11,7 +11,7 @@ arrayByClass('glide').map((item,index) => {
 		animationDuration: 700,
 		rewind: true,
 		swipeThreshold: 50,
-		gap: 0,
+		gap: 1,
 	}).mount();
 });
 
