@@ -42,6 +42,9 @@
 				{{ __('Empty') }}
 			@endif
 			<br>
+			<span class="font-bold">{{ __('Weight') }} : </span>
+			{{ $book->weight }} g
+			<br>
 			<span class="font-bold">{{ __('Quantity') }} : </span>
 				{{ $book->quantity }}
 			<br>

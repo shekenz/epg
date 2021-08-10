@@ -22,6 +22,7 @@ class BooksController extends Controller
 		'height' => ['nullable', 'integer'],
 		'pages' => ['nullable', 'integer'],
 		'cover' => ['nullable', 'string', 'max:32'],
+		'weight' => ['required', 'integer', 'min:0'],
 		'copies' => ['nullable', 'integer'],
 		'quantity' => ['required', 'integer'],
 		'pre_order' => ['nullable', 'boolean'],

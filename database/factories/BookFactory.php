@@ -44,6 +44,7 @@ class BookFactory extends Factory
 			'height' => rand(150, 300),
 			'cover' => $this->faker->randomElement(['Souple', 'Flex', 'Rigide', 'Magazine']),
 			'pages' => rand(20, 400),
+			'weight' => $this->faker->randomElement([50, 80, 120, 150, 175, 230, 255]),
 			'copies' => rand(10,300),
 			'quantity' => rand(10, 300),
 			'pre_order' => $this->faker->numberBetween(0, 1),

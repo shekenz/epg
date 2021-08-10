@@ -102,8 +102,6 @@
 					A partir de {{ $previousWeight }}g = {{ $priceStop->price }}€<br>
 				@endif
 			@endforeach
-			<form>
-				<label>Ajouter</label><input type="number" min="{{ $previousWeight }}"/>g = <input type="number" step="0.01"  min="{{ $priceStop->price }}" />€
 		</div>
 		@endforeach
 	</div>

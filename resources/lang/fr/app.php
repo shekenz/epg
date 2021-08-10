@@ -2,4 +2,5 @@
 
 return [
 	'price-frozen' => 'Le livre est lié à une commande. Archivez d\'abort la commande pour changer le prix',
+	'weight-frozen' => 'Le livre est lié à une commande. Archivez d\'abort la commande pour changer le poids',
 ];

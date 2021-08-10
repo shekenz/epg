@@ -66,10 +66,14 @@
 				<input class="input-shared" id="cover" name="cover" type="text" value="{{ old('cover') }}" maxlength="32">
 			</div>
 			<div class="md:row-start-4 md:col-start-2">
+				<label class="label-shared lg:text-lg" for="weight">{{ __('Weight') }} (g) :</label>
+				<input class="input-shared" id="weight" name="weight" type="number" value="{{ old('weight') }}" min="0">
+			</div>
+			<div class="md:row-start-5 md:col-start-2">
 				<label class="label-shared lg:text-lg" for="pages">{{ __('Pages count') }} :</label>
 				<input class="input-shared" id="pages" name="pages" type="number" value="{{ old('pages') }}">
 			</div>
-			<div class="md:row-start-5 md:col-start-2">
+			<div class="md:row-start-6 md:col-start-2">
 				<label class="label-shared lg:text-lg" for="price">{{ __('Price') }} :</label>
 				<input class="input-shared" id="price" name="price" type="text" value="{{ old('price') }}" maxlength="10">
 			</div>

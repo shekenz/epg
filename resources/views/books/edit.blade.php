@@ -63,10 +63,22 @@
 				<input class="input-shared" id="cover" name="cover" type="text" value="{{ old('cover') ?? $book->cover }}" maxlength="32">
 			</div>
 			<div class="md:row-start-4 md:col-start-2">
+				<label class="label-shared lg:text-lg" for="weight">{{ __('Weight') }} (g) :</label>
+				@if($book->orders->isNotEmpty())
+            	<input class="input-shared" disabled="true" type="number" value="{{ $book->weight }}">
+            	<input name="weight" type="hidden" value="{{ $book->weight }}">
+				<div class="mt-1  leading-[0.4rem]">
+					<span class="text-gray-400 italic text-sm">{{ __('app.weight-frozen') }}.</span>
+				</div>
+				@else
+				<input class="input-shared" id="weight" name="weight" type="number" value="{{ old('weight') ?? $book->weight }}" min="0">
+				@endif
+			</div>
+			<div class="md:row-start-5 md:col-start-2">
 				<label class="label-shared lg:text-lg" for="pages">{{ __('Pages count') }} :</label>
 				<input class="input-shared" id="pages" name="pages" type="number" value="{{ old('pages') ?? $book->pages }}">
 			</div>
-			<div class="md:row-start-5 md:col-start-2">
+			<div class="md:row-start-6 md:col-start-2">
             	<label class="label-shared lg:text-lg" for="price">{{ __('Price') }} :</label>
 				@if($book->orders->isNotEmpty())
             	<input class="input-shared" disabled="true" type="text" value="{{ $book->price }}">
