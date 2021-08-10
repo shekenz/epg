@@ -55,7 +55,6 @@
 		@endauth
 
 		@include('index.menu')
-		@include('index.menu-under')
 		<div id="content" class="mx-4 pb-16 mt-16 md:pb-12 md:mt-24 lg:mt-32 xl:mt-40 md:mx-12 xl:mx-20">
 			{{ $slot }}
 		</div>
