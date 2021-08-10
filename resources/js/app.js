@@ -1,5 +1,5 @@
 // Laravel
-require('./bootstrap');
+//require('./bootstrap');
 require('alpinejs');
 
 // App

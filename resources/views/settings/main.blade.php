@@ -68,27 +68,42 @@
 	<div class="mt-10">
 		<h2 class="label-shared lg:text-lg">{{ __('Shipping methods') }} 2 : </h2>
 		@foreach ($shippingMethods as $shippingMethod)
-		<h4>{{ $shippingMethod->label }}</h4>
-		<div class="border border-gray-300 pt-4 px-4">
-			@foreach(['Colis', 'Lettre'] as $index => $label)
-			<div class="flex items-center gap-x-4 mb-4">
-				<div class="font-bold font-xl w-16 text-center"><x-tabler-grid-dots class="inline-block text-gray-400 hover:text-gray-900 cursor-pointer" />&nbsp;{{ $index + 1 }}<br>{{ $label }}</div>
-				<div class="shipping-range-wrapper flex-1 bg-gray-100 border border-gray-300 px-4 py-2 rounded-md ">
-					<div class="shipping-range-label-wrapper flex">
-						<div class="shipping-range-label"><div class="shipping-range-label-inner">250g</div></div>
-						<div class="shipping-range-label"><div class="shipping-range-label-inner">500g</div></div>
-						<div class="shipping-range-label"><div class="shipping-range-label-inner">750g</div></div>
-						<div class="shipping-range-label"><div class="shipping-range-label-inner"></div></div>
-					</div>
-					<div class="shipping-range-price-wrapper flex">
-						<div class="shipping-range-stop">5.95€</div>
-						<div class="shipping-range-stop">8.95€</div>
-						<div class="shipping-range-stop">10.95€</div>
-						<div class="shipping-range-stop">12.65€</div>
-					</div>
+		<h4>{{ $shippingMethod->label }} ({{ $shippingMethod->id}})</h4>
+		<div class="pt-4 px-4">
+			<div class="shipping-range-wrapper flex-1 bg-gray-100 border border-gray-300 px-4 py-2 rounded-md relative cursor-[none]">
+				<div class="cursor absolute border-l border-black h-full top-0 hidden">
+					<svg width="32px" height="32px" viewbox="0 0 100 100" class="-translate-x-1/2">
+						<circle fill="#FFFFFF" stroke-width="3" stroke="#000000" cx="50" cy="50" r="40" />
+						<line stroke="#000000" stroke-width="9" x1="50" y1="30" x2="50" y2="70" />
+						<line stroke="#000000" stroke-width="9" x1="30" y1="50" x2="70" y2="50" />
+					</svg>
 				</div>
+				@if( count($shippingMethod->priceStops) === 0 )
+				<div class="shipping-range-label-wrapper flex">NO DATA</div>
+				@else
+				<div class="shipping-range-label-wrapper flex">
+					@foreach($shippingMethod->priceStops as $priceStop)
+						<div class="shipping-range-label"><div class="shipping-range-label-inner">@if(!$loop->last) {{ $priceStop->weight }}g @endif</div></div>
+					@endforeach
+				</div>
+				<div class="shipping-range-price-wrapper flex">
+					@foreach($shippingMethod->priceStops as $priceStop)
+						<div class="shipping-range-stop">{{ $priceStop->price }}&nbsp;€</div>
+					@endforeach
+				</div>
+				@endif
 			</div>
+			@php $previousWeight = 0; @endphp
+			@foreach($shippingMethod->priceStops as $priceStop)
+				@if(!$loop->last)
+					De {{ $previousWeight }}g à {{ $priceStop->weight }}g = {{ $priceStop->price }}€<br>
+					@php $previousWeight = $priceStop->weight; @endphp
+				@else
+					A partir de {{ $previousWeight }}g = {{ $priceStop->price }}€<br>
+				@endif
 			@endforeach
+			<form>
+				<label>Ajouter</label><input type="number" min="{{ $previousWeight }}"/>g = <input type="number" step="0.01"  min="{{ $priceStop->price }}" />€
 		</div>
 		@endforeach
 	</div>

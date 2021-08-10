@@ -93,7 +93,7 @@ class CartController extends Controller
     public function viewCart(Request $request) {
 
 		$books = $this->checkCart();
-		$shippingMethods = ShippingMethod::orderBy('price')->get();
+		$shippingMethods = ShippingMethod::get();
 
 		if($this->cartUpdated) {
 			session()->now('flash', __('flash.cart.stockUpdated'));

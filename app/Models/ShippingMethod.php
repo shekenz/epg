@@ -19,6 +19,10 @@ class ShippingMethod extends Model
 	];
 
 	public function orders() {
-		$this->hasMany(Orders::class);
+		return $this->hasMany(Order::class);
+	}
+
+	public function priceStops() {
+		return $this->hasMany(PriceStop::class);
 	}
 }

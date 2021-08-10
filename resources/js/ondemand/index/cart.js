@@ -23,6 +23,9 @@ const couponInput = document.getElementById('coupon-input');
 const couponAlert = document.getElementById('coupon-alert');
 const couponInfo = document.getElementById('coupon-info');
 const couponLoader = document.getElementById('loader');
+const countryInput = document.getElementById('country-input');
+const nationalShipping = document.getElementById('national-shipping');
+const internationalShipping = document.getElementById('international-shipping');
 
 // -------------------------------------------------------------------------- Functions
 
@@ -32,8 +35,9 @@ const fetchErrorHandler = () => {
 	console.error('Impossible to reach server. Please make sure you are connected to the internet.');
 }
 
-// ----------------------------------------------------------- Cart utils
+// ----------------------------------------------------------- Cart logic
 
+// Update cart subtotal under order summarize
 const updateCartSubTotal = (value = 0) => {
 	cartSubTotal = roundPrice(cartSubTotal + value)
 	document.getElementById('cart-sub-total').firstChild.nodeValue = cartSubTotal;
@@ -71,7 +75,23 @@ const checkEmptyCart = () => {
 	}
 }
 
-// ----------------------------------------------------------- Shipping method utils
+// ----------------------------------------------------------- Shipping method logic
+
+// Check for country and display shipping method accordingly (national or international)
+const checkCountry = input => {
+	if(input.value === 'FR') {
+		shippingMethodInputs[0].checked = true;
+		setShipping(shippingMethodInputs[0]);
+		nationalShipping.classList.remove('hidden');
+		internationalShipping.classList.add('hidden');
+	} else {
+		shippingMethodInputs[1].checked = true;
+		setShipping(shippingMethodInputs[1]);
+		highlightShippingPrice(shippingMethodInputs[1]);
+		nationalShipping.classList.add('hidden');
+		internationalShipping.classList.remove('hidden');
+	}
+}
 
 // Higlights selected shipping method price
 const highlightShippingPrice = inputToHighlight => {
@@ -86,13 +106,24 @@ const highlightShippingPrice = inputToHighlight => {
 
 // Set shipping global values
 const setShipping = (input => {
-	//shippingMethod = input.value;
+	shippingMethod = input.value;
 	shippingPrice = parseFloat(input.dataset.price);
 	highlightShippingPrice(input);
 	updateCartTotal();
 });
 
-// ----------------------------------------------------------- Coupon utils
+// Init shipping methods
+checkCountry(countryInput);
+shippingMethodInputs.forEach(input => {
+	if(input.hasAttribute('checked')) {
+		setShipping(input);
+	}
+	input.addEventListener('input', e => {
+		setShipping(e.target);
+	});
+});
+
+// ----------------------------------------------------------- Coupons logic
 const resetCoupon = () => {
 	couponValue = 0;
 	couponId = 0;
@@ -177,15 +208,15 @@ removeAllButtons.forEach(button => {
 	});
 });
 
-// Shipping methods
-shippingMethodInputs.forEach(input => {
-	if(input.hasAttribute('checked')) {
-		setShipping(input);
-	}
-	input.addEventListener('input', e => {
-		setShipping(e.target);
-	});
+// Shipping methods events
+countryInput.addEventListener('input', e => {
+	checkCountry(e.currentTarget)
 });
+
+document.getElementById('shipping-button').addEventListener('click', e => {
+	console.table( [...Array.from(new FormData(e.target.parentNode).entries()), ...[ ['shippingMethod', shippingMethod], ['shippingPrice', shippingPrice] ] ] );
+
+})
 
 // Coupon Update
 couponInput.addEventListener('input', coolDown(

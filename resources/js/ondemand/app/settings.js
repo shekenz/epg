@@ -207,3 +207,19 @@ document.getElementById('add-coupon').addEventListener('click', e => {
 
 	});
 });
+
+arrayByClass('shipping-range-wrapper').forEach( wrapper => {
+	wrapper.addEventListener('mouseenter', e => {
+		e.currentTarget.firstElementChild.classList.remove('hidden');
+	});
+
+	wrapper.addEventListener('mouseleave', e => {
+		e.currentTarget.firstElementChild.classList.add('hidden');
+	});
+
+	wrapper.addEventListener('mousemove', e => {
+		const cursor = e.currentTarget.firstElementChild;
+		const xOffset = e.currentTarget.getBoundingClientRect().left;
+		cursor.style.left =  (e.clientX - xOffset) + 'px';
+	});
+});

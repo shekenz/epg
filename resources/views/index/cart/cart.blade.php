@@ -54,7 +54,11 @@
 						<input class="cart" type="text" placeholder="{{ __('Adress 2') }}" autocomplete="shipping address-line2" />
 						<input class="cart" type="text" placeholder="{{ __('City') }}" autocomplete="shipping address-level2" />
 						<input class="cart" type="text" placeholder="{{ __('Postcode') }}" autocomplete="shipping postal-code" />
-						<input class="cart" type="text" placeholder="{{ __('Country') }}" autocomplete="shipping country-name" />
+						<select class="cart" id="country-input" name="country" autocomplete="country">
+							@foreach (config('countries') as $code => $country)
+								<option @if($code === "FR")selected @endif value="{{ $code }}">{{ $country }}</option>
+							@endforeach
+						</select>
 						<div class="hidden">{{-------------------------------------------------------------- Billing adress form--}}
 							<div class="mt-6">
 								<input class="" type="checkbox" id="show-billing-address" /><label for="show-billing-address" >{{ __('Different billing address') }}</label>
@@ -80,6 +84,7 @@
 						</div>
 					@endforeach
 					</div>
+
 					<h5 class="subdivision border-t flex justify-between">
 						<span>{{ __('Subtotal') }}</span>
 						<span><span id="cart-sub-total">{{ $total }}</span>&nbsp;€</span>
@@ -92,23 +97,32 @@
 						<span id="coupon-alert" class="text-red-500 text-sm italic hidden">{{ __('This coupon is not valid')}}</span>
 						<h5 id="coupon-info" class="subdivision border-t flex justify-between mt-8 hidden">Test</h5>
 					</form>
+
+					{{-- Shipping form --}}
 					<form class="mt-6" id="shipping-form">
+						<div id="national-shipping" class="flex justify-between py-1">
+							<input class="shipping-method" id="shipping-method-national" type="radio" name="shipping-method" data-price="{{ $shippingMethods[0]->price }}" value="{{ $shippingMethods[0]->id }}" />
+							<label for="shipping-method-national">{{ __('Shipping') }}</label>
+							<span class="text-gray-300 highlight">{{ $shippingMethods[0]->price }}&nbsp;€</span>
+						</div>
+						<div id="international-shipping" class="">
 						<h5>{{ __('Shipping method') }}</h5>
-						<div class="mt-1">
-							<div class="flex justify-between">
-								<div>
-									<input class="shipping-method" id="shipping-method-1" type="radio" checked name="shipping-method" data-price="12.95">
-									<label for="shipping-method-1">{{ __('With tracking') }}</label>
-								</div><span class="text-gray-300 highlight">12.95&nbsp;€</span>
-							</div>
-							<div class="flex justify-between">
-								<div>
-									<input class="shipping-method" id="shipping-method-2" type="radio" name="shipping-method" data-price="19.95">
-									<label for="shipping-method-2">{{ __('Without tracking') }}</label>
-								</div><span class="text-gray-300">19.95&nbsp;€</span>
+							<div class="mt-1">
+								@foreach($shippingMethods as $index => $shippingMethod)
+									@if($shippingMethod->id !== 1)
+										<div class="flex justify-between">
+											<div>
+												<input class="shipping-method selectable" id="shipping-method-{{ $index }}" type="radio" name="shipping-method" data-price="{{ $shippingMethod->price }}" value="{{ $shippingMethod->id }}" />
+												<label for="shipping-method-{{ $index }}">{{ __($shippingMethod->label) }}</label>
+											</div><span class="text-gray-300">{{ $shippingMethod->price }}&nbsp;€</span>
+										</div>
+									@endif
+								@endforeach
 							</div>
 						</div>
+						<input class="button py-0 px-2 mt-4" type="button" id="shipping-button" value="test" />
 					</form>
+
 					<h5 class="border-t subdivision flex justify-between mt-6">
 						<span>{{ __('Total') }}</span>
 						<span><span id="cart-total">{{ $total }}</span>&nbsp;€</span>

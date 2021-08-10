@@ -14,7 +14,9 @@ class SettingsController extends Controller
 	use ShopControls;
 
 	public function main() {
-		$shippingMethods = ShippingMethod::orderBy('price')->get();
+		$shippingMethods = ShippingMethod::with([
+			'priceStops' => function($query) { $query->orderBy('price', 'ASC'); },
+		])->orderBy('price')->get();
 		$coupons = Coupon::orderBy('created_at', 'DESC')->get();
 		return view('settings.main', compact('shippingMethods', 'coupons'));
 	}
