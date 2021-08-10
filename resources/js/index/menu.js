@@ -18,13 +18,11 @@ window.addEventListener('load', () => {
 	menuItems.map(item => {
 		item.addEventListener('click', e => {
 			e.preventDefault();
-			console.log(e.currentTarget);
 			blackSquare.classList.add('animated');
 			const itemDimension = e.currentTarget.getBoundingClientRect();
 			const href = e.currentTarget.href;
 			matchDimension(blackSquare, itemDimension, 7, 1);
 			setTimeout(() => { 
-				console.log(e.currentTarget);
 				window.location = href;
 			}, 300);
 		});
