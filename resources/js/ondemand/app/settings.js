@@ -202,7 +202,7 @@ document.getElementById('add-coupon').addEventListener('click', e => {
 
 	}, returned => {
 
-		document.getElementById('loader').classList.toggle('hidden');
+		document.getElementById('popup-loader').classList.toggle('hidden');
 		returned.submit();
 
 	});
