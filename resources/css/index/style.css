@@ -185,13 +185,18 @@
 			duration-300;
 	}
 
-	#menu {
-		/* Structure */
+	#menu-wrapper {
 		@apply
 			fixed
 			w-full
 			top-0
 			z-[3]
+			text-white
+			mix-blend-difference;
+	}
+
+	#menu {
+		@apply
 			grid
 			grid-cols-5
 			m-4
@@ -199,11 +204,7 @@
 			md:my-8
 			md:mx-12
 			xl:my-12
-			xl:mx-20;
-		/* Style */
-		@apply
-			text-white
-			mix-blend-difference;
+			xl:mx-20;	
 	}
 
 	#menu a {
