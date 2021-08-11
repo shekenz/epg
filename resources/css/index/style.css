@@ -290,12 +290,16 @@
 	.button-lg {
 		@apply
 			button
-
 			inline-block
 			py-1
 			px-2
 			md:py-3
 			md:px-4;
+	}
+
+	#dyna-flash .button-lg {
+		@apply
+			dark:border-black;
 	}
 
 	.square-button {

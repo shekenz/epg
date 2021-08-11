@@ -69,7 +69,7 @@
 				<button id="pop-up-close" type="button" class="button inverted m-auto mt-8 block">{{ __('Close') }}</button>
 			</div>
 		</div>
-		<div id="dyna-flash" class="fixed z-[900] bottom-0 left-0 bg-gray-200 w-full flex items-center transition-all duration-500 overflow-y-hidden h-0 pl-6 md:pl-[15%] hidden">
+		<div id="dyna-flash" class="fixed z-[900] bottom-0 left-0 dark:text-gray-800 bg-gray-200 w-full flex items-center transition-all duration-500 overflow-y-hidden h-0 pl-6 md:pl-[15%] hidden">
 		</div>
 		
 		<!-- Hack to prevent transition from firing at load in Chrome -->
