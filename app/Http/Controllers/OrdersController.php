@@ -103,8 +103,11 @@ class OrdersController extends Controller
 	 * @return void
 	 */
 	public function createOrder(Request $request, ShippingMethod $shippingMethod, int $couponID) {
+		
+		$shippingMethod->load('priceStops');
 
 		$preOrder = false;
+		$totalWeight = 0;
 
 		if(!$request->session()->has('cart')) {
 			Log::channel('paypal')->notice('Cart not found');
@@ -122,7 +125,7 @@ class OrdersController extends Controller
 
 		$items = [];
 		if($booksInCart) {
-			$booksInCart->each(function($book) use ($cart, &$items, &$preOrder) {
+			$booksInCart->each(function($book) use ($cart, &$items, &$preOrder, &$totalWeight) {
 				if($cart[$book->id]['quantity'] > 0) {
 					array_push($items, [
 						'name' => $book->title,
@@ -132,6 +135,9 @@ class OrdersController extends Controller
 						],
 						'quantity' => $cart[$book->id]['quantity'],
 					]);
+
+					// Reducing totalWeight
+					$totalWeight += $cart[$book->id]['quantity'] * $book->weight;
 	
 					// Checking for pre_order
 					if($book->pre_order) {
@@ -155,8 +161,12 @@ class OrdersController extends Controller
 			$couponPrice = 0;
 		}
 
+		// Calculate shipping method price from price range
+		$shippingPrice = findStopPrice($totalWeight, $shippingMethod->price, $shippingMethod->priceStops);
+
 		// Calculate total including shippingPrice and couponPrice
-		$total = round( $totalItems + $shippingMethod->price - $couponPrice, 2);
+		$total = round( $totalItems + $shippingPrice - $couponPrice, 2);
+
 
 		// ORDER
 		$paypalOrder = $this->provider->createOrder([
@@ -173,7 +183,7 @@ class OrdersController extends Controller
 							],
 							'shipping' => [
 								'currency_code'=> 'EUR',
-								'value' => $shippingMethod->price,
+								'value' => $shippingPrice,
 							],
 							'discount' => [
 								'currency_code'=> 'EUR',
@@ -191,6 +201,7 @@ class OrdersController extends Controller
 				'order_id' => $paypalOrder['id'],
 				'status' => $paypalOrder['status'],
 				'shipping_method_id' => $shippingMethod->id,
+				'total_weight' => $totalWeight,
 				'pre_order' => ($preOrder),
 				'coupon_id' => ($couponID !== 0) ? $couponID : null,
 			]);
@@ -198,6 +209,7 @@ class OrdersController extends Controller
 			$order = Order::create([
 				'status' => 'FAILED',
 				'shipping_method_id' => $shippingMethod->id,
+				'total_weight' => $totalWeight,
 				'pre_order' => ($preOrder),
 				'coupon_id' => ($couponID !== 0) ? $couponID : null,
 			]);

@@ -129,7 +129,7 @@
 										if(!($priceStop === $shippingMethods[0]->priceStops[count($shippingMethods[0]->priceStops)-1])) {
 											$dataPricesJson .= ',';
 										}
-										if($totalWeight > $priceStop->weight) {
+										if($totalWeight >= $priceStop->weight) {
 											$shippingPrice = $priceStop->price;
 										}
 									}
@@ -158,7 +158,7 @@
 														if(!($priceStop === $shippingMethod->priceStops[count($shippingMethod->priceStops)-1])) {
 															$dataPricesJson .= ',';
 														}
-														if($totalWeight > $priceStop->weight) {
+														if($totalWeight >= $priceStop->weight) {
 															$shippingPrice = $priceStop->price;
 														}
 													}
@@ -181,7 +181,9 @@
 						<span><span id="cart-total" data-raw-total="{{ $total }}">{{ $totalIncShipping }}</span>&nbsp;€</span>
 					</h5>
 					@if(setting('app.paypal.client-id') && setting('app.paypal.secret'))
+					<div class="my-10 flex justify-end">
 						<div class="w-48" id="paypal-checkout-button"></div>
+					</div>
 					@endif
 				</div>
 			</div>

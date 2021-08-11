@@ -152,7 +152,7 @@ class OrdersMassController extends Controller
 	public function pdf(Request $request, string $view) {
 		$data = $request->validate($this->validation);
 		if(!empty($data)) {
-			$orders = Order::with(['books', 'coupons'])->orderBy('created_at', 'DESC')->find($data['ids']);
+			$orders = Order::with(['books', 'coupons', 'shippingMethods'])->orderBy('created_at', 'DESC')->find($data['ids']);
 			//$orders = Order::factory()->count(16)->make();
 			$pdf = PDF::loadView('pdf.'.$view, compact('orders'));
 			return $pdf->download($view.'_'.Carbon::now()->toDateString().'.pdf');

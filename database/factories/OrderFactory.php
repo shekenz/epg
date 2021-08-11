@@ -83,6 +83,7 @@ class OrderFactory extends Factory
 			'country_code' => 'FR',
 			'coupon_id' => $this->faker->randomElement($couponsArray),
 			'shipping_method_id' => $this->faker->randomElement($shippingMethodsArray),
+			'total_weight' => 0,
 			'shipped_at' => null,
 			'tracking_url' => null,
 			'status' => $status,
@@ -99,18 +100,21 @@ class OrderFactory extends Factory
 
 		return $this->afterCreating(function(Order $order) {
 			$preOrder = 0;
+			$totalWeight = 0;
 			$this->booksIDs = Book::all()->random(rand(1, $this->booksCount));
 
-			$this->booksIDs->each(function($book) use (&$preOrder) {
+			$this->booksIDs->each(function($book) use (&$preOrder, &$totalWeight) {
 				if($book->pre_order) {
 					$preOrder = 1;
 				}
+				$totalWeight += $book->weight;
 			});
 
 			$this->booksIDs = $this->booksIDs->keyBy('id')->transform(function() {
 				return ['quantity' => rand(1,3)];
 			})->toArray();
 
+			$order->total_weight = $totalWeight;
 			$order->pre_order = $preOrder;
 			$order->save();
 

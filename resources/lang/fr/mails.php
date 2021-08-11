@@ -2,6 +2,22 @@
 
 return [
 	'orders' => [
+		'confirmation' => [
+			'subject' => 'Votre commande :order_id',
+			'intro' => 'Votre commande n° :order_id est confirmée',
+			'summary' => 'Récapitulatif de la commande',
+			'shipping' => 'Vous recevrez bientôt un mail de confirmation lorsque le colis sera expédié',
+			'coupon' => 'Réduction coupon (:coupon_value) : :coupon_price',
+			'method' => 'Frais d\'envois : :shipping_price',
+			'thanks' => 'Merci pour votre achat sur e.p.g.',
+
+		],
+		'shipped' => [
+			'subject' => 'Votre commande e.p.g a été envoyée !',
+			'intro' => 'Votre commande n° :order_id a été envoyé le :shipped_date. Vous le recevrez sous peu.',
+			'tracking' => 'Cliquez sur ce lien pour suivre votre colis',
+			'reclamation' => 'Veuillez nous contacter si vous rencontrez des problèmes, ou pour toute autre question',
+		],
 		'notification' => [
 			'subject' => 'Nouvelle commande sur e.p.g.',
 			'line1' => 'Une nouvelle commande a été effectuée.',
@@ -26,6 +42,7 @@ return [
 	],
 	'general' => [
 		'salutation' => 'Bonjour',
+		'salutationto' => 'Bonjour :name',
 		'regards' => 'Cordialement',
 		'signature' => 'e.p.g.'
 	]

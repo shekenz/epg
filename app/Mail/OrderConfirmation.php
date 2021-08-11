@@ -21,7 +21,7 @@ class OrderConfirmation extends Mailable
      */
     public function __construct(Order $order)
     {
-		$order->load(['books']);
+		$order->load(['books', 'shippingMethods']);
         $this->order = $order;
     }
 

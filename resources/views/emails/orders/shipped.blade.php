@@ -3,7 +3,6 @@
 {{ __('mails.orders.shipped.intro', [
 	'order_id' => $order->order_id,
 	'shipped_date' => $order->shipped_at->toFormattedDateString(),
-	'shipping_method' => $order->shippingMethods->label
 ]) }}<br><br>
 
 @isset($order->tracking_url)

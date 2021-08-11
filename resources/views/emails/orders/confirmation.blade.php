@@ -6,7 +6,8 @@
 
 @php 
 $total = 0;
-$couponPrice = 0; 
+$couponPrice = 0;
+$shippingPrice = findStopPrice($order->total_weight, $order->shippingMethods->price, $order->shippingMethods->priceStops);
 @endphp
 @foreach ($order->books as $book)
 	@php $total += $book->pivot->quantity * $book->price; @endphp
@@ -31,10 +32,10 @@ $couponPrice = 0;
 <br>----------------------------------------------------<br>
 {{ __('mails.orders.confirmation.method', [
 	'method' => $order->shippingMethods->label,
-	'shipping_price' => $order->shippingMethods->price
+	'shipping_price' => $shippingPrice,
 ]) }} €
 <br>----------------------------------------------------<br>
-Total : {{ round($total + $order->shippingMethods->price + $couponPrice, 2) }} €
+Total : {{ round($total + $shippingPrice + $couponPrice, 2) }} €
 <br>----------------------------------------------------<br><br>
 
 {{ __('mails.orders.confirmation.shipping') }}.<br><br><br>

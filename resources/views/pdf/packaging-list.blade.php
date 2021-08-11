@@ -56,7 +56,10 @@
 			</tr>
 		</thead>
 		<tbody>
-			@php $total = 0; @endphp
+			@php 
+				$total = 0;
+				$shippingPrice = findStopPrice($order->total_weight, $order->shippingMethods->price, $order->shippingMethods->priceStops);
+			@endphp
 			@foreach($order->books as $book)
 			@php 
 				$subTotal = round($book->pivot->quantity * $book->price, 2);
@@ -82,13 +85,14 @@
 			@endif
 			<tr>
 				<td>{{ __('Shipping').' : '.$order->shipping_method }}</td>
-				<td colspan="3" style="text-align:right;">{{ $order->shipping_price }} €</td>
+
+				<td colspan="3" style="text-align:right;">{{ $shippingPrice }} €</td>
 			</tr>
 		</tbody>
 		<tfoot style="background-color:#ddd">
 			<tr>
 				<td>{{ __('Total') }}</td>
-				<td colspan="3" style="text-align:right;">{{ round($total + $couponPrice + $order->shipping_price, 2) }} €</td>
+				<td colspan="3" style="text-align:right;">{{ round($total + $couponPrice + $shippingPrice, 2) }} €</td>
 			</tr>
 		</tfoot>
 	</table>

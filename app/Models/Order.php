@@ -29,6 +29,7 @@ class Order extends Model
 		'country_code',
 		'coupon_id',
 		'shipping_method_id',
+		'total_weight',
 		'shipped_at',
 		'tracking_url',
 		'status',
@@ -51,5 +52,9 @@ class Order extends Model
 
 	public function coupons() {
 		return $this->belongsTo(Coupon::class, 'coupon_id')->withTrashed();
+	}
+
+	public function shippingMethodPriceStops() {
+		return $this->hasManyThrough(PriceStop::class, ShippingMethod::class);
 	}
 }

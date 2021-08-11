@@ -32,6 +32,7 @@
 	@endphp
 
 	<div>
+		{{-- Header --}}
 		<div class="flex mt-6 justify-between items-center">
 			<div class="">
 				<span class="text-white text-xl py-4 px-6 {{ $statusClass }}">{{ mb_strtoupper(__('paypal.status.'.$order->status)) }}</span>
@@ -58,6 +59,8 @@
 
 
 		<div class="flex gap-x-8 mt-8">
+
+			{{-- Client info --}}
 			<div class="flex-grow">
 				<h2 class="text-lg border-b border-black font-bold">{{ __('Client info') }} : </h2>
 				<div class="p-4">
@@ -68,6 +71,8 @@
 					<p class="my-2"><span class="font-bold">{{ __('Client email') }} : </span><a href="mailto:{{ $order->email_address }}" class="hover:underline">{{ $order->email_address }}</a></p>
 				</div>
 			</div>
+
+			{{-- Shipping address --}}
 			<div class="flex-grow">
 				<h2 class="text-lg border-b border-black font-bold">{{ __('Shipping address') }} : </h2>
 				<div class="text-2xl font-bold border-4 border-black py-4 px-8 block w-96 mx-auto my-8">
@@ -79,20 +84,23 @@
 						{{ strtoupper(config('countries')[$order->country_code]) }}
 					@endisset</p>
 				</div>
-				@if($order->status == 'SHIPPED')
+				
 				<h2 class="text-lg border-b border-black font-bold">{{ __('Shipping info') }} : </h2>
 				<div class="p-4">
-					<p class="my-2"><span class="font-bold">{{ __('Shipped at') }} : </span>{{ $order->shipped_at }}</p>
-					<p class="my-2"><span class="font-bold">{{ __('Shipping method') }} : </span>{{ $order->shippingMethods->label }}</p>
-					@isset($order->tracking_url)
-					<p class="my-2"><span class="font-bold">{{ __('Tracking URL') }} : </span><a class="new-tab hover:underline" href="{{ $order->tracking_url }}">{{ $order->tracking_url }}</a></p>
+					<p class="my-2"><span class="font-bold">{{ __('Total weight') }} : </span>{{ $order->total_weight }}g</p>
+					@if($order->status == 'SHIPPED')
+						<p class="my-2"><span class="font-bold">{{ __('Shipped at') }} : </span>{{ $order->shipped_at }}</p>
+						<p class="my-2"><span class="font-bold">{{ __('Shipping method') }} : </span>{{ $order->shippingMethods->label }}</p>
+						@isset($order->tracking_url)
+						<p class="my-2"><span class="font-bold">{{ __('Tracking URL') }} : </span><a class="new-tab hover:underline" href="{{ $order->tracking_url }}">{{ $order->tracking_url }}</a></p>
+						@endisset
 					@endif
 				</div>
-			@endisset
 			</div>
 			
 		</div>
 
+		{{-- Articles details --}}
 		<div class="mt-6">
 			<h2 class="text-lg border-b border-black font-bold">{{ __('Articles') }}</h2>
 			<table class="w-full">
@@ -107,7 +115,10 @@
 				</thead>
 			@php $total = 0; @endphp
 			@foreach ($order->books as $book)
-				@php $total += round($book->pivot->quantity * $book->price, 2) @endphp
+				@php 
+					$shippingPrice = findStopPrice($order->total_weight, $order->shippingMethods->price, $order->shippingMethods->priceStops);
+					$total += round($book->pivot->quantity * $book->price, 2)
+				@endphp
 				<tr>
 					<td>@if($book->trashed())<span title="{{ __('Book is archived') }}"><x-tabler-alert-triangle class="inline-block text-yellow-500" /></span>@endif {{ $book->title }}</td>
 					<td>{{ $book->author }}</td>
@@ -147,7 +158,7 @@
 					@if($order->pre_order)
 						<td></td>
 					@endif
-					<td>{{ $order->shippingMethods->price }} €</td>
+					<td>{{ $shippingPrice }} €</td>
 				</tr>
 				<tfoot>
 					<td>{{ __('Total') }}</td>
@@ -156,7 +167,7 @@
 					@if($order->pre_order)
 						<td></td>
 					@endif
-					<td class="font-bold">{{ round($order->shippingMethods->price + $total + $couponPrice, 2) }} €</td>
+					<td class="font-bold">{{ round($shippingPrice + $total + $couponPrice, 2) }} €</td>
 				</tfoot>
 			</table>
 		</div>

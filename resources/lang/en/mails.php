@@ -7,14 +7,14 @@ return [
 			'intro' => 'Your order n° :order_id have been confirmed',
 			'summary' => 'Order summary',
 			'shipping' => 'You will soon receive another email to inform you when your order has been shipped',
-			'coupon' => 'Coupons discount (:coupon_value) : :coupon_price',
-			'method' => 'Shipped with :method for :shipping_price',
+			'coupon' => 'Coupon discount (:coupon_value) : :coupon_price',
+			'method' => 'Shipping fees : :shipping_price',
 			'thanks' => 'Thank you for orderning on e.p.g.',
 
 		],
 		'shipped' => [
 			'subject' => 'Your e.p.g order has been shipped !',
-			'intro' => 'Your order n° :order_id has been shipped on :shipped_date with :shipping_method',
+			'intro' => 'Your order n° :order_id has been shipped on :shipped_date. You should receive it soon.',
 			'tracking' => 'Follow this link to track your package',
 			'reclamation' => 'Please contact us if you encounter any problems or for any reclamations',
 		],

@@ -71,8 +71,8 @@ const updateCartTotal = (value = 0) => {
 			'Coupon Price': couponPrice,
 			'Shipping': shippingPrice+' ('+shippingMethod+')',
 			'Total Weight': weightTotal,
+			'TOTAL': total,
 		});
-		console.log('TOTAL = '+total);
 	}
 }
 
@@ -101,7 +101,7 @@ const findStopPrice = (price, pricesData) => {
 
 // Higlights price of the selected shipping method input
 const updateShippingFormInputs = () => {
-	console.log('updateShippingFormInputs');
+	if(debug) { console.log('updateShippingFormInputs'); }
 	shippingMethodInputs.forEach(input => {
 		if(input.checked) {
 			input.parentNode.nextElementSibling.classList.add('highlight');
@@ -113,7 +113,7 @@ const updateShippingFormInputs = () => {
 
 // Updating prices in each input of the shipping methods form
 const updateShippingMethodsPrice = () => {
-	console.log('updateShippingMethodsPrice');
+	if(debug) { console.log('updateShippingMethodsPrice'); }
 	shippingMethodInputs.forEach(input => {
 		const newShippingPrice = findStopPrice(input.dataset.defaultPrice, input.dataset.prices);
 		input.parentNode.nextElementSibling.innerHTML = `${newShippingPrice}&nbsp;€`;
@@ -122,7 +122,7 @@ const updateShippingMethodsPrice = () => {
 
 // Check for country and display shipping method accordingly (national or international)
 const updateShippingForm = input => {
-	console.log('updateShippingForm');
+	if(debug) { console.log('updateShippingForm'); }
 	if(input.value === 'FR') {
 		shippingMethodInputs[0].checked = true;
 		updateShippingPrice();
@@ -140,7 +140,7 @@ const updateShippingForm = input => {
 
 // Set shipping global values
 const updateShippingPrice = () => {
-	console.log('updateShippingPrice');
+	if(debug) { console.log('updateShippingPrice'); }
 	shippingMethodInputs.forEach(input => {
 		if(input.checked) {
 			shippingMethod = input.value;
@@ -174,6 +174,9 @@ const resetCoupon = () => {
 	couponPrice = 0;
 	updateCartTotal();
 };
+
+// -------------------------------------------------------------------------- Init
+updateShippingPrice();
 
 // -------------------------------------------------------------------------- Events
 
@@ -291,7 +294,6 @@ couponInput.addEventListener('input', coolDown(
 					couponInfo.classList.remove('hidden');
 					couponValue = parseFloat(jr.value);
 					couponId = jr.id;
-					console.log(jr.type);
 					// jr.type === false for percentage coupon price
 					// jr.type === true for fixed coupon price
 					couponPrice = (jr.type) ? 
@@ -316,7 +318,7 @@ couponInput.addEventListener('input', coolDown(
 );
 
 // Paypal
-const checkCartButton = document.getElementById('checkCartButton');
+const checkCartButton = document.getElementById('paypal-checkout-button');
 if(checkCartButton) {
 	checkCartButton.addEventListener('click', e => {
 		e.preventDefault();
@@ -362,6 +364,7 @@ if(checkCartButton) {
 								}, fetchErrorHandler
 							).then( // Create fetch response JSON
 								createResponseJSON => {
+									console.log(createResponseJSON);
 									if(createResponseJSON.id && !createResponseJSON.error) {
 										return createResponseJSON.id;
 									} else if(createResponseJSON.error) {
