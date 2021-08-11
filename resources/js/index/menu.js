@@ -4,7 +4,7 @@ window.addEventListener('load', () => {
 
 	const blackSquare = document.createElement('div');
 	blackSquare.setAttribute('id', 'black-square');
-	document.body.insertBefore(blackSquare, document.getElementById('menu'));
+	document.body.insertBefore(blackSquare, document.getElementById('menu-wrapper'));
 
 	// Initial transform
 	// Adding delay to make sure browsers exited their first render loop.
