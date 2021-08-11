@@ -93,7 +93,7 @@ class CartController extends Controller
     public function viewCart(Request $request) {
 
 		$books = $this->checkCart();
-		$shippingMethods = ShippingMethod::get();
+		$shippingMethods = ShippingMethod::with('priceStops')->get();
 
 		if($this->cartUpdated) {
 			session()->now('flash', __('flash.cart.stockUpdated'));
@@ -120,6 +120,7 @@ class CartController extends Controller
 				'book' => [
 					'id' => $book->id,
 					'price' => $book->price,
+					'weight' => $book->weight,
 					'modifier' => 1
 				]
 			];
@@ -175,6 +176,7 @@ class CartController extends Controller
 				'book' => [
 					'id' => $book->id,
 					'price' => $book->price,
+					'weight' => $book->weight,
 					'modifier' => -1
 				]
 			];
@@ -237,9 +239,12 @@ class CartController extends Controller
 			// Save new cart in sesh and redirect
 			session(['cart' => $cart]);
 			return response()->json([
-				'bookID' => $id,
-				'removedUnits' => $cartQuantity,
-				'removedAmount' => $cartQuantity * $book->price,
+				'book' => [
+					'id' => $book->id,
+					'price' => $book->price,
+					'weight' => $book->weight,
+					'modifier' => -1 * $cartQuantity,
+				]
 			]);
 		
 		} else {

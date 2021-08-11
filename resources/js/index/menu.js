@@ -30,7 +30,7 @@ window.addEventListener('load', () => {
 
 	// Resize event
 	window.addEventListener('resize', () => {
-		applyTransform(arrayByClass('active')[0].getBoundingClientRect(), 7, 1);
+		matchDimension(blackSquare, arrayByClass('active')[0].getBoundingClientRect(), 7, 1);
 	});
 });
 

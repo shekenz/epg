@@ -68,8 +68,9 @@
 	<div class="mt-10">
 		<h2 class="label-shared lg:text-lg">{{ __('Shipping methods') }} 2 : </h2>
 		@foreach ($shippingMethods as $shippingMethod)
-		<h4>{{ $shippingMethod->label }} ({{ $shippingMethod->id}})</h4>
-		<div class="pt-4 px-4">
+		<div class="px-2 my-6 border">
+			<h4>{{ $shippingMethod->label }} ({{ $shippingMethod->id}})</h4>
+			{{--
 			<div class="shipping-range-wrapper flex-1 bg-gray-100 border border-gray-300 px-4 py-2 rounded-md relative cursor-[none]">
 				<div class="cursor absolute border-l border-black h-full top-0 hidden">
 					<svg width="32px" height="32px" viewbox="0 0 100 100" class="-translate-x-1/2">
@@ -93,14 +94,10 @@
 				</div>
 				@endif
 			</div>
-			@php $previousWeight = 0; @endphp
+			--}}
+			En dessous de {{ $shippingMethod->priceStops->first()['weight'] }}g : {{ $shippingMethod->price }} €<br>
 			@foreach($shippingMethod->priceStops as $priceStop)
-				@if(!$loop->last)
-					De {{ $previousWeight }}g à {{ $priceStop->weight }}g = {{ $priceStop->price }}€<br>
-					@php $previousWeight = $priceStop->weight; @endphp
-				@else
-					A partir de {{ $previousWeight }}g = {{ $priceStop->price }}€<br>
-				@endif
+				A partir de {{ $priceStop->weight }}g : {{ $priceStop->price }} €<br>
 			@endforeach
 		</div>
 		@endforeach

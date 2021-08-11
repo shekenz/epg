@@ -5,14 +5,19 @@ import { updateCartQuantity, setCartTotal } from '../../shared/update-cart.mjs';
 
 const debug = false;
 
+if(debug) {
+	document.getElementById('fun').classList.add('hidden');
+}
+
 // Global Values
-let cartTotal = parseFloat(document.getElementById('cart-total').firstChild.nodeValue);
+let cartTotal = parseFloat(document.getElementById('cart-total').dataset.rawTotal);
 let cartSubTotal = parseFloat(document.getElementById('cart-sub-total').firstChild.nodeValue);
 let shippingPrice = 0;
 let shippingMethod = 0;
 let couponValue = 0;
 let couponId = 0;
 let couponPrice = 0;
+let weightTotal = parseInt(document.getElementById('cart-total-weight').dataset.totalWeight);
 
 // Elements
 const cart = document.getElementById('cart');
@@ -37,15 +42,20 @@ const fetchErrorHandler = () => {
 
 // ----------------------------------------------------------- Cart logic
 
-// Update cart subtotal under order summarize
+// Update cart (global) subtotal
 const updateCartSubTotal = (value = 0) => {
 	cartSubTotal = roundPrice(cartSubTotal + value)
 	document.getElementById('cart-sub-total').firstChild.nodeValue = cartSubTotal;
 }
 
+// Update weight total
+const updateWeightTotal = (value = 0) => {
+	weightTotal += value;
+}
+
 // Update cart total
 const updateCartTotal = (value = 0) => {
-	cartTotal = Math.round((cartTotal + value)*100) / 100;
+	cartTotal = roundPrice(cartTotal + value);
 
 	// If coupon is higher than total, client pays only shippingPrice
 	const cartTotalDisplay = ((cartTotal + couponPrice) < 0 ) ? shippingPrice : (cartTotal + shippingPrice + couponPrice);
@@ -56,12 +66,13 @@ const updateCartTotal = (value = 0) => {
 	if(debug) {
 		console.table({
 			'Cart': cartTotal,
-			'Shipping': shippingPrice,
 			'Coupon ID': couponId,
 			'Coupon Value': couponValue,
 			'Coupon Price': couponPrice,
-			'TOTAL': total
+			'Shipping': shippingPrice+' ('+shippingMethod+')',
+			'Total Weight': weightTotal,
 		});
+		console.log('TOTAL = '+total);
 	}
 }
 
@@ -77,26 +88,22 @@ const checkEmptyCart = () => {
 
 // ----------------------------------------------------------- Shipping method logic
 
-// Check for country and display shipping method accordingly (national or international)
-const checkCountry = input => {
-	if(input.value === 'FR') {
-		shippingMethodInputs[0].checked = true;
-		setShipping(shippingMethodInputs[0]);
-		nationalShipping.classList.remove('hidden');
-		internationalShipping.classList.add('hidden');
-	} else {
-		shippingMethodInputs[1].checked = true;
-		setShipping(shippingMethodInputs[1]);
-		highlightShippingPrice(shippingMethodInputs[1]);
-		nationalShipping.classList.add('hidden');
-		internationalShipping.classList.remove('hidden');
-	}
+// Look up in price range for the shipping price corresponding to the order's total weight
+const findStopPrice = (price, pricesData) => {
+	price = parseFloat(price);
+	for(const priceStop of JSON.parse(pricesData)) {
+		if( weightTotal >= priceStop.weight ) {
+			price = priceStop.price;
+		}
+	};
+	return price;
 }
 
-// Higlights selected shipping method price
-const highlightShippingPrice = inputToHighlight => {
+// Higlights price of the selected shipping method input
+const updateShippingFormInputs = () => {
+	console.log('updateShippingFormInputs');
 	shippingMethodInputs.forEach(input => {
-		if(input.id === inputToHighlight.id) {
+		if(input.checked) {
 			input.parentNode.nextElementSibling.classList.add('highlight');
 		} else {
 			input.parentNode.nextElementSibling.classList.remove('highlight');
@@ -104,24 +111,61 @@ const highlightShippingPrice = inputToHighlight => {
 	});
 }
 
-// Set shipping global values
-const setShipping = (input => {
-	shippingMethod = input.value;
-	shippingPrice = parseFloat(input.dataset.price);
-	highlightShippingPrice(input);
-	updateCartTotal();
-});
-
-// Init shipping methods
-checkCountry(countryInput);
-shippingMethodInputs.forEach(input => {
-	if(input.hasAttribute('checked')) {
-		setShipping(input);
-	}
-	input.addEventListener('input', e => {
-		setShipping(e.target);
+// Updating prices in each input of the shipping methods form
+const updateShippingMethodsPrice = () => {
+	console.log('updateShippingMethodsPrice');
+	shippingMethodInputs.forEach(input => {
+		const newShippingPrice = findStopPrice(input.dataset.defaultPrice, input.dataset.prices);
+		input.parentNode.nextElementSibling.innerHTML = `${newShippingPrice}&nbsp;€`;
 	});
-});
+}
+
+// Check for country and display shipping method accordingly (national or international)
+const updateShippingForm = input => {
+	console.log('updateShippingForm');
+	if(input.value === 'FR') {
+		shippingMethodInputs[0].checked = true;
+		updateShippingPrice();
+		updateShippingFormInputs();
+		nationalShipping.classList.remove('hidden');
+		internationalShipping.classList.add('hidden');
+	} else {
+		shippingMethodInputs[1].checked = true;
+		updateShippingPrice();
+		updateShippingFormInputs();
+		nationalShipping.classList.add('hidden');
+		internationalShipping.classList.remove('hidden');
+	}
+}
+
+// Set shipping global values
+const updateShippingPrice = () => {
+	console.log('updateShippingPrice');
+	shippingMethodInputs.forEach(input => {
+		if(input.checked) {
+			shippingMethod = input.value;
+			shippingPrice = findStopPrice(input.dataset.defaultPrice, input.dataset.prices);
+		}
+	});
+}
+
+// Common updates to be run after cart is updated
+const runCommonUpdates = book => {
+	// Update cart quantity
+	updateCartQuantity(book.modifier);
+	// Update global sub-total
+	updateCartSubTotal(book.price * book.modifier);
+	// Update total weight
+	updateWeightTotal(book.weight * book.modifier);
+	// Update shipping prices inputs in shipping form
+	updateShippingMethodsPrice();
+	// Update global shipping price
+	updateShippingPrice();
+	// Update cart total with coupon
+	updateCartTotal(book.price * book.modifier);
+	// Check if cart is empty
+	checkEmptyCart();
+}
 
 // ----------------------------------------------------------- Coupons logic
 const resetCoupon = () => {
@@ -157,18 +201,17 @@ articlesQuantityButtons.forEach(button => {
 		})
 		.then(jsonResponse => {
 			const book = jsonResponse.book;
+			// Update article sub-total first to prevent error when article quantity reach 0
 			// Book modifier is 1 when adding book and -1 when removing book
-			updateCartQuantity(book.modifier);
 			updateSubTotalFor(book.id, book.price * book.modifier);
+			// Update article quantity
 			// updateQuantityFor returns false when article quantity reaches 0
+			// and also updates order summarize list
 			if(!updateQuantityFor(book.id, book.modifier)) {
 				document.getElementById('cart').removeChild(document.getElementById(`article-${book.id}`));
 				document.getElementById('summarize-list').removeChild(document.getElementById(`summarize-book-${book.id}`))
 			};
-			// updateCartTotal
-			updateCartSubTotal(book.price * book.modifier);
-			updateCartTotal(book.price * book.modifier);
-			checkEmptyCart();
+			runCommonUpdates(book);
 		})
 		.catch(() => {});
 	})
@@ -194,12 +237,12 @@ removeAllButtons.forEach(button => {
 			fetchErrorHandler;
 		})
 		.then( jsonResponse => {
-			if(jsonResponse.bookID === bookID) {
-				cart.removeChild(document.getElementById('article-'+jsonResponse.bookID));
-				updateCartQuantity(parseInt(jsonResponse.removedUnits) * -1);
-				// updateCartTotal
-				updateCartTotal(parseFloat(jsonResponse.removedAmount) * -1)
-				checkEmptyCart();
+			if(jsonResponse.book.id.toString() === bookID) {
+				// Note : In this situation, jsonResponse.book.modifier is the negative quantity of deleted books (Ex: -3 for 3 deleted books)
+				// Removing article from cart and from summarize list
+				cart.removeChild(document.getElementById('article-'+jsonResponse.book.id));
+				document.getElementById('summarize-list').removeChild(document.getElementById('summarize-book-'+jsonResponse.book.id));
+				runCommonUpdates(jsonResponse.book);
 			} else {
 				console.error('BookID mismatch');
 			}
@@ -208,15 +251,20 @@ removeAllButtons.forEach(button => {
 	});
 });
 
-// Shipping methods events
+// Check country and display shipping methods accordingly
 countryInput.addEventListener('input', e => {
-	checkCountry(e.currentTarget)
+	updateShippingForm(e.currentTarget);
+	updateCartTotal();
 });
 
-document.getElementById('shipping-button').addEventListener('click', e => {
-	console.table( [...Array.from(new FormData(e.target.parentNode).entries()), ...[ ['shippingMethod', shippingMethod], ['shippingPrice', shippingPrice] ] ] );
-
-})
+// Select a shipping method
+shippingMethodInputs.forEach(input => {
+	input.addEventListener('input', e => {
+		updateShippingPrice();
+		updateShippingFormInputs();
+		updateCartTotal();
+	});
+});
 
 // Coupon Update
 couponInput.addEventListener('input', coolDown(
