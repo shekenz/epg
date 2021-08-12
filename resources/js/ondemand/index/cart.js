@@ -353,11 +353,14 @@ if(checkCartButton) {
 						if(cartCheckResponseJSON.updated) {
 							popUp('Some articles from you cart are not available anymore. Your cart will now be reloaded. Please check your order again before payment.', () => { window.location.reload() });
 						} else {
+							const shippingAddress = new FormData(document.getElementById('shipping-address-form'));
+							console.log(...shippingAddress);
 							return fetch(`/api/order/create/${shippingMethod}/${couponId}`, {
 								method: 'post',
 								headers: {
-								'accept': 'application/json'
-								}
+									'accept': 'application/json'
+								},
+								body: shippingAddress,
 							}).then( // Create fetch response
 								createResponse => {
 									return createResponse.json();

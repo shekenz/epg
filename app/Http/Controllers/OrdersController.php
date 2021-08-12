@@ -103,6 +103,19 @@ class OrdersController extends Controller
 	 * @return void
 	 */
 	public function createOrder(Request $request, ShippingMethod $shippingMethod, int $couponID) {
+
+		$data = $request->validate([
+			'given_name' => 'required|string|max:140',
+			'surname' => 'required|string|max:140',
+			'phone' => 'nullable|string|max:15',
+			'email_address' => 'email|required',
+			'address_line_1' => 'required|string|max:300',
+			'address_line_2' => 'nullable|string|max:300',
+			'admin_area_2' => 'required|string|max:120',
+			'admin_area_1' => 'nullable|string|max:300',
+			'postal_code' => 'required|string|max:60',
+			'country_code' => 'required|string|max:2',
+		]);
 		
 		$shippingMethod->load('priceStops');
 
@@ -171,6 +184,31 @@ class OrdersController extends Controller
 		// ORDER
 		$paypalOrder = $this->provider->createOrder([
 			'intent' => 'CAPTURE',
+			'application_context' => [
+				'shipping_preference' => 'SET_PROVIDED_ADDRESS',
+			],
+			'payer' => [
+				'email_address' => $data['email_address'],
+				/*
+				'name' => [
+					'given_name' => 'André',
+					'surname' => 'Michel',
+				],
+				'phone' => [
+					'phone_number' => [
+						'national_number' => '0032487528702',
+					],
+				],
+				'address' => [
+					'address_line_1' => '23 Rue Blanche',
+					'address_line_2' => '',
+					'admin_area_2' => 'Truc-sur-Bousin',
+					'admin_area_1' => 'Normandie',
+					'postal_code' => '28564',
+					'country_code' => 'FR',
+				],
+				*/
+			],
 			'purchase_units' => [
 				0 => [
 					'amount' => [
@@ -189,7 +227,21 @@ class OrdersController extends Controller
 								'currency_code'=> 'EUR',
 								'value' => $couponPrice,
 							],
-						]
+						],
+					],
+					'shipping' => [
+						'name' => [
+							'full_name' => $data['surname'].' '.$data['given_name'],
+						],
+						'type' => 'SHIPPING',
+						'address' => [
+							'address_line_1' => $data['address_line_1'],
+							'address_line_2' => $data['address_line_2'],
+							'admin_area_2' => $data['admin_area_2'],
+							'admin_area_1' => (isset($data['admin_area_1'])) ? $data['admin_area_1'] : '',
+							'postal_code' => $data['postal_code'],
+							'country_code' => $data['country_code'],
+						],
 					],
 					'items' => $items
 				]
@@ -200,6 +252,7 @@ class OrdersController extends Controller
 			$order = Order::create([
 				'order_id' => $paypalOrder['id'],
 				'status' => $paypalOrder['status'],
+				'phone' => $data['phone'],
 				'shipping_method_id' => $shippingMethod->id,
 				'total_weight' => $totalWeight,
 				'pre_order' => ($preOrder),
@@ -209,6 +262,8 @@ class OrdersController extends Controller
 			$order = Order::create([
 				'status' => 'FAILED',
 				'shipping_method_id' => $shippingMethod->id,
+				'email_address' => $data['email_address'],
+				'phone' => $data['phone'],
 				'total_weight' => $totalWeight,
 				'pre_order' => ($preOrder),
 				'coupon_id' => ($couponID !== 0) ? $couponID : null,

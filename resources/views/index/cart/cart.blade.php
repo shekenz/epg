@@ -54,16 +54,16 @@
 				<div>
 					<form id="shipping-address-form" class="mt-6 md:mt-0">
 						<h5 class="subdivision">{{ __('Contact information') }}</h5>
-						<input class="cart" type="text" placeholder="{{ __('Last name') }}" autocomplete="given-name" />
-						<input class="cart" type="text" placeholder="{{ __('First name') }}" autocomplete="family-name" />
-						<input class="cart" type="tel" placeholder="{{ __('Phone') }}" autocomplete="tel" />
-						<input class="cart" type="email" placeholder="{{ __('Email') }}" autocomplete="email" />
+						<input class="cart" type="text" name="surname" placeholder="{{ __('Last name') }}" autocomplete="family-name" maxlength="140" required />
+						<input class="cart" type="text" name="given_name" placeholder="{{ __('First name') }}" autocomplete="given-name" maxlength="140" required />
+						<input class="cart" type="tel" name="phone_number" placeholder="{{ __('Phone') }}" autocomplete="tel" maxlength="15" />
+						<input class="cart" type="email" name="email_address" placeholder="{{ __('Email') }}" autocomplete="email" maxlength="254" required />
 						<h5 class="mt-6 subdivision">{{ __('Shipping address') }}</h5>
-						<input class="cart" type="text" placeholder="{{ __('Adress 1') }}" autocomplete="shipping address-line1" />
-						<input class="cart" type="text" placeholder="{{ __('Adress 2') }}" autocomplete="shipping address-line2" />
-						<input class="cart" type="text" placeholder="{{ __('City') }}" autocomplete="shipping address-level2" />
-						<input class="cart" type="text" placeholder="{{ __('Postcode') }}" autocomplete="shipping postal-code" />
-						<select class="cart" id="country-input" name="country" autocomplete="country">
+						<input class="cart" type="text" name="address_line_1" placeholder="{{ __('Address line 1') }}" autocomplete="shipping address-line1" maxlength="300" required />
+						<input class="cart" type="text" name="address_line_2" placeholder="{{ __('Address line 2') }}" autocomplete="shipping address-line2" maxlength="300" />
+						<input class="cart" type="text" name="admin_area_2" placeholder="{{ __('City') }}" autocomplete="shipping address-level2" maxlength="120" required />
+						<input class="cart" type="text" name="postal_code" placeholder="{{ __('Postcode') }}" autocomplete="shipping postal-code" maxlength="60" required />
+						<select class="cart" id="country-input" name="country_code" autocomplete="country" required >
 							@foreach (config('countries') as $code => $country)
 								<option @if($code === "FR")selected @endif value="{{ $code }}">{{ $country }}</option>
 							@endforeach
@@ -117,7 +117,7 @@
 					</form>
 
 					{{-- Shipping form --}}
-					<form class="mt-6" id="shipping-form">
+					<form class="mt-6" id="shipping-methods-form">
 						<div id="national-shipping" class="flex justify-between py-1">
 							<div> {{-- LEAVE  THAT DIV HERE IT'S THE INPUT + LABEL WRAPPER --}}
 								@php // TODO refractor for all shipping method in once, weathe rit is internatinal or national
