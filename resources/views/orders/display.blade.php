@@ -67,8 +67,9 @@
 					<p class="my-2"><span class="font-bold">{{ __('Ordered at') }} : </span>{{ $order->created_at }}</p>
 					<p class="my-2"><span class="font-bold">{{ __('Order ID') }} : </span>{{ $order->order_id }}</p>
 					<p class="my-2"><span class="font-bold">{{ __('Client ID') }} : </span>{{ $order->payer_id }}</p>
-					<p class="my-2"><span class="font-bold">{{ __('Client') }} : </span>{{ $order->given_name }} {{ $order->surname }}</p>
+					<p class="my-2"><span class="font-bold">{{ __('Client') }} : </span>{{ $order->surname }} {{ $order->given_name }}</p>
 					<p class="my-2"><span class="font-bold">{{ __('Client email') }} : </span><a href="mailto:{{ $order->email_address }}" class="hover:underline">{{ $order->email_address }}</a></p>
+					<p class="my-2"><span class="font-bold">{{ __('Client phone') }} : </span>{{ $order->phone_number }}</p>
 				</div>
 			</div>
 

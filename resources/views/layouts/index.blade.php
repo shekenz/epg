@@ -58,7 +58,7 @@
 		<div id="content" class="mx-4 pb-16 mt-16 md:pb-12 md:mt-24 lg:mt-32 xl:mt-40 md:mx-12 xl:mx-20">
 			{{ $slot }}
 		</div>
-		<div id="footer" class="fixed bottom-4 right-4 md:bottom-8 md:right-12 xl:bottom-12 xl:right-20">
+		<div id="footer" class="fixed bottom-4 right-4 md:bottom-8 md:right-12 xl:bottom-12 xl:right-20 @if(request()->routeIs('cart')) hidden @endif">
 			<a id="fun" class="bg-black dark:bg-white hover:bg-white w-16 h-16 md:w-24 md:h-24 block p-2 md:p-4" href="{{ route('about') }}"><img class="inline-block w-full" src="{{ asset('img/frog_logo.svg') }}" alt="epg logo"></a>
 		</div>
 

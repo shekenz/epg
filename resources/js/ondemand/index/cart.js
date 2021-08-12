@@ -5,10 +5,6 @@ import { updateCartQuantity, setCartTotal } from '../../shared/update-cart.mjs';
 
 const debug = false;
 
-if(debug) {
-	document.getElementById('fun').classList.add('hidden');
-}
-
 // Global Values
 let cartTotal = parseFloat(document.getElementById('cart-total').dataset.rawTotal);
 let cartSubTotal = parseFloat(document.getElementById('cart-sub-total').firstChild.nodeValue);
@@ -22,6 +18,7 @@ let weightTotal = parseInt(document.getElementById('cart-total-weight').dataset.
 // Elements
 const cart = document.getElementById('cart');
 const shippingMethodInputs = (Array.from(document.getElementsByName('shipping-method')));
+const shippingAddressInputs = arrayByClass('shipping-address-input');
 const articlesQuantityButtons = arrayByClass('qte-button');
 const removeAllButtons = arrayByClass('remove-all-button');
 const couponInput = document.getElementById('coupon-input');
@@ -38,6 +35,28 @@ const internationalShipping = document.getElementById('international-shipping');
 const fetchErrorHandler = () => {
 	popUp('Impossible to reach server. Please make sure you are connected to the internet.');
 	console.error('Impossible to reach server. Please make sure you are connected to the internet.');
+}
+
+// Form error handler
+const inputError = (inputName, message = '') => {
+	const input = document.getElementsByName(inputName)[0];
+	if(input === undefined) {
+		throw new Error(`C\'ant find element with name "${inputName}"`);
+	} else {
+		input.classList.add('error');
+		if(input.nextElementSibling.tagName === 'SPAN' && message !== '') {
+			input.nextElementSibling.innerHTML = message;
+		}
+	}
+}
+
+const inputErrorReset = input => {
+	if(input.classList.contains('error')) {
+		input.classList.remove('error');
+		if(input.nextElementSibling.tagName === 'SPAN') {
+			input.nextElementSibling.innerHTML = '';
+		}
+	}
 }
 
 // ----------------------------------------------------------- Cart logic
@@ -254,6 +273,13 @@ removeAllButtons.forEach(button => {
 	});
 });
 
+// Check shipping address input for errors
+shippingAddressInputs.forEach(input => {
+	input.addEventListener('focus', e => {
+		inputErrorReset(e.currentTarget);
+	});
+});
+
 // Check country and display shipping methods accordingly
 countryInput.addEventListener('input', e => {
 	updateShippingForm(e.currentTarget);
@@ -320,24 +346,21 @@ couponInput.addEventListener('input', coolDown(
 // Paypal
 const checkCartButton = document.getElementById('paypal-checkout-button');
 if(checkCartButton) {
-	checkCartButton.addEventListener('click', e => {
-		e.preventDefault();
-		fetch(`/api/cart/check`, {
-			method: 'post',
-			headers: {
-				'accept': 'application/json'
-			}
-		}).then(response => {
-			return response.json();
-		}).catch(() => {
-			fetchErrorHandler;
-		}).then(jsonResponse => {
-			console.log(jsonResponse);
-		});
-	});
-
 	if('paypal' in window) {
 		paypal.Buttons({
+			onClick: (data, actions) => {
+				let anyErrors = false;
+				shippingAddressInputs.forEach(input => {
+					if(input.hasAttribute('name') && input.value === '' && input.hasAttribute('required')) {
+						inputError(input.name);
+						anyErrors = true
+					}
+				});
+				if(anyErrors) {
+					return actions.reject();
+				}
+			},
+
 			createOrder: () => {
 				return fetch(`/api/cart/check`, {
 					method: 'post',
@@ -350,11 +373,19 @@ if(checkCartButton) {
 					}, fetchErrorHandler
 				).then( // Check cart fetch JSON response
 					cartCheckResponseJSON => {
-						if(cartCheckResponseJSON.updated) {
+						let needUpdating = false;
+						for(const bookInCart of Object.values(cartCheckResponseJSON)) {
+							console.log(bookInCart);
+							if(!(document.getElementsByClassName(`quantity-for-id-${bookInCart.id}`)[0].firstChild.nodeValue === bookInCart.cartQuantity.toString())) {
+								needUpdating = true;
+							}
+						}
+						if(needUpdating) {
 							popUp('Some articles from you cart are not available anymore. Your cart will now be reloaded. Please check your order again before payment.', () => { window.location.reload() });
 						} else {
 							const shippingAddress = new FormData(document.getElementById('shipping-address-form'));
-							console.log(...shippingAddress);
+							// TODO Refractor chaining and catching errors when we'll have a better understanding of promises
+							// Chain needs to be broken and stop Paypal error ID expected
 							return fetch(`/api/order/create/${shippingMethod}/${couponId}`, {
 								method: 'post',
 								headers: {
@@ -367,14 +398,18 @@ if(checkCartButton) {
 								}, fetchErrorHandler
 							).then( // Create fetch response JSON
 								createResponseJSON => {
-									console.log(createResponseJSON);
 									if(createResponseJSON.id && !createResponseJSON.error) {
 										return createResponseJSON.id;
-									} else if(createResponseJSON.error) {
-										// We have error details
-										console.error(createResponseJSON.error);
+									} else if(createResponseJSON.errors && createResponseJSON.message === 'The given data was invalid.') {
+										// Specific Laravel generated error
+										console.error('Laravel Error');
+										for (const [inputName, errors] of Object.entries(createResponseJSON.errors)) {
+											const message = Object.values(errors).join('<br>');
+											inputError(inputName, message);
+										}
 									} else {
 										//--------------------------------------------------------- ERROR AT CREATING ORDER
+										console.error(createResponseJSON);
 										popUp('An internal error has occured while creating your order. Our team has been warned and we will work on it as soon as possible. Please try to purchase your goods later. We are sorry for the inconvenience.');
 									}
 								}

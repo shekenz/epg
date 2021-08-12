@@ -19,7 +19,7 @@ class Order extends Model
 		'surname',
 		'given_name',
 		'full_name',
-		'phone',
+		'phone_number',
 		'email_address',
 		'address_line_1',
 		'address_line_2',

@@ -107,7 +107,7 @@ class OrdersController extends Controller
 		$data = $request->validate([
 			'given_name' => 'required|string|max:140',
 			'surname' => 'required|string|max:140',
-			'phone' => 'nullable|string|max:15',
+			'phone_number' => 'nullable|string|max:15',
 			'email_address' => 'email|required',
 			'address_line_1' => 'required|string|max:300',
 			'address_line_2' => 'nullable|string|max:300',
@@ -252,7 +252,7 @@ class OrdersController extends Controller
 			$order = Order::create([
 				'order_id' => $paypalOrder['id'],
 				'status' => $paypalOrder['status'],
-				'phone' => $data['phone'],
+				'phone_number' => (isset($data['phone_number'])) ? $data['phone_number'] : '',
 				'shipping_method_id' => $shippingMethod->id,
 				'total_weight' => $totalWeight,
 				'pre_order' => ($preOrder),
@@ -261,9 +261,9 @@ class OrdersController extends Controller
 		} catch(Exception $e) {
 			$order = Order::create([
 				'status' => 'FAILED',
-				'shipping_method_id' => $shippingMethod->id,
+				'phone_number' => (isset($data['phone_number'])) ? $data['phone_number'] : '',
 				'email_address' => $data['email_address'],
-				'phone' => $data['phone'],
+				'shipping_method_id' => $shippingMethod->id,
 				'total_weight' => $totalWeight,
 				'pre_order' => ($preOrder),
 				'coupon_id' => ($couponID !== 0) ? $couponID : null,

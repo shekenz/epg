@@ -54,31 +54,31 @@
 				<div>
 					<form id="shipping-address-form" class="mt-6 md:mt-0">
 						<h5 class="subdivision">{{ __('Contact information') }}</h5>
-						<input class="cart" type="text" name="surname" placeholder="{{ __('Last name') }}" autocomplete="family-name" maxlength="140" required />
-						<input class="cart" type="text" name="given_name" placeholder="{{ __('First name') }}" autocomplete="given-name" maxlength="140" required />
-						<input class="cart" type="tel" name="phone_number" placeholder="{{ __('Phone') }}" autocomplete="tel" maxlength="15" />
-						<input class="cart" type="email" name="email_address" placeholder="{{ __('Email') }}" autocomplete="email" maxlength="254" required />
+						<input class="shipping-address-input" type="text" name="surname" placeholder="{{ __('Last name') }}" autocomplete="family-name" maxlength="140" required /><span class="input-error">{{ __('This field is required') }}</span>
+						<input class="shipping-address-input" type="text" name="given_name" placeholder="{{ __('First name') }}" autocomplete="given-name" maxlength="140" required /><span class="input-error">{{ __('This field is required') }}</span>
+						<input class="shipping-address-input" type="tel" name="phone_number" placeholder="{{ __('Phone') }}" autocomplete="tel" maxlength="15" /><span class="input-error">{{ __('This field is required') }}</span>
+						<input class="shipping-address-input" type="email" name="email_address" placeholder="{{ __('Email') }}" autocomplete="email" maxlength="254" required /><span class="input-error">{{ __('This field is required') }}</span>
 						<h5 class="mt-6 subdivision">{{ __('Shipping address') }}</h5>
-						<input class="cart" type="text" name="address_line_1" placeholder="{{ __('Address line 1') }}" autocomplete="shipping address-line1" maxlength="300" required />
-						<input class="cart" type="text" name="address_line_2" placeholder="{{ __('Address line 2') }}" autocomplete="shipping address-line2" maxlength="300" />
-						<input class="cart" type="text" name="admin_area_2" placeholder="{{ __('City') }}" autocomplete="shipping address-level2" maxlength="120" required />
-						<input class="cart" type="text" name="postal_code" placeholder="{{ __('Postcode') }}" autocomplete="shipping postal-code" maxlength="60" required />
-						<select class="cart" id="country-input" name="country_code" autocomplete="country" required >
+						<input class="shipping-address-input" type="text" name="address_line_1" placeholder="{{ __('Address line 1') }}" autocomplete="shipping address-line1" maxlength="300" required /><span class="input-error">{{ __('This field is required') }}</span>
+						<input class="shipping-address-input" type="text" name="address_line_2" placeholder="{{ __('Address line 2') }}" autocomplete="shipping address-line2" maxlength="300" /><span class="input-error">{{ __('This field is required') }}</span>
+						<input class="shipping-address-input" type="text" name="admin_area_2" placeholder="{{ __('City') }}" autocomplete="shipping address-level2" maxlength="120" required /><span class="input-error">{{ __('This field is required') }}</span>
+						<input class="shipping-address-input" type="text" name="postal_code" placeholder="{{ __('Postcode') }}" autocomplete="shipping postal-code" maxlength="60" required /><span class="input-error">{{ __('This field is required') }}</span>
+						<select class="shipping-address-input" id="country-input" name="country_code" autocomplete="country" required >
 							@foreach (config('countries') as $code => $country)
 								<option @if($code === "FR")selected @endif value="{{ $code }}">{{ $country }}</option>
 							@endforeach
-						</select>
+						</select><span class="input-error">{{ __('This field is required') }}</span>
 						{{-- Billing adress form --}}
 						<div class="hidden">
 							<div class="mt-6">
 								<input class="" type="checkbox" id="show-billing-address" /><label for="show-billing-address" >{{ __('Different billing address') }}</label>
 							</div>
 							<h5 class="mt-6 subdivision">{{ __('Billing address') }}</h5>
-							<input class="cart" type="text" placeholder="{{ __('Adress 2') }}" />
-							<input class="cart" type="text" placeholder="{{ __('City') }}" />
-							<input class="cart" type="text" placeholder="{{ __('Postcode') }}" />
-							<input class="cart" type="text" placeholder="{{ __('Country') }}" />
-							<input class="cart" type="text" placeholder="{{ __('Adress 1') }}" />
+							<input class="shipping-address-input" type="text" placeholder="{{ __('Adress 2') }}" />
+							<input class="shipping-address-input" type="text" placeholder="{{ __('City') }}" />
+							<input class="shipping-address-input" type="text" placeholder="{{ __('Postcode') }}" />
+							<input class="shipping-address-input" type="text" placeholder="{{ __('Country') }}" />
+							<input class="shipping-address-input" type="text" placeholder="{{ __('Adress 1') }}" />
 						</div>
 					</form>
 				</div>

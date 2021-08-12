@@ -71,6 +71,22 @@
 		@apply min-h-[16rem];
 	}
 
+	.input-error {
+		@apply 
+			text-red-500
+			text-sm
+			hidden
+			italic;
+	}
+
+	input[type=text].error + span.input-error,
+	input[type=email].error + span.input-error,
+	input[type=tel].error + span.input-error,
+	textarea.error + span.input-error {
+		@apply
+			block;
+	}
+
 	/*--------------- Checkboxes ---------------*/
 	input[type=checkbox] {
 		@apply hidden;
@@ -121,7 +137,7 @@
 	}
 
 	/*--------------- Shipping form ---------------*/
-	input[type=text].cart, input[type=email].cart, input[type=tel].cart, select.cart {
+	.shipping-address-input {
 		@apply py-1 px-2 mt-4 w-full;
 	}
 
