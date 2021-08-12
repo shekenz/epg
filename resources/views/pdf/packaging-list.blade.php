@@ -25,25 +25,26 @@
 {{-- </head> --}}
 <body style="font-family:sans-serif">
 	@foreach($orders as $order)
-	<h1 style="border-bottom:3px solid black;padding-bottom:20px;">e.p.g.</h1>
-	<div class="">
-		1 Adresse e.p.g.<br>
-		75000 Paris<br>
-		FRANCE<br>
-		Tel : 0123456789<br>
-		DATE ?
-	</div>
+	<h1 style="border-bottom:3px solid black;padding-bottom:20px;margin-bottom:1cm">e.p.g.</h1>
 	<div style="float:right;width:25%;border:3px solid black;padding:30px 50px;">
-		<span style="display:block;font-weight:bold;">{{ $order->full_name }}</span>
-		{{ $order->address_line_1 }}<br>
+		<span style="display:block;font-weight:bold;margin-bottom:10px;">{{ $order->full_name }}</span>
+		{{ $order->address_line_1 }},<br>
 		@isset($order->address_line_2)
-		{{ $order->address_line_2 }}<br>
+		{{ $order->address_line_2 }},<br>
 		@endif
-		{{ $order->postal_code }} {{ $order->admin_area_2 }}<br>@isset($order->admin_area_1) {{ $order->admin_area_1 }}@endif<br>
+		{{ $order->postal_code }} {{ $order->admin_area_2 }}<br>@isset($order->admin_area_1) {{ $order->admin_area_1 }}<br>@endif
 		{{ strtoupper(config('countries.'.$order->country_code))}}
 	</div>
+	<div style="width:25%;border:3px solid black;padding:30px 50px;">
+		<span style="display:block;font-weight:bold;margin-bottom:10px;">e.p.g.</span>
+		12 Cité Jandelle,<br>
+		75019 Paris<br>
+		FRANCE<br>
+	</div>
+	
 	<div style="clear:both;">
-		<h2>{{ __('Packaging list') }}</h2>
+		<h2 style="margin-top:2cm;margin-bottom:0.7cm" >{{ __('Packaging list') }}</h2>
+		<div style="margin-bottom:0.3cm">{{ __('Order').' '}}<span style="font-weight:bold">{{ $order->order_id }}</span> {{ __('shipped on').' '.Carbon\Carbon::now()->locale(config('app.locale'))->isoFormat('L');  }}</div>
 	</div>
 	<table style="border-collapse: collapse;border:3px solid black;;width:100%;">
 		@php $couponPrice = 0; @endphp
@@ -96,7 +97,7 @@
 			</tr>
 		</tfoot>
 	</table>
-	<div style="position:fixed;bottom:-200px;height:300px;text-align: center;margin-top:150px;border-top:3px solid black;padding-top:30px;">{{ __('Thank you for your purchase :)') }}</div>
+	<div style="position:fixed;bottom:-200px;height:300px;text-align: center;margin-top:150px;border-top:3px solid black;padding-top:30px;">{{ __('Thanks for your purchase').' :)' }}</div>
 	@if(!$loop->last)<div style="page-break-after: always;"></div>@endif
 	@endforeach
 </body>
