@@ -73,7 +73,7 @@ class OrderFactory extends Factory
 			'surname' => $surname,
 			'given_name' => $givenName,
 			'full_name' => $givenName.' '.$surname,
-			'phone' => null,
+			'phone_number' => $this->faker->e164PhoneNumber(),
 			'email_address' => $this->faker->email(),
 			'address_line_1' => $this->faker->streetAddress(),
 			'address_line_2' => null,
