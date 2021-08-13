@@ -42,13 +42,15 @@
 						<button id="ship-button" class="inline-block align-middle"><x-tabler-truck-delivery class="text-gray-400 hover:text-green-500 mx-2 w-12 h-12 inline-block" /></button> 
 					</form>
 				@endif
-				{{-- For debug ONLY ----- To be removed --}}
+				{{-- For debug ONLY - Use for returning feature ? --}}
+				{{--
 				@if($order->status == 'SHIPPED')
 					<form class="inline-block" action="{{ route('orders.shipped', $order->order_id) }}" method="POST">
 						@csrf
 						<button id="ship-button" class="inline-block align-middle"><x-tabler-truck-return class="text-gray-400 hover:text-green-500 mx-2 w-12 h-12 inline-block" /></button> 
 					</form>
 				@endif
+				--}}
 			</div>
 			<div class="font-bold">
 				<span class="mr-2">{{ __('Transaction ID') }} : </span><a href="@if(setting('app.paypal.sandbox')) {{ 'https://www.sandbox.paypal.com/activity/payment/'.$order->transaction_id  }}

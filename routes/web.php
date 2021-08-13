@@ -12,6 +12,7 @@ use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\ShippingMethodsController;
 use App\Http\Controllers\CouponsController;
 use App\Http\Controllers\OrdersMassController;
+use App\Http\Controllers\ArchivedOrdersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,6 +50,11 @@ Route::get('/dashboard/order/cancel/{order}', [OrdersController::class, 'cancel'
 Route::get('/dashboard/order/recycle/{orderID}', [OrdersController::class, 'recycle'])->middleware('auth')->name('orders.recycle');
 Route::post('/dashboard/order/shipped/{orderID}', [OrdersController::class, 'shipped'])->middleware('auth')->name('orders.shipped');
 Route::get('/dashboard/orders/hidden', [OrdersController::class, 'hidden'])->middleware('auth')->name('orders.hidden');
+
+// Archived Orders
+Route::post('/dashboard/order/archive/{order}', [ArchivedOrdersController::class, 'archive'])->middleware('auth')->name('archive.order');
+Route::get('/dashboard/order/archived/{archivedOrder}', [ArchivedOrdersController::class, 'display'])->middleware('auth')->name('archive.display');
+Route::get('/dashboard/orders/archived', [ArchivedOrdersController::class, 'list'])->middleware('auth')->name('archive.list');
 
 // Orders mass process
 Route::post('/dashboard/orders/csv', [OrdersMassController::class, 'csv'])->middleware('auth')->name('orders.csv');

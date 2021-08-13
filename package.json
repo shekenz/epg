@@ -18,6 +18,7 @@
         "browser-sync": "^2.27.5",
         "browser-sync-webpack-plugin": "^2.3.0",
         "date-fns": "^2.22.1",
+        "js-cookies": "^1.0.4",
         "laravel-mix": "git+https://github.com/JeffreyWay/laravel-mix.git#master",
         "lodash": "^4.17.21",
         "postcss": "^8.3.5",

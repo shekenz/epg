@@ -1,25 +1,16 @@
 <x-app-layout>
 	<x-slot name="title">
-		@if(request()->routeIs('orders.hidden'))
-			{{ __('Orders (hidden)') }}
-		@else
-			{{ __('Orders') }}
-		@endif
+			{{ __('Archived orders') }}
 	</x-slot>
 
+	{{--
 	<x-slot name="scripts">
 		<script src="{{ asset('js/order-list.js') }}" type="text/javascript" defer></script>
 	</x-slot>
-
-	@if(request()->routeIs('orders'))
-	<x-slot name="controls">
-		<a class="button-shared" href="{{ route('orders.hidden') }}">{{ __('Hidden orders') }}</a>
-		<a class="button-shared" href="{{ route('archive.list') }}">{{ __('Archived orders') }}</a>
-	</x-slot>
-	@endif
+	--}}
 
 	<div class="flex justify-between mb-3">
-		<div>
+		<div class="hidden">
 			@php $maxDate = \Carbon\Carbon::now()->toDateString(); @endphp
 			<label for="filter">{{ __('Filter') }}</label>
 			<select class="input-inline" id="filter" placeholder="Filter">
@@ -36,9 +27,11 @@
 			<input class="input-inline" id="filter-data-text" type="text" disabled="true">
 			<select class="input-inline hidden max-w-[16rem]" id="filter-data-book">
 				<option value=""></option>
+				{{--
 				@foreach ($books as $book)	
 					<option value="{{ $book->id }}">{{ $book->title }}</option>
 				@endforeach
+				--}}
 			</select>
 			<select class="input-inline hidden" id="filter-data-status">
 				<option value="FAILED">{{ __('paypal.status.FAILED') }}</option>
@@ -48,14 +41,18 @@
 			</select>
 			<select class="input-inline hidden" id="filter-data-coupon">
 				<option value="">{{ __('None') }}</option>
+				{{--
 				@foreach ($coupons as $coupon)
 					<option value="{{ $coupon->id }}">{{ $coupon->label }}@if($coupon->trashed()) ({{ __('Trashed') }})@endif</option>
 				@endforeach
+				--}}
 			</select>
 			<select class="input-inline hidden" id="filter-data-shipping">
+				{{--
 				@foreach ($shippingMethods as $shippingMethod)
 					<option value="{{ $shippingMethod->id }}">{{ $shippingMethod->label }}@if($shippingMethod->trashed()) ({{ __('Trashed') }})@endif</option>
 				@endforeach
+				--}}
 			</select>
 			<label for="start-date">{{ __('from') }}</label>
 			<input class="input-inline" id="start-date" type="date" value="{{ \Carbon\Carbon::now()->subYear(1)->toDateString()}}" max="{{ $maxDate }}">
@@ -66,9 +63,9 @@
 			</select>
 		</div>
 	</div>
-	<div class="flex items-end border-t pt-1">
+	<div class="flex items-end border-t pt-1 hidden">
 		<x-tabler-corner-left-down class="ml-2 inline-block" />
-		<div class="mb-2">
+		<div class="mb-2 hidden">
 			@if(request()->routeIs('orders.hidden'))
 			<input id="hide" class="button-small cursor-pointer action" type="button" data-action="{{ route('orders.unhide') }}" value="{{ __('Unhide') }}">
 			@else
@@ -83,20 +80,29 @@
 		@csrf
 		<table id="orders-table" class="app-table">
 			<thead>
-				<td><input type="checkbox" id="checkall" title="{{ __('Select/Deselect all') }}"></td>
+				<td class="hidden"><input type="checkbox" id="checkall" title="{{ __('Select/Deselect all') }}"></td>
 				<td>{{ __('Order') }}</td>
 				<td>{{ __('Client') }}</td>
 				<td>{{ __('Client email') }}</td>
-				<td>{{ __('Pre') }}</td>
-				<td>{{ __('Status') }}</td>
 				<td>{{ __('Created at') }}</td>
-				{{-- <td>{{ __('Last updated') }}</td> --}}
-				<td>{{ __('Tools') }}</td>
+				<td>{{ __('Archived at') }}</td>
 			</thead>
 			<tbody id="order-rows">
+				@foreach($archivedOrders as $archiveOrder)
+				<tr>
+					<td class='hidden'>{{ $archiveOrder->id }}</td>
+					<td><a class="underline text-gray-500 hover:text-inherit" href="{{ route('archive.display', $archiveOrder->id) }}">{{ $archiveOrder->order_id }}</a></td>
+					<td>{{ $archiveOrder->full_name }}</td>
+					<td>{{ $archiveOrder->email_address }}</td>
+					<td>{{ $archiveOrder->created_at }}</td>
+					<td>{{ $archiveOrder->archived_at }}</td>
+				</tr>
+				@endforeach
+				{{--
 				<tr>
 					<td colspan="8"><img class="m-auto my-8" src="{{ asset('img/loader2.gif') }}" alt="loader animation"></td>
 				</tr>
+				--}}
 			</tbody>
 		</table>
 	</form>

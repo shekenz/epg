@@ -24,12 +24,16 @@ const startDate = document.getElementById('start-date');
 const endDate = document.getElementById('end-date');
 const preorderInput = document.getElementById('preorder');
 const loader = document.getElementById('loader');
+
+// TODO a function that sets all of that automatically
 const recycleBlueprint = document.getElementById('recycle-blueprint');
 const trashBlueprint = document.getElementById('trash-blueprint');
 const forkliftBlueprint = document.getElementById('forklift-blueprint');
 const shippedBlueprint = document.getElementById('shipped-blueprint');
+const archiveBlueprint = document.getElementById('archive-blueprint');
 const noResult = document.getElementById('no-result');
 
+// TODO Make it post data from a form and use it in archiving tool, and check route for method.
 const createToolButton = (href, blueprint) => {
 	const link = document.createElement('a');
 	link.setAttribute('href', href);
@@ -145,74 +149,107 @@ const request = () => {
 
 						// Last cell
 						const toolsCell = document.createElement('td');
-						if(order.status === 'FAILED') {
-							toolsCell.append(createToolButton(window.location.origin+'/dashboard/order/cancel/'+order.id, trashBlueprint));
-						} else if(order.status === 'CREATED' && order.order_id && !isThisHour(orderCreationDate)) {
-							toolsCell.append(createToolButton(window.location.origin+'/dashboard/order/recycle/'+order.id, recycleBlueprint));
-						} else if(order.status === 'COMPLETED') {
-							const shippedLink = createToolButton('#', shippedBlueprint);
-							shippedLink.classList.add('shipped');
-							shippedLink.addEventListener('click', e => {
-								e.preventDefault();
-								popUpPlus((wrapper, button) => {
+						console.log(order.status);
+						switch(order.status) {
+							case('FAILED') :
+								toolsCell.append(createToolButton(window.location.origin+'/dashboard/order/cancel/'+order.id, trashBlueprint));
+								break;
+							case('CREATED') : 
+								if(order.order_id && !isThisHour(orderCreationDate)) {
+									toolsCell.append(createToolButton(window.location.origin+'/dashboard/order/recycle/'+order.id, recycleBlueprint));
+								}
+								break;
+							case('COMPLETED') :
+								const shippedLink = createToolButton('#', shippedBlueprint);
+								shippedLink.classList.add('shipped');
+								shippedLink.addEventListener('click', e => {
+									e.preventDefault();
+									popUpPlus((wrapper, button) => {
 
-									button.firstChild.nodeValue = 'Ship';
-														
-									const title = document.createElement('h2');
-									title.appendChild(document.createTextNode('Confirm shipping'));
-							
-									const shipTrackingForm = document.createElement('form');
-									shipTrackingForm.setAttribute('method', 'POST');
-									shipTrackingForm.setAttribute('action', window.location.origin+'/dashboard/order/shipped/'+order.order_id);
-									shipTrackingForm.appendChild(document.getElementsByName('_token')[0].cloneNode());
-									
-									// Tracking URL
-									const shipTrackingURL = document.createElement('input');
-									shipTrackingURL.setAttribute('type', 'text');
-									shipTrackingURL.setAttribute('name', 'tracking_url');
-									shipTrackingURL.classList.add('input-shared');
-									const shipTrackingURLLabel = document.createElement('label');
-									shipTrackingURLLabel.classList.add('label-shared');
-									shipTrackingURLLabel.classList.add('block');
-									shipTrackingURLLabel.classList.add('text-lg');
-									shipTrackingURLLabel.classList.add('mt-4');
-									shipTrackingURLLabel.appendChild(document.createTextNode('Tracking URL :'))
-							
-									// Appending
-									shipTrackingForm.appendChild(shipTrackingURLLabel);
-									shipTrackingForm.appendChild(shipTrackingURL);
-									
-									wrapper.appendChild(title);
-									wrapper.appendChild(shipTrackingForm);
-									return shipTrackingForm;
-								},
-								returned => {
-									document.getElementById('popup-loader').classList.toggle('hidden');
-									
-									//TODO prevent enter from submiting form 
-									fetch(returned.action, {
-										method: 'post',
-										headers: {
-											accept: 'application/json',
-										},
-										body: new FormData(returned)
-									}).then(r => {
-										if( r.status === 200 ) {
-											return r.json();
-										}
-									}).then(rj => {
+										button.firstChild.nodeValue = 'Ship';
+															
+										const title = document.createElement('h2');
+										title.appendChild(document.createTextNode('Confirm shipping'));
+								
+										const shipTrackingForm = document.createElement('form');
+										shipTrackingForm.setAttribute('method', 'POST');
+										shipTrackingForm.setAttribute('action', window.location.origin+'/dashboard/order/shipped/'+order.order_id);
+										shipTrackingForm.appendChild(document.getElementsByName('_token')[0].cloneNode());
+										
+										// Tracking URL
+										const shipTrackingURL = document.createElement('input');
+										shipTrackingURL.setAttribute('type', 'text');
+										shipTrackingURL.setAttribute('name', 'tracking_url');
+										shipTrackingURL.classList.add('input-shared');
+										const shipTrackingURLLabel = document.createElement('label');
+										shipTrackingURLLabel.classList.add('label-shared');
+										shipTrackingURLLabel.classList.add('block');
+										shipTrackingURLLabel.classList.add('text-lg');
+										shipTrackingURLLabel.classList.add('mt-4');
+										shipTrackingURLLabel.appendChild(document.createTextNode('Tracking URL :'))
+								
+										// Appending
+										shipTrackingForm.appendChild(shipTrackingURLLabel);
+										shipTrackingForm.appendChild(shipTrackingURL);
+										
+										wrapper.appendChild(title);
+										wrapper.appendChild(shipTrackingForm);
+										return shipTrackingForm;
+									},
+									returned => {
 										document.getElementById('popup-loader').classList.toggle('hidden');
-										document.getElementById('pop-up-wrapper').classList.add('hidden');
-										document.getElementById('pop-inner-wrapper').innerHTML = '';
-										const statusLabel = document.querySelector(`#order-${rj.id} td:nth-child(6) span`);
-										statusLabel.innerHTML = 'Envoyé'.toUpperCase();
-										statusLabel.classList.remove('bg-blue-500');
-										statusLabel.classList.add('bg-green-500');
-										document.querySelector(`#order-${rj.id} td:nth-child(8)`).removeChild(document.querySelector(`#order-${rj.id} td:nth-child(8) a.shipped`));
+										
+										//TODO prevent enter from submiting form 
+										fetch(returned.action, {
+											method: 'post',
+											headers: {
+												accept: 'application/json',
+											},
+											body: new FormData(returned)
+										}).then(r => {
+											if( r.status === 200 ) {
+												return r.json();
+											}
+										}).then(rj => {
+											document.getElementById('popup-loader').classList.toggle('hidden');
+											document.getElementById('pop-up-wrapper').classList.add('hidden');
+											document.getElementById('pop-inner-wrapper').innerHTML = '';
+											const statusLabel = document.querySelector(`#order-${rj.id} td:nth-child(6) span`);
+											statusLabel.innerHTML = 'Envoyé'.toUpperCase();
+											statusLabel.classList.remove('bg-blue-500');
+											statusLabel.classList.add('bg-green-500');
+											document.querySelector(`#order-${rj.id} td:nth-child(8)`).removeChild(document.querySelector(`#order-${rj.id} td:nth-child(8) a.shipped`));
+										});
 									});
 								});
-							});
-							toolsCell.append(shippedLink);
+								toolsCell.append(shippedLink);
+								break;
+							case('SHIPPED') :
+								const archiveButtonForm = document.createElement('form');
+								archiveButtonForm.setAttribute('action', window.location.origin+'/dashboard/order/archive/'+order.id);
+								archiveButtonForm.setAttribute('method', 'POST');
+								const tokenInput = document.createElement('input');
+								tokenInput.setAttribute('type', 'hidden');
+								tokenInput.setAttribute('name', '_token');
+								const csrfToken = document.getElementsByName('csrf-token')[0].getAttribute('content');
+								tokenInput.setAttribute('value', csrfToken);
+								const submitButton = document.createElement('button');
+								submitButton.classList.add('icon');
+
+								submitButton.addEventListener('click', e => {
+									e.preventDefault();
+									if(confirm('Are you sure you want to archive this command ? Archived commands cannot be restored.')) {
+										e.currentTarget.parentNode.submit();
+									}
+								});
+
+								const archiveIcon = archiveBlueprint.cloneNode(true);
+								archiveIcon.classList.remove('hidden');
+								submitButton.append(archiveIcon);
+								archiveButtonForm.append(tokenInput);
+								archiveButtonForm.append(submitButton);
+								toolsCell.append(archiveButtonForm);
+								break;
 						}
 						toolsCell.setAttribute('class', 'text-right');
 						row.append(toolsCell);
