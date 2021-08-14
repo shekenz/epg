@@ -19,9 +19,11 @@
 				<button class="glide__arrow2 glide__arrow2--right" data-glide-dir=">"></button>
 			</div>
 			<div class="glide__bullets xl:hidden" data-glide-el="controls[nav]">
-				<button class="glide__bullet" data-glide-dir="=0"></button>
-				<button class="glide__bullet" data-glide-dir="=1"></button>
-				<button class="glide__bullet" data-glide-dir="=2"></button>
+				@if(count($book->media) != 1)
+					@foreach ($book->media as $medium)
+						<button class="glide__bullet" data-glide-dir="={{ $medium->order }}"></button>
+					@endforeach
+				@endif
 			</div>
 					
 		</div>
