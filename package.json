@@ -26,7 +26,6 @@
         "sortablejs": "^1.13.0",
         "tailwindcss": "^2.2.2"
     },
-    "dependencies": {},
     "browserslist": [
         "last 2 version",
         "> 0.2%",
