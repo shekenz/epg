@@ -522,7 +522,7 @@ class OrdersController extends Controller
 	 *
 	 * @param  strig $orderID
 	 */
-	public function recycle($orderID) {
+	public function recycle(string $orderID) {
 		$details = $this->details($orderID);
 		if(isset($details['error']) || (isset($details['status']) && $details['status'] === 'CREATED')) {
 			$order = Order::where('order_id', $orderID)->first();

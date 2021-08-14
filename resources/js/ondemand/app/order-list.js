@@ -156,7 +156,7 @@ const request = () => {
 								break;
 							case('CREATED') : 
 								if(order.order_id && !isThisHour(orderCreationDate)) {
-									toolsCell.append(createToolButton(window.location.origin+'/dashboard/order/recycle/'+order.id, recycleBlueprint));
+									toolsCell.append(createToolButton(window.location.origin+'/dashboard/order/recycle/'+order.order_id, recycleBlueprint));
 								}
 								break;
 							case('COMPLETED') :
