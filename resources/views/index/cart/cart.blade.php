@@ -14,9 +14,6 @@
 			lg:grid-cols-3
 			xl:grid-cols-2 
 			gap-x-12
-			text-[1.05rem]
-			leading-[1.2rem]
-			md:text-base
 		">
 			{{------------------------------------------------------------------- Articles wrapper (or cart) --}}
 			<div id="cart" class="

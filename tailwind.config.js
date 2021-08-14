@@ -24,8 +24,7 @@ module.exports = {
             },
 			fontSize: {
 				custom: ['1.1em', '1.2em'],
-				'custom-sm': ['0.8em', '1.1em'],
-				'custom-md': ['1em', '1.1em'],
+				'custom-sm': ['1em', '1.15em'],
 			},
 			colors: {
 				dark: colors.gray,

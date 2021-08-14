@@ -46,7 +46,7 @@
 			{{ $scripts }}
 		@endif
     </head>
-    <body class="text-custom-sm md:text-custom-md lg:text-custom">
+    <body class="text-custom-sm md:text-custom">
 		@if(session('flash'))
 			<x-flash.front :message="session('flash')" :type="session('flash-type')"/>
 		@endif
