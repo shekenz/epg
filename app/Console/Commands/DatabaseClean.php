@@ -45,7 +45,7 @@ class DatabaseClean extends Command
 			DB::table('book_order')->truncate();
 			DB::table('orders')->truncate();
 		}
-		$this->info('Databas cleaned !');
+		$this->info('Database cleaned !');
         return 0;
     }
 }
