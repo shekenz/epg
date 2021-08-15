@@ -15,7 +15,7 @@ return [
 		'shipped' => [
 			'subject' => 'Your e.p.g order has been shipped !',
 			'intro' => 'Your order n° :order_id has been shipped on :shipped_date. You should receive it soon.',
-			'tracking' => 'Follow this link to track your package',
+			'tracking' => 'Here is your tracking number on',
 			'reclamation' => 'Please contact us if you encounter any problems or for any reclamations',
 		],
 		'notification' => [

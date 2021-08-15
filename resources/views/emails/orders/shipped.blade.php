@@ -2,12 +2,12 @@
 
 {{ __('mails.orders.shipped.intro', [
 	'order_id' => $order->order_id,
-	'shipped_date' => $order->shipped_at->toFormattedDateString(),
+	'shipped_date' => $order->shipped_at->locale(config('app.locale'))->isoFormat('L'),
 ]) }}<br><br>
 
 @isset($order->tracking_url)
-{{ __('mails.orders.shipped.tracking') }} :<br>
-<a href="{{ $order->tracking_url }}">{{ $order->tracking_url }}</a>
+{{ __('mails.orders.shipped.tracking') }} <a href="https://www.laposte.fr/outils/suivre-vos-envois">La Poste</a> :<br>
+{{ $order->tracking_url }}
 <br><br>
 @endif
 {{ __('mails.orders.shipped.reclamation') }}.

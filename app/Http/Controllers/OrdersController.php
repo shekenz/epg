@@ -380,7 +380,12 @@ class OrdersController extends Controller
 					});
 
 					//Notify client
-					Mail::to($order->email_address)->send(new OrderConfirmation($order));
+					if(config('app.env') === 'local') {
+						// In test environement, sends the confirmation email to me
+						Mail::to('aureltrotebas@icloud.com')->send(new OrderConfirmation($order));
+					} else {
+						Mail::to($order->email_address)->send(new OrderConfirmation($order));
+					}
 
 				} catch(Exception $e) { 
 
@@ -552,7 +557,12 @@ class OrdersController extends Controller
 			$order->shipped_at = Carbon::now();
 			$order->tracking_url = $data['tracking_url'];
 
-			Mail::to($order->email_address)->send(new OrderShipped($order));
+			if(config('app.env') === 'local') {
+				// In test environement, sends the confirmation email to me
+				Mail::to('aureltrotebas@icloud.com')->send(new OrderShipped($order));
+			} else {
+				Mail::to($order->email_address)->send(new OrderShipped($order));
+			}
 		} else {
 			$order->status = 'COMPLETED';
 			$order->shipped_at = null;
