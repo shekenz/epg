@@ -39,7 +39,7 @@
 					@endphp
 
 					@if($warnings)
-						<a href="{{ route('books.display', $book->id) }}" class="icon warning" title="{{ implode($warnings, "\n") }}"><x-tabler-alert-triangle /></a>
+						<a href="{{ route('books.display', $book->id) }}" class="icon warning" title="{{ implode("\n", $warnings) }}"><x-tabler-alert-triangle /></a>
 					@endif
 
 					@if($book->pre_order)
