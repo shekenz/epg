@@ -28,7 +28,7 @@ use App\Http\Controllers\ArchivedOrdersController;
 // Main index route
 Route::get('/', [BooksController::class, 'index'])->middleware('published')->name('index');
 Route::get('/about', [IndexController::class, 'about'])->middleware('published')->name('about');
-Route::view('/contact', 'index.contact')->middleware('published')->name('messages');
+Route::view('/contact', 'index.contact')->middleware('published')->name('contact');
 Route::post('/contact', [MessagesController::class, 'forward'])->middleware('published')->name('messages.forward');
 Route::get('/order/{orderID}', [OrdersController::class, 'index'])->middleware(['published', 'shop'])->name('orders.index');
 
