@@ -1,7 +1,7 @@
 <x-app-layout>
 
 	<x-slot name="title">
-		{{ __('Order') }}
+		{{ ___('order') }}
 	</x-slot>
 
 	<x-slot name="scripts">
@@ -53,7 +53,7 @@
 				--}}
 			</div>
 			<div class="font-bold">
-				<span class="mr-2">{{ __('Transaction ID') }} : </span><a href="@if(setting('app.paypal.sandbox')) {{ 'https://www.sandbox.paypal.com/activity/payment/'.$order->transaction_id  }}
+				<span class="mr-2">{{ ___('transaction ID') }} : </span><a href="@if(setting('app.paypal.sandbox')) {{ 'https://www.sandbox.paypal.com/activity/payment/'.$order->transaction_id  }}
 				@else {{ 'https://www.paypal.com/activity/payment/'.$order->transaction_id  }}
 				@endif" class="new-tab border border-black box-border text-xl py-4 px-6">{{ $order->transaction_id }}</a>
 			</div>
@@ -64,20 +64,20 @@
 
 			{{-- Client info --}}
 			<div class="flex-grow">
-				<h2 class="text-lg border-b border-black font-bold">{{ __('Client info') }} : </h2>
+				<h2 class="text-lg border-b border-black font-bold">{{ ___('client info') }} : </h2>
 				<div class="p-4">
-					<p class="my-2"><span class="font-bold">{{ __('Ordered at') }} : </span>{{ $order->created_at }}</p>
-					<p class="my-2"><span class="font-bold">{{ __('Order ID') }} : </span>{{ $order->order_id }}</p>
-					<p class="my-2"><span class="font-bold">{{ __('Client ID') }} : </span>{{ $order->payer_id }}</p>
-					<p class="my-2"><span class="font-bold">{{ __('Client') }} : </span>{{ $order->surname }} {{ $order->given_name }}</p>
-					<p class="my-2"><span class="font-bold">{{ __('Client email') }} : </span><a href="mailto:{{ $order->email_address }}" class="hover:underline">{{ $order->email_address }}</a></p>
-					<p class="my-2"><span class="font-bold">{{ __('Client phone') }} : </span>{{ $order->phone_number }}</p>
+					<p class="my-2"><span class="font-bold">{{ ___('ordered at') }} : </span>{{ $order->created_at }}</p>
+					<p class="my-2"><span class="font-bold">{{ ___('order ID') }} : </span>{{ $order->order_id }}</p>
+					<p class="my-2"><span class="font-bold">{{ ___('client ID') }} : </span>{{ $order->payer_id }}</p>
+					<p class="my-2"><span class="font-bold">{{ ___('client') }} : </span>{{ $order->surname }} {{ $order->given_name }}</p>
+					<p class="my-2"><span class="font-bold">{{ ___('client email') }} : </span><a href="mailto:{{ $order->email_address }}" class="hover:underline">{{ $order->email_address }}</a></p>
+					<p class="my-2"><span class="font-bold">{{ ___('client phone') }} : </span>{{ $order->phone_number }}</p>
 				</div>
 			</div>
 
 			{{-- Shipping address --}}
 			<div class="flex-grow">
-				<h2 class="text-lg border-b border-black font-bold">{{ __('Shipping address') }} : </h2>
+				<h2 class="text-lg border-b border-black font-bold">{{ ___('shipping address') }} : </h2>
 				<div class="text-2xl font-bold border-4 border-black py-4 px-8 block w-96 mx-auto my-8">
 					<p>{{ $order->full_name }}</p>
 					<p>{{ $order->address_line_1 }}</p>
@@ -88,14 +88,14 @@
 					@endisset</p>
 				</div>
 				
-				<h2 class="text-lg border-b border-black font-bold">{{ __('Shipping info') }} : </h2>
+				<h2 class="text-lg border-b border-black font-bold">{{ ___('shipping infos') }} : </h2>
 				<div class="p-4">
-					<p class="my-2"><span class="font-bold">{{ __('Total weight') }} : </span>{{ $order->total_weight }}g</p>
+					<p class="my-2"><span class="font-bold">{{ ___('total weight') }} : </span>{{ $order->total_weight }}g</p>
 					@if($order->status == 'SHIPPED')
-						<p class="my-2"><span class="font-bold">{{ __('Shipped at') }} : </span>{{ $order->shipped_at }}</p>
-						<p class="my-2"><span class="font-bold">{{ __('Shipping method') }} : </span>{{ $order->shippingMethods->label }}</p>
+						<p class="my-2"><span class="font-bold">{{ ___('shipped on') }} : </span>{{ $order->shipped_at }}</p>
+						<p class="my-2"><span class="font-bold">{{ ___('shipping method') }} : </span>{{ $order->shippingMethods->label }}</p>
 						@isset($order->tracking_url)
-						<p class="my-2"><span class="font-bold">{{ __('Tracking URL') }} : </span><a class="new-tab hover:underline" href="{{ $order->tracking_url }}">{{ $order->tracking_url }}</a></p>
+						<p class="my-2"><span class="font-bold">{{ ___('tracking URL') }} : </span><a class="new-tab hover:underline" href="{{ $order->tracking_url }}">{{ $order->tracking_url }}</a></p>
 						@endisset
 					@endif
 				</div>
@@ -105,16 +105,16 @@
 
 		{{-- Articles details --}}
 		<div class="mt-6">
-			<h2 class="text-lg border-b border-black font-bold">{{ __('Articles') }}</h2>
+			<h2 class="text-lg border-b border-black font-bold">{{ ___('articles') }}</h2>
 			<table class="w-full">
 				<thead class="border-b-2 border-black">
-					<td>{{ __('Title') }}</td>
-					<td>{{ __('Author') }}</td>
-					<td>{{ __('Quantity') }}</td>
+					<td>{{ ___('title') }}</td>
+					<td>{{ ___('author') }}</td>
+					<td>{{ ___('quantity') }}</td>
 					@if($order->pre_order)
 						<td></td>
 					@endif
-					<td>{{ __('Subtotal') }}</td>
+					<td>{{ ___('subtotal') }}</td>
 				</thead>
 			@php $total = 0; @endphp
 			@foreach ($order->books as $book)
@@ -123,12 +123,12 @@
 					$total += round($book->pivot->quantity * $book->price, 2)
 				@endphp
 				<tr>
-					<td>@if($book->trashed())<span title="{{ __('Book is archived') }}"><x-tabler-alert-triangle class="inline-block text-yellow-500" /></span>@endif {{ $book->title }}</td>
+					<td>@if($book->trashed())<span title="{{ ___('book is archived') }}"><x-tabler-alert-triangle class="inline-block text-yellow-500" /></span>@endif {{ $book->title }}</td>
 					<td>{{ $book->author }}</td>
 					<td>{{ $book->pivot->quantity }}</td>
 					@if($order->pre_order)
 						@if($book->pre_order)
-							<td><span class="font-bold text-sm inline-block text-white px-2 py-0.5 rounded bg-blue-500">{{ __('Pre-order') }}</span></td>
+							<td><span class="font-bold text-sm inline-block text-white px-2 py-0.5 rounded bg-blue-500">{{ ___('pre-order') }}</span></td>
 						@else
 							<td></td>
 						@endif
@@ -145,7 +145,7 @@
 					}
 				@endphp
 				<tr class="border-b-2 border-t-2 border-black">
-					<td>{{ __('Coupon') }}</td>
+					<td>{{ ___('coupon') }}</td>
 					<td>{{ $order->coupons->label }}</td>
 					<td>-{{ $order->coupons->value }}@if(boolval($order->coupons->type)){{ '€' }}@else{{ '%' }}@endif</td>
 					@if($order->pre_order)
@@ -155,7 +155,7 @@
 				</tr>
 				@endif
 				<tr class="border-b-2 border-t-2 border-black">
-					<td>{{ __('Shipping method') }}</td>
+					<td>{{ ___('shipping method') }}</td>
 					<td>{{ $order->shippingMethods->label }}</td>
 					<td></td>
 					@if($order->pre_order)
@@ -164,7 +164,7 @@
 					<td>{{ $shippingPrice }} €</td>
 				</tr>
 				<tfoot>
-					<td>{{ __('Total') }}</td>
+					<td>{{ ___('total') }}</td>
 					<td></td>
 					<td></td>
 					@if($order->pre_order)
@@ -178,7 +178,7 @@
 		<form action="{{ route('orders.print', 'packaging-list') }}" method="POST" class="my-8 flex justify-end">
 			@csrf
 			<input type="hidden" name="ids[]" value="{{ $order->id }}">
-			<input type="submit" class="button-shared cursor-pointer" value="Download PDF">
+			<input type="submit" class="button-shared cursor-pointer" value="{{ ___('download PDF') }}">
 		</form>
 	</div>
 		

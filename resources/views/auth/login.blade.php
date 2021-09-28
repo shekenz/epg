@@ -22,13 +22,13 @@
 			<!-- Username -->
 			<!-- TODO autofocus on the field that has error -->
             <div>
-                <x-label for="username" :value="__('Username')" />
+                <x-label for="username" :value="___('username')" />
                 <x-input id="username" class="block mt-1 w-full" type="text" name="username" :value="old('username')" required maxlength="64"/>
             </div>
 
             <!-- Password -->
             <div class="mt-4">
-                <x-label for="password" :value="__('Password')" />
+                <x-label for="password" :value="___('password')" />
 
                 <x-input id="password" class="block mt-1 w-full"
                                 type="password"
@@ -53,7 +53,7 @@
                 @endif
 
                 <x-button class="ml-3">
-                    {{ __('Login') }}
+                    {{ ___('login') }}
                 </x-button>
             </div>
 			@if( config('app.allow_register'))

@@ -69,10 +69,10 @@
 					<br>{{ $book->price }} €<br>
 					@if( $book->quantity > 0)
 						<br>
-						<a href="{{ route('cart.api.add', $book->id)}}" class="add-to-cart-button button-lg">{{ __('Add to cart') }}</a><br>
+						<a href="{{ route('cart.api.add', $book->id)}}" class="add-to-cart-button button-lg">{{ ___('add to cart') }}</a><br>
 					@elseif( $book->pre_order)
 						<br>
-						<a href="{{ route('cart.api.add', $book->id)}}" class="add-to-cart-button button-lg">{{ __('Pre-order') }}</a><br>
+						<a href="{{ route('cart.api.add', $book->id)}}" class="add-to-cart-button button-lg">{{ ___('pre-order') }}</a><br>
 					@else
 						<br>
 						({{ __('Out of stock') }})<br>
@@ -80,7 +80,7 @@
 				@endif
 				<br>
 				@auth
-					<div class="hideable mb-4"><a href="{{ route('books.edit', $book->id) }}" class="user-edit">{{ __('Edit') }}</a><a href="{{ route('books.archive', $book->id) }}" class="user-edit">{{ __('Archive') }}</a></div>
+					<div class="hideable mb-4"><a href="{{ route('books.edit', $book->id) }}" class="user-edit">{{ ___('edit') }}</a><a href="{{ route('books.archive', $book->id) }}" class="user-edit">{{ ___('archive') }}</a></div>
 				@endauth
 		</div>
 		<div class="col-span-2">

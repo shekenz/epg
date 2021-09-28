@@ -50,33 +50,21 @@
 				{{-- Shipping address form --}}
 				<div>
 					<form id="shipping-address-form" class="mt-6 md:mt-0">
-						<h5 class="subdivision">{{ __('Contact information') }}</h5>
-						<input class="shipping-address-input" type="text" name="surname" placeholder="{{ __('Last name') }}" autocomplete="family-name" maxlength="140" required /><span class="input-error">{{ __('This field is required') }}</span>
-						<input class="shipping-address-input" type="text" name="given_name" placeholder="{{ __('First name') }}" autocomplete="given-name" maxlength="140" required /><span class="input-error">{{ __('This field is required') }}</span>
-						<input class="shipping-address-input" type="tel" name="phone_number" placeholder="{{ __('Phone') }}" autocomplete="tel" maxlength="15" /><span class="input-error">{{ __('This field is required') }}</span>
-						<input class="shipping-address-input" type="email" name="email_address" placeholder="{{ __('Email') }}" autocomplete="email" maxlength="254" required /><span class="input-error">{{ __('This field is required') }}</span>
-						<h5 class="mt-6 subdivision">{{ __('Shipping address') }}</h5>
-						<input class="shipping-address-input" type="text" name="address_line_1" placeholder="{{ __('Address line 1') }}" autocomplete="shipping address-line1" maxlength="300" required /><span class="input-error">{{ __('This field is required') }}</span>
-						<input class="shipping-address-input" type="text" name="address_line_2" placeholder="{{ __('Address line 2') }}" autocomplete="shipping address-line2" maxlength="300" /><span class="input-error">{{ __('This field is required') }}</span>
-						<input class="shipping-address-input" type="text" name="admin_area_2" placeholder="{{ __('City') }}" autocomplete="shipping address-level2" maxlength="120" required /><span class="input-error">{{ __('This field is required') }}</span>
-						<input class="shipping-address-input" type="text" name="postal_code" placeholder="{{ __('Postcode') }}" autocomplete="shipping postal-code" maxlength="60" required /><span class="input-error">{{ __('This field is required') }}</span>
+						<h5 class="subdivision">{{ ___('contact information') }}</h5>
+						<input class="shipping-address-input" type="text" name="surname" placeholder="{{ ___('last name') }}" autocomplete="family-name" maxlength="140" required /><span class="input-error">{{ __('This field is required') }}</span>
+						<input class="shipping-address-input" type="text" name="given_name" placeholder="{{ ___('first name') }}" autocomplete="given-name" maxlength="140" required /><span class="input-error">{{ __('This field is required') }}</span>
+						<input class="shipping-address-input" type="tel" name="phone_number" placeholder="{{ ___('phone') }}" autocomplete="tel" maxlength="15" /><span class="input-error">{{ __('This field is required') }}</span>
+						<input class="shipping-address-input" type="email" name="email_address" placeholder="{{ ___('email') }}" autocomplete="email" maxlength="254" required /><span class="input-error">{{ __('This field is required') }}</span>
+						<h5 class="mt-6 subdivision">{{ ___('shipping address') }}</h5>
+						<input class="shipping-address-input" type="text" name="address_line_1" placeholder="{{ ___('address line 1') }}" autocomplete="shipping address-line1" maxlength="300" required /><span class="input-error">{{ __('This field is required') }}</span>
+						<input class="shipping-address-input" type="text" name="address_line_2" placeholder="{{ ___('address line 2') }}" autocomplete="shipping address-line2" maxlength="300" /><span class="input-error">{{ __('This field is required') }}</span>
+						<input class="shipping-address-input" type="text" name="admin_area_2" placeholder="{{ ___('city') }}" autocomplete="shipping address-level2" maxlength="120" required /><span class="input-error">{{ __('This field is required') }}</span>
+						<input class="shipping-address-input" type="text" name="postal_code" placeholder="{{ ___('postcode') }}" autocomplete="shipping postal-code" maxlength="60" required /><span class="input-error">{{ __('This field is required') }}</span>
 						<select class="shipping-address-input" id="country-input" name="country_code" autocomplete="country" required >
 							@foreach (config('countries') as $code => $country)
 								<option @if($code === "FR")selected @endif value="{{ $code }}">{{ $country }}</option>
 							@endforeach
 						</select><span class="input-error">{{ __('This field is required') }}</span>
-						{{-- Billing adress form --}}
-						<div class="hidden">
-							<div class="mt-6">
-								<input class="" type="checkbox" id="show-billing-address" /><label for="show-billing-address" >{{ __('Different billing address') }}</label>
-							</div>
-							<h5 class="mt-6 subdivision">{{ __('Billing address') }}</h5>
-							<input class="shipping-address-input" type="text" placeholder="{{ __('Adress 2') }}" />
-							<input class="shipping-address-input" type="text" placeholder="{{ __('City') }}" />
-							<input class="shipping-address-input" type="text" placeholder="{{ __('Postcode') }}" />
-							<input class="shipping-address-input" type="text" placeholder="{{ __('Country') }}" />
-							<input class="shipping-address-input" type="text" placeholder="{{ __('Adress 1') }}" />
-						</div>
 					</form>
 				</div>
 				
@@ -84,7 +72,7 @@
 				<div id="info" class="mt-6 xl:mt-0">
 
 					{{-- Summarize list --}}
-					<h5 class="subdivision">{{ __('Order summarize') }}</h5>
+					<h5 class="subdivision">{{ ___('order summarize') }}</h5>
 					<div id="summarize-list" class="my-6">
 					@foreach($books as $book)
 						@php $totalWeight += ($book->weight * $book->cartQuantity) @endphp
@@ -99,15 +87,15 @@
 					
 					{{-- Global subtotal --}}
 					<h5 class="subdivision border-t flex justify-between">
-						<span>{{ __('Subtotal') }}</span>
+						<span>{{ ___('subtotal') }}</span>
 						<span><span id="cart-sub-total">{{ $total }}</span>&nbsp;€</span>
 					</h5>
 
 					{{-- Coupons --}}
 					<form class="mt-6" id="coupon-form">
-						<h5>{{ __('Add a coupon') }}<img src="{{ asset('img/loader2.gif') }}" class="hidden inline-block ml-2 w-4 h-4 align-middle" id="loader" /></h5>
+						<h5>{{ ___('add a coupon') }}<img src="{{ asset('img/loader2.gif') }}" class="hidden inline-block ml-2 w-4 h-4 align-middle" id="loader" /></h5>
 						<div class="flex items-center">
-							<input class="py-1 px-2 mt-1 w-full" type="text" id="coupon-input" placeholder="{{ __('Coupon') }}" autocomplete="off">
+							<input class="py-1 px-2 mt-1 w-full" type="text" id="coupon-input" placeholder="{{ ___('coupon') }}" autocomplete="off">
 						</div>
 						<span id="coupon-alert" class="text-red-500 text-sm italic hidden">{{ __('This coupon is not valid')}}</span>
 						<h5 id="coupon-info" class="subdivision border-t flex justify-between mt-8 hidden">Test</h5>
@@ -135,12 +123,12 @@
 									$totalIncShipping = $total + $shippingPrice;
 								@endphp
 								<input class="shipping-method" id="shipping-method-national" type="radio" name="shipping-method" data-default-price="{{ $shippingMethods[0]->price }}" data-prices="{{ $dataPricesJson }}" value="{{ $shippingMethods[0]->id }}" checked />
-								<label for="shipping-method-national">{{ __('Shipping') }}</label>
+								<label for="shipping-method-national">{{ ___('shipping') }}</label>
 							</div>
 							<span class="text-gray-300 highlight">{{ $shippingPrice }}&nbsp;€</span>
 						</div>
 						<div id="international-shipping" class="hidden">
-						<h5>{{ __('Shipping method') }}</h5>
+						<h5>{{ ___('shipping method') }}</h5>
 							<div class="mt-1">
 								@foreach($shippingMethods as $index => $shippingMethod)
 									@if($shippingMethod->id !== 1)
@@ -174,7 +162,7 @@
 
 					{{-- Total --}}
 					<h5 class="border-t subdivision flex justify-between mt-6">
-						<span>{{ __('Total') }}</span>
+						<span>{{ ___('total') }}</span>
 						<span><span id="cart-total" data-raw-total="{{ $total }}">{{ $totalIncShipping }}</span>&nbsp;€</span>
 					</h5>
 					@if(setting('app.paypal.client-id') && setting('app.paypal.secret'))

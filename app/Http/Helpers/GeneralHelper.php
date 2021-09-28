@@ -8,3 +8,11 @@ function findStopPrice(int $totalWeight, float $defaultPrice, Illuminate\Support
 	});
 	return $defaultPrice;
 }
+
+function mb_ucfirst($string) {
+	return mb_strtoupper(mb_substr($string, 0, 1)).mb_substr($string, 1);
+}
+
+function ___($string) {
+	return mb_ucfirst(__($string));
+}

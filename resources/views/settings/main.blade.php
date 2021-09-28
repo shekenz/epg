@@ -1,6 +1,6 @@
 <x-app-layout>
 	<x-slot name="title">
-		{{ __('Settings') }}
+		{{ ___('settings') }}
 	</x-slot>
 
 	<x-slot name="scripts">
@@ -23,28 +23,28 @@
 	@endif
 	{{-------------------------------------- Switches --------------------------------------}}
 	<div class="border-b flex justify-between items-center">
-		<label class="label-shared lg:text-lg">{{ __('Publish site') }}</label>
+		<label class="label-shared lg:text-lg">{{ ___('publish site') }}</label>
 		<div class="text-[1.25rem]">
 			<form action="{{ route('settings.publish') }}" method="POST">
 				@csrf
-				<button id="publish-switch" title="{{ __('Publish site') }}" class="switch @if(!setting('app.published')) {{ 'off' }} @endif">
+				<button id="publish-switch" title="{{ ___('publish site') }}" class="switch @if(!setting('app.published')) {{ 'off' }} @endif">
 				</button>
 			</form>
 		</div>
 	</div>
 	<div class="border-b flex justify-between items-center">
-		<label class="label-shared lg:text-lg">{{ __('Enable e-shop') }}</label>
+		<label class="label-shared lg:text-lg">{{ ___('enable e-shop') }}</label>
 		<div class="text-[1.25rem]">
 			<form action="{{ route('settings.toggleShop') }}" method="POST">
 				@csrf
-				<button id="publish-switch" title="{{ __('Enable shop') }}" class="switch @if(!setting('app.shop.enabled')) {{ 'off' }} @endif">
+				<button id="publish-switch" title="{{ ___('enable e-shop') }}" class="switch @if(!setting('app.shop.enabled')) {{ 'off' }} @endif">
 				</button>
 			</form>
 		</div>
 	</div>
 	{{-------------------------------------- Coupons --------------------------------------}}
 	<div class="mt-10">
-		<h2 class="label-shared lg:text-lg">{{ __('Coupons') }}</h2>
+		<h2 class="label-shared lg:text-lg">{{ ___('coupons') }}</h2>
 			<div id="coupons-wrapper" class="border grid grid-cols-5 gap-2 p-2">
 			@foreach($coupons as $coupon)
 				@php
@@ -61,12 +61,12 @@
 					<a class="delete-coupon text-red-500" href="{{ route('coupons.delete', $coupon->id) }}"> <x-tabler-circle-x class="inline-block" /></a>
 				</div>
 			@endforeach
-			<a id="add-coupon" href="{{ route('coupons.add') }}" class="bg-green-300 hover:bg-green-400 transition duration-300 rounded text-white text-center font-bold uppercase py-2">{{ __('Add coupon') }}</a>
+			<a id="add-coupon" href="{{ route('coupons.add') }}" class="bg-green-300 hover:bg-green-400 transition duration-300 rounded text-white text-center font-bold uppercase py-2">{{ ___('add coupon') }}</a>
 		</div>
 	</div>
 	{{-------------------------------------- Shipping methods 2 --------------------------------------}}
 	<div class="mt-10">
-		<h2 class="label-shared lg:text-lg">{{ __('Shipping methods') }} : </h2>
+		<h2 class="label-shared lg:text-lg">{{ ___('shipping methods') }} : </h2>
 		@foreach ($shippingMethods as $shippingMethod)
 		<div class="px-2 my-6 border">
 			<h4>{{ $shippingMethod->label }} ({{ $shippingMethod->id}})</h4>
@@ -99,8 +99,17 @@
 			@foreach($shippingMethod->priceStops as $priceStop)
 				A partir de {{ $priceStop->weight }}g : {{ $priceStop->price }} €<br>
 			@endforeach
+			<form>
+				<label for="shipping-weight-stop">{{ ___('add new range from') }} : </label><input type="number" step="0.01" name="shipping-price-stop" id="shipping-weight-stop" />g,
+				<label for="shipping-price-stop">{{ __('price') }} : </label><input type="number" step="0.01" name="shipping-price-stop" id="shipping-price-stop" />€
+			</form>
 		</div>
 		@endforeach
+		{{ ___('new shipping method') }}
+		<form>
+			<label>{{ ___('label') }} : </label><input type="text" maxlength="127" />
+			<label>{{ ___('minimum price') }} : </label><input type="text" maxlength="127" />€
+		</form>
 	</div>
 	{{-------------------------------------- Other settings --------------------------------------}}
 	<form method="POST" action="{{ route('settings.update') }}">
@@ -117,15 +126,15 @@
 			</div>
 			{{-------------------------------------- Paypal credentials --------------------------------------}}
 			<div class="col-span-2  mt-8">
-				<label for="paypal-client-id" class="label-shared lg:text-lg">{{ __('Paypal client ID') }} : </label>
+				<label for="paypal-client-id" class="label-shared lg:text-lg">{{ ___('paypal client ID') }} : </label>
 				<input type="text" class="input-shared" id="paypal-client-id" name="paypal-client-id" value="{{ old('paypal-client-id') ?? setting('app.paypal.client-id') }}">
 			</div>
 			<div class="col-span-2">
-				<label for="paypal-secret" class="label-shared lg:text-lg">{{ __('Paypal secret') }} : </label>
+				<label for="paypal-secret" class="label-shared lg:text-lg">{{ ___('paypal secret') }} : </label>
 				<input type="text" class="input-shared" id="paypal-secret" name="paypal-secret" value="{{ old('paypal-secret') ?? setting('app.paypal.secret') }}">
 			</div>
 			<div class="col-span-2">
-				<label for="paypal-sandbox" class="label-shared lg:text-lg">{{ __('Sandbox') }} : </label>
+				<label for="paypal-sandbox" class="label-shared lg:text-lg">{{ ___('sandbox') }} : </label>
 				<input type="checkbox" class="" id="paypal-sandbox" name="paypal-sandbox" value="true" {{ (old('paypal-sandbox') || setting('app.paypal.sandbox')) ? 'checked' : '' }}>
 			</div>
 			{{-------------------------------------- About --------------------------------------}}
@@ -139,7 +148,7 @@
 			</div>
 		</div>
 		<div class="text-right mt-4">
-			<input class="button-shared" type="submit" value="{{ __('Save') }}">
+			<input class="button-shared" type="submit" value="{{ ___('save') }}">
 		</div>
 	</form>
 </x-layout-app>

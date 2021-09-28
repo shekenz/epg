@@ -66,7 +66,7 @@
 		<div id="pop-up-wrapper" class="hidden bg-black bg-opacity-80 fixed top-0 left-0 w-full h-full z-[9001]">
 			<div id="pop-up" class="pop-up border border-black py-8 px-10 bg-white max-w-[640px] m-auto mt-[30vh]">
 				<p id="pop-up-message"></p>
-				<button id="pop-up-close" type="button" class="button inverted m-auto mt-8 block">{{ __('Close') }}</button>
+				<button id="pop-up-close" type="button" class="button inverted m-auto mt-8 block">{{ ___('close') }}</button>
 			</div>
 		</div>
 		<div id="dyna-flash" class="fixed z-[900] bottom-0 left-0 dark:text-gray-800 bg-gray-200 w-full flex items-center transition-all duration-500 overflow-y-hidden h-0 pl-6 md:pl-[15%] hidden">

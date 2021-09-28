@@ -1,10 +1,10 @@
 <x-app-layout>
 	<x-slot name="title">
-		{{ __('New book') }}
+		{{ ___('new book') }}
 	</x-slot>
 
 	<x-slot name="controls">
-		<a href="{{ route('books') }}" class="button-shared">{{ __('Cancel') }}</a> 
+		<a href="{{ route('books') }}" class="button-shared">{{ ___('cancel') }}</a> 
 	</x-slot>
 
 	<x-slot name="scripts">
@@ -30,62 +30,62 @@
         <form action="{{ route('books.store') }}" method="post" enctype="multipart/form-data" class="flex flex-col gap-y-2 md:grid md:grid-cols-4 lg:m-2 md:gap-x-4">
             @csrf
 			<div>
-				<label class="label-shared lg:text-lg" for="title">{{ __('Title') }} :</label>
+				<label class="label-shared lg:text-lg" for="title">{{ ___('title') }} :</label>
 				<input class="input-shared" id="title" name="title" type="text" value="{{ old('title') }}" maxlength="128">
 			</div>
 			<div class="md:row-start-2">
-				<label class="label-shared lg:text-lg" for="author">{{ __('Author') }} :</label>
+				<label class="label-shared lg:text-lg" for="author">{{ ___('author') }} :</label>
 				<input class="input-shared" id="author" name="author" type="text" value="{{ old('author') }}" maxlength="64">
 			</div>
 			<div class="md:row-start-3">
-            	<label class="label-shared lg:text-lg" for="year">{{ __('Year') }} :</label>
+            	<label class="label-shared lg:text-lg" for="year">{{ ___('year') }} :</label>
             	<input class="input-shared" id="year" name="year" type="number" value="{{ old('year') }}" min="0" max="{{ now()->addYear(1)->year }}">
 			</div>
 			<div class="md:row-start-4">
-				<label class="label-shared lg:text-lg" for="copies">{{ __('Copies') }} :</label>
+				<label class="label-shared lg:text-lg" for="copies">{{ ___('copies') }} :</label>
 				<input class="input-shared" id="copies" name="copies" type="number" value="{{ old('copies') }}">
 			</div>
 			<div class="md:row-start-5">
-				<label class="label-shared lg:text-lg" for="quantity">{{ __('Stock') }} :</label>
+				<label class="label-shared lg:text-lg" for="quantity">{{ ___('stock') }} :</label>
 				<input class="input-shared" id="quantity" name="quantity" type="number" min="0" value="{{ old('quantity') }}">
 				<input class="input-shared" id="quantity-hidden" name="quantity" type="hidden" disabled="true" value="0">
 				<div class="mt-1">
-					<input class="" id="pre-order" name="pre_order" type="checkbox" value="1" @if(old('pre_order')) {{ 'checked' }} @endif><label for="pre-order"> {{ __('Pre-order') }}</label>
+					<input class="" id="pre-order" name="pre_order" type="checkbox" value="1" @if(old('pre_order')) {{ 'checked' }} @endif><label for="pre-order"> {{ ___('pre-order') }}</label>
 				</div>
 			</div>
 			<div class="md:col-start-2">
-				<label class="label-shared lg:text-lg" for="width">{{ __('Width') }} (mm) :</label>
+				<label class="label-shared lg:text-lg" for="width">{{ __('width') }} (mm) :</label>
 				<input class="input-shared" id="width" name="width" type="number" value="{{ old('width') }}">
 			</div>
 			<div class="md:row-start-2 md:col-start-2">
-				<label class="label-shared lg:text-lg" for="height">{{ __('Height') }} (mm) :</label>
+				<label class="label-shared lg:text-lg" for="height">{{ ___('height') }} (mm) :</label>
 				<input class="input-shared" id="height" name="height" type="number" value="{{ old('height') }}">
 			</div>
 			<div class="md:row-start-3 md:col-start-2">
-				<label class="label-shared lg:text-lg" for="cover">{{ __('Cover') }} :</label>
+				<label class="label-shared lg:text-lg" for="cover">{{ ___('cover') }} :</label>
 				<input class="input-shared" id="cover" name="cover" type="text" value="{{ old('cover') }}" maxlength="32">
 			</div>
 			<div class="md:row-start-4 md:col-start-2">
-				<label class="label-shared lg:text-lg" for="weight">{{ __('Weight') }} (g) :</label>
+				<label class="label-shared lg:text-lg" for="weight">{{ ___('weight') }} (g) :</label>
 				<input class="input-shared" id="weight" name="weight" type="number" value="{{ old('weight') }}" min="0">
 			</div>
 			<div class="md:row-start-5 md:col-start-2">
-				<label class="label-shared lg:text-lg" for="pages">{{ __('Pages count') }} :</label>
+				<label class="label-shared lg:text-lg" for="pages">{{ ___('pages count') }} :</label>
 				<input class="input-shared" id="pages" name="pages" type="number" value="{{ old('pages') }}">
 			</div>
 			<div class="md:row-start-6 md:col-start-2">
-				<label class="label-shared lg:text-lg" for="price">{{ __('Price') }} :</label>
+				<label class="label-shared lg:text-lg" for="price">{{ ___('price') }} :</label>
 				<input class="input-shared" id="price" name="price" type="text" value="{{ old('price') }}" maxlength="10">
 			</div>
 			<div class="col-start-3 col-span-2 row-start-1 row-span-5">
-				<label class="label-shared lg:text-lg" for="description">{{ __('Description') }} :</label>
+				<label class="label-shared lg:text-lg" for="description">{{ ___('description') }} :</label>
 				<textarea id="description" class="input-shared h-[22rem]" name="description">{{ old('description') }}</textarea>
 			</div>
 			<input type="hidden" name="lang" value="fr">
 
 			@if( $media->isNotEmpty() )
 				<div class="col-span-4">
-					<label class="label-shared lg:text-lg">{{ __('Linked media') }} :</label>
+					<label class="label-shared lg:text-lg">{{ ___('linked media') }} :</label>
 					<div id="media-link" class="dropzone input-mimic">
 						<div id="media-link-placeholder" class="placeholder flex m-3 justify-center items-center">
 							<span class="text-3xl text-gray-300 font-bold">{{ __('Drop media from the library here')}}.</span>
@@ -94,7 +94,7 @@
 				</div>
 				
 				<div class="col-span-4">
-					<label class="label-shared lg:text-lg">{{ __('Media library') }} :</label>
+					<label class="label-shared lg:text-lg">{{ ___('media library') }} :</label>
 					<div id="media-library" class="dropzone input-mimic">
 						@php $input = false; @endphp
 						@if($media->isEmpty())
@@ -117,7 +117,7 @@
 			</div>
 
 			<div class="col-span-4 mt-2 lg:text-right">
-            	<input class="button-shared w-full lg:w-auto" type="submit" value="{{ __('Create') }}">
+            	<input class="button-shared w-full lg:w-auto" type="submit" value="{{ ___('create') }}">
 			</div>
 			
         </form>

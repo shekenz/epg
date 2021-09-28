@@ -1,6 +1,6 @@
 <x-app-layout>
 	<x-slot name="title">
-		{{ __('Invite new user') }}
+		{{ ___('invite new user') }}
 	</x-slot>
 
 	@if ($errors->any())
@@ -18,7 +18,7 @@
         @endif
 	<form action="{{ route('users.invite') }}" method="POST" class="flex flex-row gap-x-4 mb-4 items-center">
 		@csrf
-		<label for="email" class="label-shared whitespace-nowrap">{{ __('Email') }} : </label>
+		<label for="email" class="label-shared whitespace-nowrap">{{ ___('email') }} : </label>
 		<input class="input-shared" id="email" name="email" type="text" value="{{ old('email')}}" maxlength="256">
 		<input class="button-shared" type="submit">
 	</form>

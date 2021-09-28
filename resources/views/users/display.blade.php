@@ -1,6 +1,6 @@
 <x-app-layout>
 	<x-slot name=title>
-		{{ __('User') }}
+		{{ ___('user') }}
 	</x-slot>
 
 	<div class="flex flex-col gap-8 sm:flex-row items-center p-8">
@@ -12,11 +12,11 @@
 			<span class="text-gray-500">{{ $user->firstname }} {{ $user->lastname }}</span><br>
 			<span class="text-gray-500">Role</span><br>
 			<span class="text-gray-500">{{ $user->email }}</span><br>
-			<span class="text-gray-500">{{ __('Registered since') }}: {{ $user->created_at }}</span>
+			<span class="text-gray-500">{{ ___('registered since') }}: {{ $user->created_at }}</span>
 		</div>
 		@if($user->username == Auth::user()->username)
 		<div class="flex-none self-start">
-			<a href="{{ route('users.edit', $user->id ) }}" class="button-shared">{{ __('Edit') }}</a>
+			<a href="{{ route('users.edit', $user->id ) }}" class="button-shared">{{ ___('edit') }}</a>
 		</div>
 		@endif
 	</div>

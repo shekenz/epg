@@ -1,10 +1,10 @@
 <x-app-layout>
     <x-slot name="title">
-        {{ __('Media') }}
+        {{ ___('media') }}
     </x-slot>
 
     <x-slot name="controls">
-       <a href="{{ route('media.create') }}" class="button-shared">{{ __('Upload') }}</a> 
+       <a href="{{ route('media.create') }}" class="button-shared">{{ ___('upload') }}</a> 
     </x-slot>
 
     <div class="grid items-center text-gray-500

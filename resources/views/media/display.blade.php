@@ -10,7 +10,7 @@
 	<x-slot name="controls">
 		<form method="POST" action="{{ route('media.delete', $medium->id) }}" class="inline">
 			@csrf
-			<input type="submit" class="button-shared button-warning cursor-pointer" value="{{ __('Delete') }}" onclick="return confirm('{{__('Are you sure you want to permanently delete').' '.$medium->name.'.'.$medium->extension.' ? '.__('This action is not reversible').'.'}}');">
+			<input type="submit" class="button-shared button-warning cursor-pointer" value="{{ ___('delete') }}" onclick="return confirm('{{__('Are you sure you want to permanently delete').' '.$medium->name.'.'.$medium->extension.' ? '.__('This action is not reversible').'.'}}');">
 		</form>
 	</x-slot>
 
@@ -30,9 +30,9 @@
 	<form action="{{ route('media.update', $medium->id) }}" method="POST" class="flex flex-row gap-x-4 mb-4 items-center">
 		@csrf
 		@method('patch')
-		<label for="name" class="label-shared whitespace-nowrap">{{ __('New name') }} : </label>
+		<label for="name" class="label-shared whitespace-nowrap">{{ ___('new name') }} : </label>
 		<input class="input-shared" id="name" name="name" type="text" value="{{ old('name') ?? $medium->name }}" maxlength="64">
-		<input class="button-shared" type="submit" value="{{ __('Rename') }}">
+		<input class="button-shared" type="submit" value="{{ ___('rename') }}">
 	</form>
 
 	@if(Storage::disk('public')->exists('uploads/'.$medium->filename))
@@ -79,7 +79,7 @@
 
 	@env('local')
 	<div>
-		<h4>{{ __('File info') }}</h4>
+		<h4>{{ ___('file info') }}</h4>
 		ID : {{ $medium->id }}<br>
 		Hash : {{ $medium->filehash }}<br>
 		Format : <span class="bg-gray-400 rounded px-2 py-0.5 font-bold uppercase text-white text-sm">{{ $medium->extension }}</span><br>
@@ -90,19 +90,19 @@
 		@if( $medium->books->isEmpty() )
 		<h4>{{ __('No linked books') }}.</h4>
 		@else
-			<h4>{{ __('Linked to') }} :</h4>
+			<h4>{{ ___('linked to') }} :</h4>
 		@endif
 		<table class="w-full app-table app-table-small">
 		@foreach ($medium->books as $book)
 			<tr>
 				<td><a class="default" href="{{ route('books.display', $book->id) }}">{{ $book->title }}</a></td>
-				<td>{{ __('By') }} {{ $book->author }}</td>
+				<td>{{ __('by') }} {{ $book->author }}</td>
 				@if( !empty($book->edition ))
 					<td>{{ $book->edition }}</td>
 				@else
-					<td>({{ __('No edition') }})</td>
+					<td>({{ __('no edition') }})</td>
 				@endif
-				<td>{{ __('Published by') }} <a class="default" href="{{ route('users.display', $book->user->id) }}">{{ $book->user->username }}</a></td>
+				<td>{{ __('published by') }} <a class="default" href="{{ route('users.display', $book->user->id) }}">{{ $book->user->username }}</a></td>
 				<td class="text-right w-8"><a class="icon" title="Break link" href="{{ route('media.break', [$medium, $book]) }}"><x-tabler-unlink /></a></td>
 			</tr>
 		@endforeach

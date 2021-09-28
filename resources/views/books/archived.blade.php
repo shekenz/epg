@@ -1,14 +1,14 @@
 <x-app-layout>
     <x-slot name="title">
-        {{ __('Archived books') }}
+        {{ ___('archived books') }}
     </x-slot>
 
     <x-slot name="controls">
 		<form method="POST" action="{{ route('books.deleteAll') }}" class="inline">
 			@csrf
-			<input type="submit" class="button-shared button-warning cursor-pointer" value="{{ __('Delete all') }}" onclick="return confirm('{{ __('Are you sure you want to permanently delete all the books').' ? '.__('This action is not reversible').'.'}}');">
+			<input type="submit" class="button-shared button-warning cursor-pointer" value="{{ ___('delete all') }}" onclick="return confirm('{{ __('Are you sure you want to permanently delete all the books').' ? '.__('This action is not reversible').'.'}}');">
 		</form>
-		<a href="{{ route('books') }}" class="button-shared">{{ __('Return to books') }}</a>
+		<a href="{{ route('books') }}" class="button-shared">{{ ___('return to books') }}</a>
     </x-slot>
 
     <div class="m-4">
@@ -17,13 +17,13 @@
             </thead> --}}
             <tbody>
 				<thead class="font-bold">
-					<td>{{ __('Title') }}</td>
-					<td>{{ __('Author') }}</td>
-					<td>{{ __('Price') }}</td>
-					<td>{{ __('Left') }}</td>
-					<td>{{ __('Trashed') }}</td>
-					<td>{{ __('Published by') }}</td>
-					<td>{{ __('Action') }}</td>
+					<td>{{ ___('title') }}</td>
+					<td>{{ ___('author') }}</td>
+					<td>{{ ___('price') }}</td>
+					<td>{{ ___('left') }}</td>
+					<td>{{ ___('trashed') }}</td>
+					<td>{{ ___('published by') }}</td>
+					<td>{{ ___('action') }}</td>
 				</thead>
 				@foreach($books as $book)
                 <tr>
@@ -41,7 +41,7 @@
                     <td class="text-right">
 						<form method="POST" action="{{ route('books.delete', $book->id) }}" class="inline">
 							@csrf
-							<a href="#" title="{{ __('Delete') }}" class="icon warning" onclick="
+							<a href="#" title="{{ ___('delete') }}" class="icon warning" onclick="
 								event.preventDefault();
 								if(confirm('{{ __('Are you sure you want to permanently delete the book').' '.$book->title.' ? '.__('This action is not reversible').'.'}}')) {
 									this.closest('form').submit();
@@ -50,7 +50,7 @@
 								<x-tabler-trash />
 							</a>
 						</form>
-						<a class="icon" title="{{ __('Restore') }}" href="{{ route('books.restore', $book->id) }}"><x-tabler-arrow-up-circle /></a>
+						<a class="icon" title="{{ ___('restore') }}" href="{{ route('books.restore', $book->id) }}"><x-tabler-arrow-up-circle /></a>
 					</td>
                 </tr>
                 @endforeach

@@ -1,10 +1,10 @@
 <x-app-layout>
 	<x-slot name="title">
-		{{ __('Users') }}
+		{{ ___('users') }}
 	</x-slot>
 
 	<x-slot name="controls">
-		<a class="button-shared" href="{{ route('users.invitation') }}">{{ __('Invite') }}</a>
+		<a class="button-shared" href="{{ route('users.invitation') }}">{{ ___('invite') }}</a>
 	</x-slot>
 
 	@foreach($users as $user)
@@ -18,7 +18,7 @@
 			</div>
 			@if($user->username == Auth::user()->username)
 			<div class="flex-none">
-				<a href="{{ route('users.edit', $user->id ) }}" class="button-shared">{{ __('Edit') }}</a>
+				<a href="{{ route('users.edit', $user->id ) }}" class="button-shared">{{ ___('edit') }}</a>
 			</div>
 			@endif
 		</div>
