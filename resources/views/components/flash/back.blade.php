@@ -1,5 +1,10 @@
-<div id="flash-wrapper" class="@if($attributes->has('permanent')) {{ 'permanent' }} @endif">
-	<div {{ $attributes->merge(['class' => 'text-gray-900 p-2 rounded-lg mb-4 text-center transition-all duration-300']) }}>
+@php
+	$classesToMerge = ['flash'];
+	if($attributes->has('permanent')) {
+		array_push($classesToMerge, 'permanent');
+	}	
+@endphp
+
+<div id="flash" {{ $attributes->merge(['class' => implode(' ', $classesToMerge)]) }}>
 		{{ $message }}
-	</div>
 </div>

@@ -18,55 +18,45 @@
 		@if(isset($scripts))
 			{{ $scripts }}
 		@endif
-	</head>
-	<body class="font-dashboard antialiased">
-		<div class="min-h-screen bg-gray-100">
-			@include('layouts.navigation')
+    </head>
+    <body>
+        <div id="app">
+            
+			@include('layouts.dashboard-nav')
 
-			<div id="save-loader" class="hidden fixed m-4 py-2 pl-4 pr-3 bg-white rounded-md border border-gray-200 shadow-sm">
-				Saving&nbsp;<img src="{{ asset('img/loader_dark.svg') }}" class="inline-block h-6 w-6 ml-2">
-			</div>
-				
-			<!-- Page Content -->
-			<main>
-				<div class="py-2 sm:py-8">
-					<div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
-						@if(session('flash'))
-						<x-flash.back :message="session('flash')" class="flash-{{ session('flash-type') }}"/>
-						@endif
-						@if(setting('app.paypal.sandbox'))
-						<x-flash.back :message="__('flash.paypal.sandbox')" permanent class="flash-warning"/>
-						@endif
-						@if( !setting('app.paypal.client-id') || !setting('app.paypal.secret'))
-						<x-flash.back :message="__('flash.paypal.credentials')" permanent class="flash-error"/>
-						@endif
-						<div class="bg-white overflow-hidden shadow-sm rounded-md sm:rounded-lg">
-							@if(isset($title))
-							<div class="flex flex-row py-2 px-3 sm:py-4 sm:px-5 bg-white border-b border-gray-200 items-center">
-								@isset($leftControls)
-								<div id="left-controls" class="mr-4">
-									{{ $leftControls }}
-								</div>
-								@endif
-								<h3 class="text-lg flex-none font-bold">
-									{{ $title }}
-								</h3>
-								<div class="flex-grow"></div>
-								@isset($controls)
-								<div id="controls" class="flex-none">
-									{{ $controls }}
-								</div>
-								@endif
-							</div>
-							@endif
-							<div class="m-1/2 md:m-2 xl:m-4">
-								{{ $slot ?? ''}}
-							</div>
+			<div class="flex">
+				@include('layouts.dashboard-sidebar')
+
+				<!-- Page Content -->
+				<main>
+
+					@if(session('flash'))
+						<x-flash.back :message="session('flash')" class="{{ session('flash-type') }}"/>
+					@endif
+					@if( setting('app.paypal.sandbox'))
+						<x-flash.back :message="__('flash.paypal.sandbox')" permanent class="warning"/>
+					@endif
+					@if( !setting('app.paypal.client-id') || !setting('app.paypal.secret'))
+						<x-flash.back :message="__('flash.paypal.credentials')" permanent class="error"/>
+					@endif
+
+					<section class="titled maximized">
+						@isset($title)
+							<h2>{{ $title }}</h2>
+						@endisset
+						<div>
+							@if(isset($controls))
+							<nav class="flex w-full gap-x-4 pt-2 pb-4">
+								{{ $controls }}
+							</nav>
+							@endisset
+							{{ $slot ?? ''}}
 						</div>
-					</div>
-				</div>
-			</main>
-		</div>
+					</section>
+				</main>
+
+			</div>
+        </div>
 
 		<div id="pop-up-wrapper" class="hidden backdrop-blur-lg fixed top-0 left-0 w-full h-full z-[9001]">
 			<div id="pop-up" class="pop-up border border-gray-400 rounded-lg shadow-lg py-8 px-10 bg-white max-w-[640px] m-auto mt-[30vh]">

@@ -1,0 +1,311 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@import './flash.css';
+@import './fonts-dashboard.css';
+
+@layer base {
+
+	a {
+		@apply
+			transition-colors
+			duration-300;
+	}
+
+	a.default, .base-link {
+		@apply text-gray-500 underline transition-colors duration-300;
+	}
+
+	a.default:hover, .base-link:hover {
+		@apply text-gray-700;
+	}
+
+	.notification {
+		@apply
+			bg-red-500
+			text-white
+			font-bold
+			rounded-full
+			min-w-[1.25rem]
+			h-5
+			px-1
+			ml-1
+			text-center;
+	}
+
+	h4 {
+		@apply font-bold py-2;
+	}
+
+	input[type=checkbox]:focus {
+		@apply
+			ring-1;
+	}
+
+	.icon svg {
+		@apply w-6 inline transition-colors duration-300 hover:text-indigo-500;
+	}
+
+	.warning svg {
+		@apply text-red-500 hover:text-red-300;
+	}
+
+	.label-shared {
+		@apply mt-2 font-medium text-sm text-gray-500;
+	}
+
+	.label-shared-first {
+		@apply mt-0 font-medium text-sm text-gray-500;
+	}
+
+	.input-base {
+		@apply rounded-md shadow-sm border-gray-300;
+	}
+
+	.input-base:focus {
+		@apply border-indigo-300 ring ring-indigo-200 ring-opacity-50;
+	}
+
+	.input-base:disabled {
+		@apply
+			text-gray-400
+			bg-gray-100;
+	}
+	.input-shared {
+		@apply input-base w-full;
+	}
+
+	.input-inline {
+		@apply input-base w-auto;
+	}
+
+	.input-mimic {
+		@apply input-shared rounded-md border border-gray-300;
+	}
+
+	.coupon-input {
+		@apply
+			rounded-md
+			shadow-sm
+			border-gray-300
+			inline
+			w-auto;
+	}
+
+	.dropzone {
+		min-height : calc(102px + 1.5rem);
+	}
+
+	.dropzone > .placeholder {
+		height : 100px;
+		box-sizing : border-box;
+	}
+
+	.button-shared {
+		font-family: Roboto, sans-serif;
+		@apply p-2 bg-gray-800 border border-gray-800 rounded-md font-bold text-xs text-white uppercase tracking-widest transition ease-in-out duration-300;
+	}
+
+	.button-shared:hover {
+		@apply bg-white text-gray-800;
+	}
+
+	.button-shared:active {
+		@apply bg-gray-900;
+	}
+
+	.button-small {
+		@apply button-shared py-0.5 px-1;
+	}
+
+	.button-shared:focus {
+		@apply outline-none border-gray-900 ring ring-gray-300;
+	}
+
+	.button-shared:disabled {
+		@apply opacity-25;
+	}
+
+	.button-warning {
+		@apply bg-red-500 border-red-500;
+	}
+
+	.button-warning:hover {
+		@apply text-red-500;
+	}
+
+	/* --------------------------------------------------------------------------------------------- TABLES */
+
+	/* --------------------------- Base Table */
+
+	table {
+		@apply border-collapse table-auto box-border border border-gray-300 w-full;
+	}
+
+
+	table th {
+		@apply border-b border-current text-left p-2;
+	}
+
+	table td {
+		@apply border-b p-2;
+	}
+
+	table tbody tr:nth-child(2n-1) {
+		@apply bg-gray-100;
+	}
+
+	/* --------------------------- Orders unread rows */
+
+	table tr.unread, table tr:nth-child(2n-1).unread {
+		@apply
+			bg-blue-100;
+	}
+
+	table tr.unread a, table tr:nth-child(2n-1).unread a {
+		@apply
+			text-blue-600
+			font-bold;
+	}
+
+	/* --------------------------- Small row Table */
+
+	table.app-table-small td {
+		@apply p-0 px-1;
+	}
+
+	/* --------------------------- Shipping methods Table */
+
+	table.shipping-method td {
+		@apply
+			border-none;
+	}
+
+	table.shipping-method tr {
+		@apply
+			md:text-lg
+			bg-transparent
+			h-12
+			box-border
+			border-b
+			border-gray-300;
+	}
+
+	table.shipping-method tr:last-child{
+		@apply
+			border-none;
+	}
+
+	table.shipping-method tr:nth-child(2n-1) {
+		@apply bg-transparent;
+	}
+
+	/* --------------------------- Shipping methods Table 2 */
+	table.shipping-method-2 thead td {
+		@apply text-center font-bold py-2;
+	}
+
+	table.shipping-method-2 td {
+		@apply border border-black;
+	}
+
+	table.shipping-method-2 tbody tr {
+		@apply h-24;
+	}
+
+	td.shipping-method-label {
+		white-space: nowrap;
+	}
+
+	div.shipping-range-price-wrapper, div.shipping-range-label-wrapper {
+		@apply text-sm;
+	}
+
+	div.shipping-range-price-wrapper {
+		@apply border border-black flex;
+	}
+
+	div.shipping-range-label-wrapper {
+		@apply px-[1px];
+	}
+
+	div.shipping-range-stop, div.shipping-range-label {
+		@apply border-r border-black flex-1;
+	}
+
+	div.shipping-range-stop {
+		@apply text-center py-1;
+	}
+	
+	div.shipping-range-label {
+		@apply text-right pb-2;
+	}
+
+	div.shipping-range-label-inner {
+		transform: translateX(50%); 
+		@apply inline-block bg-gray-100;
+	}
+
+	div.shipping-range-stop:nth-child(even) {
+		@apply bg-blue-200;
+	}
+
+	div.shipping-range-stop:last-child {
+		@apply border-none;
+	}
+	
+	div.shipping-range-label:last-child {
+		@apply border-none;
+	}
+	/* --------------------------------------------------------------------------------------------- SWITCHES */
+
+	.switch {
+		width: 2em;
+		height: 1em;
+		border-radius: 0.5em;
+		box-shadow: inset 0px 2px 4px -2px rgba(0,0,0,0.5);
+		@apply bg-green-pale border border-gray-900 cursor-pointer block focus:outline-none;
+	}
+
+	.switch:before {
+		content: '';
+		width: 1em;
+		height: 1em;
+		margin: -1px;
+		border-radius: 0.5em;
+		left: 1em;
+		box-shadow: inset 0px 0px 4px 4px rgb(255, 255, 255);
+		@apply block relative border border-gray-900 bg-gray-100 transition-all duration-200;
+	}
+
+	.off {
+		@apply bg-red-500;
+	}
+
+	.off:before {
+		left: 0em;
+	}
+
+	/*-------------------------------- popUp --------------------------------*/
+	#pop-inner-wrapper h2 {
+		@apply
+			text-xl
+			mb-6
+			border-b
+			border-gray-900;
+	}
+
+	/*---- Fuck webkit ----*/
+	img.not-draggable {
+		-webkit-user-drag: none;
+	}
+
+	input[type=text].error {
+		@apply
+			ring-red-500
+			bg-red-100;
+	}
+
+}
+
