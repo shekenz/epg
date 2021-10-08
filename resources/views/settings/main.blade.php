@@ -68,48 +68,70 @@
 	<div class="mt-10">
 		<h2 class="label-shared lg:text-lg">{{ ___('shipping methods') }} : </h2>
 		@foreach ($shippingMethods as $shippingMethod)
-		<div class="px-2 my-6 border">
-			<h4>{{ $shippingMethod->label }} ({{ $shippingMethod->id}})</h4>
-			{{--
-			<div class="shipping-range-wrapper flex-1 bg-gray-100 border border-gray-300 px-4 py-2 rounded-md relative cursor-[none]">
-				<div class="cursor absolute border-l border-black h-full top-0 hidden">
-					<svg width="32px" height="32px" viewbox="0 0 100 100" class="-translate-x-1/2">
-						<circle fill="#FFFFFF" stroke-width="3" stroke="#000000" cx="50" cy="50" r="40" />
-						<line stroke="#000000" stroke-width="9" x1="50" y1="30" x2="50" y2="70" />
-						<line stroke="#000000" stroke-width="9" x1="30" y1="50" x2="70" y2="50" />
-					</svg>
+		<div class="px-2 my-6 border border-gray-400 bg-gray-100">
+			<div class="flex justify-between items-center">
+				<div>
+					<h4 class="pt-2 pb-0">{{ $shippingMethod->label }} (Max {{ round($shippingMethod->max_weight / 1000, 3) }}Kg ) [ID:{{ $shippingMethod->id }}]</h4>
+					<div class="mb-4 italic">{{ $shippingMethod->info }}</div>
 				</div>
-				@if( count($shippingMethod->priceStops) === 0 )
-				<div class="shipping-range-label-wrapper flex">NO DATA</div>
-				@else
-				<div class="shipping-range-label-wrapper flex">
-					@foreach($shippingMethod->priceStops as $priceStop)
-						<div class="shipping-range-label"><div class="shipping-range-label-inner">@if(!$loop->last) {{ $priceStop->weight }}g @endif</div></div>
-					@endforeach
+				<div>
+					<a href="{{ route('shippingMethods.delete', $shippingMethod->id )}}" class="button-shared button-warning">{{ ___('delete') }}</a>
+					<a href="{{ route('shippingMethods.edit', $shippingMethod->id )}}" class="button-shared">{{ ___('edit') }}</a>
 				</div>
-				<div class="shipping-range-price-wrapper flex">
-					@foreach($shippingMethod->priceStops as $priceStop)
-						<div class="shipping-range-stop">{{ $priceStop->price }}&nbsp;€</div>
-					@endforeach
-				</div>
-				@endif
 			</div>
-			--}}
-			En dessous de {{ $shippingMethod->priceStops->first()['weight'] }}g : {{ $shippingMethod->price }} €<br>
+			@php $previousWeight = 0; @endphp
+			@if($shippingMethod->priceStops->isNotEmpty())
+				{{-- To use as a minimum value for the new priceStop weight input --}}
+				@php $firstStopWeight = $shippingMethod->priceStops->first()['weight'] @endphp
+				{{ ___('between') }}
+				{{ $previousWeight }}g
+				{{ __('and') }}
+				{{ $firstStopWeight }}g : {{ $shippingMethod->price }} € ({{ ___('base price') }})<a href="#"><br>
+			@else
+				@php $firstStopWeight = 0 @endphp
+				{{ ___('unique price') }} : {{ $shippingMethod->price }} €
+			@endif
 			@foreach($shippingMethod->priceStops as $priceStop)
-				A partir de {{ $priceStop->weight }}g : {{ $priceStop->price }} €<br>
+				{{ ___('between') }}
+				<span class="font-bold text-green-900 bg-green-200">{{ $priceStop->weight }}g</span>
+				{{ __('and') }}
+				@if($shippingMethod->priceStops->get($loop->index + 1))
+					{{ $shippingMethod->priceStops->get($loop->index + 1)->weight }}g
+				@else
+					{{ $shippingMethod->max_weight }}g
+				@endif :
+				{{ $priceStop->price }} € ({{ $priceStop->id }})<a href="{{ route('shippingMethods.deleteStop', $priceStop->id) }}"><x-tabler-x class="inline-block text-red-500"/></a><br>
+				@php $previousWeight = $priceStop->weight; @endphp
 			@endforeach
-			<form>
-				<label for="shipping-weight-stop">{{ ___('add new range from') }} : </label><input type="number" step="0.01" name="shipping-price-stop" id="shipping-weight-stop" />g,
-				<label for="shipping-price-stop">{{ __('price') }} : </label><input type="number" step="0.01" name="shipping-price-stop" id="shipping-price-stop" />€
+			<div class="border-b border-gray-400 mb-2"><h4 class="pb-0">{{ ___('add a stop-point') }}</h4></div>
+			<form class="mb-2 flex justify-between" action="{{ route('shippingMethods.addStop', $shippingMethod->id) }}" method="POST">
+				@csrf
+				<div>
+					<label for="shipping-weight-stop">{{ ___('add a new point at') }} </label><input type="number" name="weight" min={{ $firstStopWeight + 1 }} max="{{ $shippingMethod->max_weight - 1}}" id="shipping-weight-stop" />g,
+					<label for="shipping-price-stop">{{ __('at price') }} </label><input type="number" step="0.01" name="price" min="{{ $shippingMethod->price + 0.01 }}" id="shipping-price-stop" />€
+				</div>
+				<input type="submit" class="button-shared self-center" value="{{ ___('add') }}" />
 			</form>
 		</div>
 		@endforeach
-		{{ ___('new shipping method') }}
-		<form>
-			<label>{{ ___('label') }} : </label><input type="text" maxlength="127" />
-			<label>{{ ___('minimum price') }} : </label><input type="text" maxlength="127" />€
-		</form>
+		<div class="px-2 my-6 border border-gray-400 bg-gray-100">
+			<div class="border-b border-gray-400 mb-2"><h4 class="pb-0">{{ ___('new shipping method') }}</h4></div>
+			<form method="POST" action="{{ route('shippingMethods.add') }}" class="mb-2 w-full flex gap-8">
+				@csrf
+				<div class="flex-shrink-0">
+					<label>{{ ___('name') }} : </label><input type="text" maxlength="127" name="label" class="input-shared"/><br>
+					<label>{{ ___('base price') }} : </label><input type="number" step="0.01" min="0" name="price" class="input-shared"/><br>
+					<label>{{ ___('maximum weight') }} (g) : </label><input type="number" min="0" name="max_weight" class="input-shared"/>
+					<label>{{ ___('rule') }} : </label><select name="rule" class="input-shared">
+						<option></option>
+						<option value="national">{{ ___('national') }}</option>
+						<option value="international">{{ ___('international') }}</option>
+					</select>
+				</div>
+				<textarea placeholder="{{ ___('description') }}" class="w-full rounded-lg border border-gray-300" name="info"></textarea>
+				<input type="submit" value="{{ ___('add') }}" class="button-shared self-center" />
+			</form>
+		</div>
 	</div>
 	{{-------------------------------------- Other settings --------------------------------------}}
 	<form method="POST" action="{{ route('settings.update') }}">

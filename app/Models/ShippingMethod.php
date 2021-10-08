@@ -16,6 +16,9 @@ class ShippingMethod extends Model
 	protected $fillable = [
 		'label',
 		'price',
+		'max_weight',
+		'rule',
+		'info',
 	];
 
 	public function orders() {

@@ -18,7 +18,9 @@ let weightTotal = parseInt(document.getElementById('cart-total-weight').dataset.
 // Elements
 const cart = document.getElementById('cart');
 const shippingMethodInputs = (Array.from(document.getElementsByName('shipping-method')));
+const shippingMethodInputsWrapper = document.getElementsByClassName('shipping-method-wrapper');
 const shippingAddressInputs = arrayByClass('shipping-address-input');
+const shippingInfo = document.getElementById('shipping-info');
 const articlesQuantityButtons = arrayByClass('qte-button');
 const removeAllButtons = arrayByClass('remove-all-button');
 const couponInput = document.getElementById('coupon-input');
@@ -26,8 +28,6 @@ const couponAlert = document.getElementById('coupon-alert');
 const couponInfo = document.getElementById('coupon-info');
 const couponLoader = document.getElementById('loader');
 const countryInput = document.getElementById('country-input');
-const nationalShipping = document.getElementById('national-shipping');
-const internationalShipping = document.getElementById('international-shipping');
 
 // -------------------------------------------------------------------------- Functions
 
@@ -124,6 +124,11 @@ const updateShippingFormInputs = () => {
 	shippingMethodInputs.forEach(input => {
 		if(input.checked) {
 			input.parentNode.nextElementSibling.classList.add('highlight');
+			if(input.parentNode.parentNode.lastElementChild.firstChild !== null) {
+				shippingInfo.innerHTML = input.parentNode.parentNode.lastElementChild.firstChild.nodeValue;
+			} else {
+				shippingInfo.innerHTML = '';
+			}
 		} else {
 			input.parentNode.nextElementSibling.classList.remove('highlight');
 		}
@@ -143,17 +148,29 @@ const updateShippingMethodsPrice = () => {
 const updateShippingForm = input => {
 	if(debug) { console.log('updateShippingForm'); }
 	if(input.value === 'FR') {
+		// Hardcoded input selection for now. Should be depending on customizable conditions.
 		shippingMethodInputs[0].checked = true;
 		updateShippingPrice();
 		updateShippingFormInputs();
-		nationalShipping.classList.remove('hidden');
-		internationalShipping.classList.add('hidden');
+		for(let wrapper of shippingMethodInputsWrapper) {
+			if(wrapper.classList.contains('national')) {
+				wrapper.classList.remove('hidden');
+			} else {
+				wrapper.classList.add('hidden');
+			}
+		}
 	} else {
-		shippingMethodInputs[1].checked = true;
+		// Hardcoded input selection for now. Should be depending on customizable conditions.
+		shippingMethodInputs[2].checked = true;
 		updateShippingPrice();
 		updateShippingFormInputs();
-		nationalShipping.classList.add('hidden');
-		internationalShipping.classList.remove('hidden');
+		for(let wrapper of shippingMethodInputsWrapper) {
+			if(wrapper.classList.contains('international')) {
+				wrapper.classList.remove('hidden');
+			} else {
+				wrapper.classList.add('hidden');
+			}
+		}
 	}
 }
 
@@ -196,6 +213,7 @@ const resetCoupon = () => {
 
 // -------------------------------------------------------------------------- Init
 updateShippingPrice();
+updateShippingForm(countryInput);
 
 // -------------------------------------------------------------------------- Events
 

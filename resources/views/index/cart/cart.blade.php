@@ -103,61 +103,41 @@
 
 					{{-- Shipping form --}}
 					<form class="mt-6" id="shipping-methods-form">
-						<div id="national-shipping" class="flex justify-between py-1">
-							<div> {{-- LEAVE  THAT DIV HERE IT'S THE INPUT + LABEL WRAPPER --}}
-								@php // TODO refractor for all shipping method in once, weathe rit is internatinal or national
-									$shippingPrice = $shippingMethods[0]->price;
-									$dataPricesJson = '[';
-									foreach ($shippingMethods[0]->priceStops as $priceStop) {
-										$dataPricesJson .= '{"price":'.$priceStop->price.',"weight":'.$priceStop->weight.'}';
-										// If $priceStop is not the last item
-										if(!($priceStop === $shippingMethods[0]->priceStops[count($shippingMethods[0]->priceStops)-1])) {
-											$dataPricesJson .= ',';
-										}
-										if($totalWeight >= $priceStop->weight) {
-											$shippingPrice = $priceStop->price;
-										}
-									}
-									$dataPricesJson .= ']';
-									// Since this is the default shipping method, we add the calculated price to the total
-									$totalIncShipping = $total + $shippingPrice;
-								@endphp
-								<input class="shipping-method" id="shipping-method-national" type="radio" name="shipping-method" data-default-price="{{ $shippingMethods[0]->price }}" data-prices="{{ $dataPricesJson }}" value="{{ $shippingMethods[0]->id }}" checked />
-								<label for="shipping-method-national">{{ ___('shipping') }}</label>
-							</div>
-							<span class="text-gray-300 highlight">{{ $shippingPrice }}&nbsp;€</span>
-						</div>
-						<div id="international-shipping" class="hidden">
-						<h5>{{ ___('shipping method') }}</h5>
+						<div id="international-shipping">
+							<h5>{{ ___('shipping method') }}</h5>
 							<div class="mt-1">
 								@foreach($shippingMethods as $index => $shippingMethod)
-									@if($shippingMethod->id !== 1)
-										<div class="flex justify-between">
-											<div>
-												@php // TODO refractor for all shipping method in once, weathe rit is internatinal or national
-													$shippingPrice = $shippingMethod->price;
-													$dataPricesJson = '[';
-													foreach ($shippingMethod->priceStops as $priceStop) {
-														$dataPricesJson .= '{"price":'.$priceStop->price.',"weight":'.$priceStop->weight.'}';
-														// If $priceStop is not the last item
-														if(!($priceStop === $shippingMethod->priceStops[count($shippingMethod->priceStops)-1])) {
-															$dataPricesJson .= ',';
-														}
-														if($totalWeight >= $priceStop->weight) {
-															$shippingPrice = $priceStop->price;
-														}
+									<div class="flex justify-between hidden shipping-method-wrapper {{ in_array($shippingMethod->id, [1,4]) ? 'national' : 'international' }}">
+										<div>
+											@php
+												$shippingPrice = $shippingMethod->price;
+												$dataPricesJson = '[';
+												foreach ($shippingMethod->priceStops as $priceStop) {
+													$dataPricesJson .= '{"price":'.$priceStop->price.',"weight":'.$priceStop->weight.'}';
+													// If $priceStop is not the last item
+													if(!($priceStop === $shippingMethod->priceStops[count($shippingMethod->priceStops)-1])) {
+														$dataPricesJson .= ',';
 													}
-													$dataPricesJson .= ']';
-												@endphp
-												<input class="shipping-method selectable" id="shipping-method-{{ $index }}" type="radio" name="shipping-method" data-default-price="{{ $shippingMethod->price }}" data-prices="{{ $dataPricesJson }}" value="{{ $shippingMethod->id }}" />
-												<label for="shipping-method-{{ $index }}">{{ __($shippingMethod->label) }}</label>
-											</div>
-											<span class="text-gray-300">{{ $shippingPrice }}&nbsp;€</span>
+													if($totalWeight >= $priceStop->weight) {
+														$shippingPrice = $priceStop->price;
+													}
+												}
+												$dataPricesJson .= ']';
+												// We add the calculated price of the first shipping method to the total
+												if($loop->first) {
+													$totalIncShipping = $total + $shippingPrice;
+												}
+											@endphp
+											<input class="shipping-method selectable" id="shipping-method-{{ $index }}" type="radio" name="shipping-method" data-default-price="{{ $shippingMethod->price }}" data-prices="{{ $dataPricesJson }}" value="{{ $shippingMethod->id }}" @if($loop->first) {{ 'checked' }} @endif/>
+											<label for="shipping-method-{{ $index }}">{{ __($shippingMethod->label) }}</label>
 										</div>
-									@endif
+										<span class="text-gray-300">{{ $shippingPrice }}&nbsp;€</span>
+										<div class="shipping-info hidden">{{ $shippingMethod->info }}</div>
+									</div>
 								@endforeach
 							</div>
 						</div>
+						<div id="shipping-info" class="mt-1 italic">Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero nam, facilis soluta alias corporis adipisci.</div>
 					</form>
 
 					{{-- Total --}}

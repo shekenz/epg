@@ -13,6 +13,8 @@ use App\Http\Controllers\ShippingMethodsController;
 use App\Http\Controllers\CouponsController;
 use App\Http\Controllers\OrdersMassController;
 use App\Http\Controllers\ArchivedOrdersController;
+use App\Http\Controllers\PriceStopsController;
+use App\Models\ShippingMethod;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,10 +68,17 @@ Route::post('/dashboard/orders/print/labels/{extra?}', [OrdersMassController::cl
 
 // Shipping methods
 Route::post('/dashboard/shipping-methods/add/', [ShippingMethodsController::class, 'add'])->middleware('auth')->name('shippingMethods.add');
+Route::post('/dashboard/shipping-methods/add-stop/{shippingMethod}', [PriceStopsController::class, 'add'])->middleware('auth')->name('shippingMethods.addStop');
+// TODO Should be post or delete method, but I'm too lazy to create a form in the blade view
+Route::get('/dashboard/shipping-methods/delete-stop/{priceStop}', [PriceStopsController::class, 'delete'])->middleware('auth')->name('shippingMethods.deleteStop');
+// TODO Should be post or delete method, but I'm too lazy to create a form in the blade view
 Route::get('/dashboard/shipping-methods/delete/{shippingMethod}', [ShippingMethodsController::class, 'delete'])->middleware('auth')->name('shippingMethods.delete');
+Route::get('dashboard/shipping-methods/edit/{shippingMethod}', [ShippingMethodsController::class, 'edit'])->middleware('auth')->name('shippingMethods.edit');
+Route::patch('dashboard/shipping-methods/edit/{shippingMethod}', [ShippingMethodsController::class, 'update'])->middleware('auth')->name('shippingMethods.update');
 
 // Coupons
 Route::post('/dashboard/coupon/add/', [CouponsController::class, 'add'])->middleware('auth')->name('coupons.add');
+// TODO Should be post or delete method, but I'm too lazy to create a form in the blade view
 Route::get('/dashboard/coupon/delete/{coupon}', [CouponsController::class, 'delete'])->middleware('auth')->name('coupons.delete');
 
 // Users

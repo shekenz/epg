@@ -13,10 +13,11 @@ class PriceStop extends Model
 
 	protected $fillable = [
 		'price',
-		'weight'
+		'weight',
+		'shipping_method_id',
 	];
 
 	public function shippingMethods() {
-		return $this->belongsTo(ShippingMethod::class);
+		return $this->belongsTo(ShippingMethod::class)->orderBy('price', 'ASC');
 	}
 }
