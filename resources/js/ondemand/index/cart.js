@@ -3,6 +3,20 @@ import { popUp, popFlash } from '../../shared/popup.mjs';
 import { updateQuantityFor, updateSubTotalFor } from '../../shared/update-article.mjs';
 import { updateCartQuantity, setCartTotal } from '../../shared/update-cart.mjs';
 
+// Sentry
+import * as Sentry from "@sentry/browser";
+import { Integrations } from "@sentry/tracing";
+
+Sentry.init({
+  dsn: "https://07f45debc8da4555b7bde057f0f2f391@o1036209.ingest.sentry.io/6003767",
+  integrations: [new Integrations.BrowserTracing()],
+
+  // Set tracesSampleRate to 1.0 to capture 100%
+  // of transactions for performance monitoring.
+  // We recommend adjusting this value in production
+  tracesSampleRate: 1.0,
+});
+
 const debug = false;
 
 // Global Values
@@ -149,7 +163,7 @@ const updateShippingForm = input => {
 	if(debug) { console.log('updateShippingForm'); }
 	if(input.value === 'FR') {
 		// Hardcoded input selection for now. Should be depending on customizable conditions.
-		shippingMethodInputs[0].checked = true;
+		shippingMethodInputs[1].checked = true;
 		updateShippingPrice();
 		updateShippingFormInputs();
 		for(let wrapper of shippingMethodInputsWrapper) {

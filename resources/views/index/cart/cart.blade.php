@@ -102,14 +102,16 @@
 					</form>
 
 					{{-- Shipping form --}}
+					@if($totalWeight <= 5000)
 					<form class="mt-6" id="shipping-methods-form">
 						<div id="international-shipping">
 							<h5>{{ ___('shipping method') }}</h5>
 							<div class="mt-1">
 								@foreach($shippingMethods as $index => $shippingMethod)
-									<div class="flex justify-between hidden shipping-method-wrapper {{ in_array($shippingMethod->id, [1,4]) ? 'national' : 'international' }}">
+									<div class="flex justify-between hidden shipping-method-wrapper {{ $shippingMethod->rule }}">
 										<div>
 											@php
+												// We compact all priceStops as a JSON string to use in cart.js
 												$shippingPrice = $shippingMethod->price;
 												$dataPricesJson = '[';
 												foreach ($shippingMethod->priceStops as $priceStop) {
@@ -128,7 +130,7 @@
 													$totalIncShipping = $total + $shippingPrice;
 												}
 											@endphp
-											<input class="shipping-method selectable" id="shipping-method-{{ $index }}" type="radio" name="shipping-method" data-default-price="{{ $shippingMethod->price }}" data-prices="{{ $dataPricesJson }}" value="{{ $shippingMethod->id }}" @if($loop->first) {{ 'checked' }} @endif/>
+											<input class="shipping-method selectable" id="shipping-method-{{ $index }}" type="radio" name="shipping-method" data-default-price="{{ $shippingMethod->price }}" data-prices="{{ $dataPricesJson }}" value="{{ $shippingMethod->id }}" />
 											<label for="shipping-method-{{ $index }}">{{ __($shippingMethod->label) }}</label>
 										</div>
 										<span class="text-gray-300">{{ $shippingPrice }}&nbsp;€</span>
@@ -137,15 +139,23 @@
 								@endforeach
 							</div>
 						</div>
-						<div id="shipping-info" class="mt-1 italic">Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero nam, facilis soluta alias corporis adipisci.</div>
+						<div id="shipping-info" class="mt-1 italic"></div>
+						<div class="text-yellow-700">{{ $totalWeight }}</div>
 					</form>
+					@else
+					<div class="mt-4 italic">
+						@php $totalIncShipping = $total @endphp
+						{{ __('front.overweight') }}
+					</div>
+					@endif
+
 
 					{{-- Total --}}
 					<h5 class="border-t subdivision flex justify-between mt-6">
 						<span>{{ ___('total') }}</span>
 						<span><span id="cart-total" data-raw-total="{{ $total }}">{{ $totalIncShipping }}</span>&nbsp;€</span>
 					</h5>
-					@if(setting('app.paypal.client-id') && setting('app.paypal.secret'))
+					@if(setting('app.paypal.client-id') && setting('app.paypal.secret') && $totalWeight <= 5000)
 					<div class="my-10 flex justify-end">
 						<div class="w-48" id="paypal-checkout-button"></div>
 					</div>
