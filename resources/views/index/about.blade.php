@@ -4,7 +4,7 @@
 
 	@php
 	if(empty($acronyms)) {
-		$aconyms = [ 'édition production graphique' ];
+		$acronyms = [ 'édition production graphique' ];
 	}
 	@endphp
 
