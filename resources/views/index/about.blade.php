@@ -2,6 +2,12 @@
 
 	<x-slot name="title">About</x-slot>
 
+	@php
+	if(empty($acronyms)) {
+		$aconyms = [ 'édition production graphique' ];
+	}
+	@endphp
+
 	<div class="
 		mx-4
 		md:grid
