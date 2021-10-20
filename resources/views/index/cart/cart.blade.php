@@ -140,7 +140,6 @@
 							</div>
 						</div>
 						<div id="shipping-info" class="mt-1 italic"></div>
-						<div class="text-yellow-700">{{ $totalWeight }}</div>
 					</form>
 					@else
 					<div class="mt-4 italic">

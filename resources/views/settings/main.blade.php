@@ -71,7 +71,7 @@
 		<div class="px-2 my-6 border border-gray-400 bg-gray-100">
 			<div class="flex justify-between items-center">
 				<div>
-					<h4 class="pt-2 pb-0">{{ $shippingMethod->label }} (Max {{ round($shippingMethod->max_weight / 1000, 3) }}Kg ) [ID:{{ $shippingMethod->id }}]</h4>
+					<h4 class="pt-2 pb-0">{{ $shippingMethod->label }} (Max {{ round($shippingMethod->max_weight / 1000, 3) }}Kg)@if(config('app.env') === 'local') [ID:{{ $shippingMethod->id }}]@endif</h4>
 					<div class="mb-4 italic">{{ $shippingMethod->info }}</div>
 				</div>
 				<div>
@@ -93,14 +93,14 @@
 			@endif
 			@foreach($shippingMethod->priceStops as $priceStop)
 				{{ ___('between') }}
-				<span class="font-bold text-green-900 bg-green-200">{{ $priceStop->weight }}g</span>
+				<span @if(config('app.env') === 'local') class="font-bold text-green-900 bg-green-200"@endif>{{ $priceStop->weight }}g</span>
 				{{ __('and') }}
 				@if($shippingMethod->priceStops->get($loop->index + 1))
 					{{ $shippingMethod->priceStops->get($loop->index + 1)->weight }}g
 				@else
 					{{ $shippingMethod->max_weight }}g
 				@endif :
-				{{ $priceStop->price }} € ({{ $priceStop->id }})<a href="{{ route('shippingMethods.deleteStop', $priceStop->id) }}"><x-tabler-x class="inline-block text-red-500"/></a><br>
+				{{ $priceStop->price }} €@if(config('app.env') === 'local') ({{ $priceStop->id }})@endif<a href="{{ route('shippingMethods.deleteStop', $priceStop->id) }}"><x-tabler-x class="inline-block text-red-500"/></a><br>
 				@php $previousWeight = $priceStop->weight; @endphp
 			@endforeach
 			<div class="border-b border-gray-400 mb-2"><h4 class="pb-0">{{ ___('add a stop-point') }}</h4></div>

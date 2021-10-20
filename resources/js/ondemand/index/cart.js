@@ -17,7 +17,7 @@ Sentry.init({
   tracesSampleRate: 1.0,
 });
 
-const debug = false;
+const debug = true;
 
 // Global Values
 let cartTotal = parseFloat(document.getElementById('cart-total').dataset.rawTotal);
@@ -28,22 +28,43 @@ let couponValue = 0;
 let couponId = 0;
 let couponPrice = 0;
 let weightTotal = parseInt(document.getElementById('cart-total-weight').dataset.totalWeight);
+let total = 0;
 
 // Elements
 const cart = document.getElementById('cart');
-const shippingMethodInputs = (Array.from(document.getElementsByName('shipping-method')));
-const shippingMethodInputsWrapper = document.getElementsByClassName('shipping-method-wrapper');
-const shippingAddressInputs = arrayByClass('shipping-address-input');
-const shippingInfo = document.getElementById('shipping-info');
+
 const articlesQuantityButtons = arrayByClass('qte-button');
 const removeAllButtons = arrayByClass('remove-all-button');
+
+const shippingAddressInputs = arrayByClass('shipping-address-input');
+const countryInput = document.getElementById('country-input');
+
+const shippingMethodInputs = (Array.from(document.getElementsByName('shipping-method')));
+const shippingMethodInputsNational = document.getElementsByClassName('national');
+const shippingMethodInputsInternational = document.getElementsByClassName('international');
+
+const shippingInfo = document.getElementById('shipping-info');
+
 const couponInput = document.getElementById('coupon-input');
 const couponAlert = document.getElementById('coupon-alert');
 const couponInfo = document.getElementById('coupon-info');
 const couponLoader = document.getElementById('loader');
-const countryInput = document.getElementById('country-input');
+
 
 // -------------------------------------------------------------------------- Functions
+
+// Dump all price values
+const dumpData = () => {
+	console.table({
+		'Cart': cartTotal,
+		'Coupon ID': couponId,
+		'Coupon Value': couponValue,
+		'Coupon Price': couponPrice,
+		'Shipping': shippingPrice+' ('+shippingMethod+')',
+		'Total Weight': weightTotal,
+		'TOTAL': total,
+	});
+}
 
 // No connection error handler
 const fetchErrorHandler = () => {
@@ -75,6 +96,8 @@ const inputErrorReset = input => {
 
 // ----------------------------------------------------------- Cart logic
 
+// TODO Important !! Check for max weight on live update !!
+
 // Update cart (global) subtotal
 const updateCartSubTotal = (value = 0) => {
 	cartSubTotal = roundPrice(cartSubTotal + value)
@@ -94,18 +117,10 @@ const updateCartTotal = (value = 0) => {
 	const cartTotalDisplay = ((cartTotal + couponPrice) < 0 ) ? shippingPrice : (cartTotal + shippingPrice + couponPrice);
 
 	// Update cart total element
-	const total = setCartTotal(cartTotalDisplay);
+	total = setCartTotal(cartTotalDisplay);
 
 	if(debug) {
-		console.table({
-			'Cart': cartTotal,
-			'Coupon ID': couponId,
-			'Coupon Value': couponValue,
-			'Coupon Price': couponPrice,
-			'Shipping': shippingPrice+' ('+shippingMethod+')',
-			'Total Weight': weightTotal,
-			'TOTAL': total,
-		});
+		dumpData();
 	}
 }
 
@@ -161,31 +176,41 @@ const updateShippingMethodsPrice = () => {
 // Check for country and display shipping method accordingly (national or international)
 const updateShippingForm = input => {
 	if(debug) { console.log('updateShippingForm'); }
+
 	if(input.value === 'FR') {
-		// Hardcoded input selection for now. Should be depending on customizable conditions.
-		shippingMethodInputs[1].checked = true;
-		updateShippingPrice();
-		updateShippingFormInputs();
-		for(let wrapper of shippingMethodInputsWrapper) {
-			if(wrapper.classList.contains('national')) {
-				wrapper.classList.remove('hidden');
-			} else {
-				wrapper.classList.add('hidden');
+
+		let isAlreadyChecked = false;
+		for(let natWrapper of shippingMethodInputsNational) {
+			natWrapper.classList.remove('hidden');
+			let shippingMethodInput = natWrapper.firstElementChild.firstElementChild;
+			if(shippingMethodInput.dataset.defaultPrice !== "0" && !isAlreadyChecked) {
+				shippingMethodInput.checked = isAlreadyChecked = true;
 			}
 		}
+
+		for(let intWrapper of shippingMethodInputsInternational) {
+			intWrapper.classList.add('hidden');
+		}
+	
 	} else {
-		// Hardcoded input selection for now. Should be depending on customizable conditions.
-		shippingMethodInputs[2].checked = true;
-		updateShippingPrice();
-		updateShippingFormInputs();
-		for(let wrapper of shippingMethodInputsWrapper) {
-			if(wrapper.classList.contains('international')) {
-				wrapper.classList.remove('hidden');
-			} else {
-				wrapper.classList.add('hidden');
-			}
+
+		for(let natWrapper of shippingMethodInputsNational) {
+			natWrapper.classList.add('hidden');
 		}
+
+		for(let intWrapper of shippingMethodInputsInternational) {
+			intWrapper.classList.remove('hidden');
+		}
+
+		// In case it's international shipping, we don't have to check for free hand delivery
+		// we just select the first input
+		console.log(shippingMethodInputsInternational[0]);
+		shippingMethodInputsInternational[0].firstElementChild.firstElementChild.checked = true;
 	}
+
+	updateShippingPrice();
+	updateShippingFormInputs();
+
 }
 
 // Set shipping global values
@@ -226,8 +251,8 @@ const resetCoupon = () => {
 };
 
 // -------------------------------------------------------------------------- Init
-updateShippingPrice();
 updateShippingForm(countryInput);
+updateCartTotal();
 
 // -------------------------------------------------------------------------- Events
 
