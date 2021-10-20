@@ -17,7 +17,7 @@ Sentry.init({
   tracesSampleRate: 1.0,
 });
 
-const debug = true;
+const debug = false;
 
 // Global Values
 let cartTotal = parseFloat(document.getElementById('cart-total').dataset.rawTotal);

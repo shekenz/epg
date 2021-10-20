@@ -26,6 +26,6 @@ class ShippingMethod extends Model
 	}
 
 	public function priceStops() {
-		return $this->hasMany(PriceStop::class);
+		return $this->hasMany(PriceStop::class)->orderBy('price', 'ASC');
 	}
 }

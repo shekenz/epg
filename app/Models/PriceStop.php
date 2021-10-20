@@ -18,6 +18,6 @@ class PriceStop extends Model
 	];
 
 	public function shippingMethods() {
-		return $this->belongsTo(ShippingMethod::class)->orderBy('price', 'ASC');
+		return $this->belongsTo(ShippingMethod::class);
 	}
 }
