@@ -44,6 +44,7 @@ return [
 		'salutation' => 'Bonjour',
 		'salutationto' => 'Bonjour :name',
 		'regards' => 'Cordialement',
-		'signature' => 'e.p.g.'
+		'signature' => 'e.p.g.',
+		'contact' => 'Pour toutes questions, veuillez nous contacter via',
 	]
 ];

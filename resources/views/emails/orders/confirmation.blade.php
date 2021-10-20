@@ -40,6 +40,8 @@ Total : {{ round($total + $shippingPrice + $couponPrice, 2) }} €
 
 {{ __('mails.orders.confirmation.shipping') }}.<br><br><br>
 
+{{ __('mails.general.contact') }} <a href="mailto:hello@epg.works">hello@epg.works</a>.<br><br>
+
 {{ __('mails.orders.confirmation.thanks') }}
 <br><br>
 <a href="https://www.epg.works">https://www.epg.works</a>
