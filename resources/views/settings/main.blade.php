@@ -107,8 +107,8 @@
 			<form class="mb-2 flex justify-between" action="{{ route('shippingMethods.addStop', $shippingMethod->id) }}" method="POST">
 				@csrf
 				<div>
-					<label for="shipping-weight-stop">{{ ___('add a new point at') }} </label><input type="number" name="weight" min={{ $firstStopWeight + 1 }} max="{{ $shippingMethod->max_weight - 1}}" id="shipping-weight-stop" />g,
-					<label for="shipping-price-stop">{{ __('at price') }} </label><input type="number" step="0.01" name="price" min="{{ $shippingMethod->price + 0.01 }}" id="shipping-price-stop" />€
+					<label for="shipping-weight-stop">{{ ___('add a new point at') }} </label><input type="number" name="weight" min={{ $firstStopWeight + 1 }} max="{{ $shippingMethod->max_weight - 1}}" id="shipping-weight-stop" class="input-base"/>g,
+					<label for="shipping-price-stop">{{ __('at price') }} </label><input type="number" step="0.01" name="price" min="{{ $shippingMethod->price + 0.01 }}" id="shipping-price-stop" class="input-base"/>€
 				</div>
 				<input type="submit" class="button-shared self-center" value="{{ ___('add') }}" />
 			</form>
@@ -133,13 +133,32 @@
 			</form>
 		</div>
 	</div>
+
+	<div>
+		<h2 class="label-shared lg:text-lg">{{ ___('acronyms') }}</h2>
+		<div class="border flex gap-2 p-2 flex-wrap">
+			@foreach($acronyms as $acronym)
+			<div class="border border-dotted py-2 px-4 border-gray-400 bg-gray-100">
+				<span class="font-bold">{{ $acronym->label }}</span>
+				<a class="delete-coupon text-red-500" href="{{ route('settings.deleteAcronym', $acronym->id) }}"> <x-tabler-circle-x class="inline-block" /></a>
+			</div>
+			@endforeach
+		</div>
+		<form method="POST" action="{{ route('settings.addAcronym') }}" class="m-2">
+			@csrf
+			<label for="acronym-label">{{ ___('add new acronym') }} :</label>
+			<input class="input-base inline-block" type="text" name="label" id="acronym-label" />
+			<input class="button-shared" type="submit" value="{{ ___('add') }}" />
+		</form>
+	</div>
+
 	{{-------------------------------------- Other settings --------------------------------------}}
 	<form method="POST" action="{{ route('settings.update') }}">
 		@csrf
 		@method('patch')
 		<div class="grid grid-cols-2 gap-x-4 gap-y-2 mt-10">
 			{{-------------------------------------- Country list --------------------------------------}}
-			<div class="col-span-2">
+			<div class="col-span-2 hidden">
 				@php
 					$countryList = (setting('app.shipping.allowed-countries')) ? implode(',', setting('app.shipping.allowed-countries')) : '';
 				@endphp
@@ -147,7 +166,7 @@
 				<input type="text" class="input-shared" id="shipping-allowed-countries" name="shipping-allowed-countries" value="{{ old('shipping-allowed-countries') ??  $countryList }}">
 			</div>
 			{{-------------------------------------- Paypal credentials --------------------------------------}}
-			<div class="col-span-2  mt-8">
+			<div class="col-span-2 mt-8">
 				<label for="paypal-client-id" class="label-shared lg:text-lg">{{ ___('paypal client ID') }} : </label>
 				<input type="text" class="input-shared" id="paypal-client-id" name="paypal-client-id" value="{{ old('paypal-client-id') ?? setting('app.paypal.client-id') }}">
 			</div>
@@ -169,7 +188,7 @@
 				<textarea class="input-shared h-96" id="about-1" name="about[]">{!! (Storage::disk('raw')->exists('about_1.txt')) ? Storage::disk('raw')->get('about_1.txt') : '' !!}</textarea>
 			</div>
 		</div>
-		<div class="text-right mt-4">
+		<div class="text-right mt-8 col-span-2">
 			<input class="button-shared" type="submit" value="{{ ___('save') }}">
 		</div>
 	</form>

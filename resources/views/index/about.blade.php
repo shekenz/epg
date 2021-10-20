@@ -16,7 +16,7 @@
 			xl:col-span-3
 			xl:mr-12
 		">
-			{{ $abouts[0] }}
+			@php echo(preg_replace('/\[epg\]/', $acronyms[array_rand($acronyms)], $abouts[0])) @endphp
 		</div>
 		<div class="
 			about
@@ -25,7 +25,7 @@
 			xl:col-start-6
 			xl:col-span-3
 		">
-		{{ $abouts[1] }}
+			@php echo(preg_replace('/\[epg\]/', $acronyms[array_rand($acronyms)], $abouts[1])) @endphp
 		</div>
 		{{-- <div class="col-span-9 xl:col-start-2 xl:col-span-7 my-8"><a href="#" class="base-link">terms and condition</a></div> --}}
 	</div>

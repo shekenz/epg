@@ -76,11 +76,6 @@ Route::get('/dashboard/shipping-methods/delete/{shippingMethod}', [ShippingMetho
 Route::get('dashboard/shipping-methods/edit/{shippingMethod}', [ShippingMethodsController::class, 'edit'])->middleware('auth')->name('shippingMethods.edit');
 Route::patch('dashboard/shipping-methods/edit/{shippingMethod}', [ShippingMethodsController::class, 'update'])->middleware('auth')->name('shippingMethods.update');
 
-// Coupons
-Route::post('/dashboard/coupon/add/', [CouponsController::class, 'add'])->middleware('auth')->name('coupons.add');
-// TODO Should be post or delete method, but I'm too lazy to create a form in the blade view
-Route::get('/dashboard/coupon/delete/{coupon}', [CouponsController::class, 'delete'])->middleware('auth')->name('coupons.delete');
-
 // Users
 Route::get('/dashboard/users', [UsersController::class, 'list'])->middleware('auth')->name('users');
 Route::get('/dashboard/user/{user}', [UsersController::class, 'display'])->middleware('auth')->name('users.display');
@@ -116,11 +111,19 @@ Route::get('/dashboard/media/rebuild/{medium}', [MediaController::class, 'rebuil
 Route::get('/dashboard/media/{medium}/break/{book}', [MediaController::class, 'breakLink'])->middleware('auth')->name('media.break');
 Route::post('/dashboard/media/delete/{id}', [MediaController::class, 'delete'])->middleware('auth')->name('media.delete');
 
+// Coupons
+Route::post('/dashboard/settings/coupon/add/', [CouponsController::class, 'add'])->middleware('auth')->name('coupons.add');
+// TODO Should be post or delete method, but I'm too lazy to create a form in the blade view
+Route::get('/dashboard/settings/coupon/delete/{coupon}', [CouponsController::class, 'delete'])->middleware('auth')->name('coupons.delete');
+
 // Settings
 Route::get('/dashboard/settings', [SettingsController::class, 'main'])->middleware('auth')->name('settings');
 Route::patch('/dashboard/settings', [SettingsController::class, 'update'])->middleware('auth')->name('settings.update');
 Route::post('/dashboard/settings/publish', [SettingsController::class, 'publish'])->middleware('auth')->name('settings.publish');
 Route::post('/dashboard/settings/toggleshop', [SettingsController::class, 'toggleShop'])->middleware('auth')->name('settings.toggleShop');
+Route::post('/dashboard/settings/acronyms/add', [SettingsController::class, 'addAcronym'])->middleware('auth')->name('settings.addAcronym');
+// TODO Should be post or delete method, but I'm too lazy to create a form in the blade view
+Route::get('/dashboard/settings/acronyms/delete/{acronym}', [SettingsController::class, 'deleteAcronym'])->middleware('auth')->name('settings.deleteAcronym');
 
 // Misc/Debug/Log
 Route::get('/dashboard/mails/log', [MessagesController::class, 'log'])->middleware('auth')->name('mails.log');

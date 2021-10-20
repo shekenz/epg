@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\ShippingMethod;
 use App\Models\Coupon;
+use App\Models\Acronym;
 use App\Traits\ShopControls;
 
 class SettingsController extends Controller
@@ -18,7 +19,8 @@ class SettingsController extends Controller
 			'priceStops' => function($query) { $query->orderBy('price', 'ASC'); },
 		])->orderBy('id')->get();
 		$coupons = Coupon::orderBy('created_at', 'DESC')->get();
-		return view('settings.main', compact('shippingMethods', 'coupons'));
+		$acronyms = Acronym::all();
+		return view('settings.main', compact('shippingMethods', 'coupons', 'acronyms'));
 	}
 
     public function update(Request $request) {
@@ -119,5 +121,22 @@ class SettingsController extends Controller
 			}
 
 		}
+	}
+
+	public function addAcronym(Request $request) {
+
+		$data = $request->validate(['label' => 'required|string|max:256']);
+
+		Acronym::create($data);
+
+		return redirect()->route('settings');
+	}
+
+	public function deleteAcronym(Request $request, Acronym $acronym) {
+
+		$acronym->delete();
+
+		return redirect()->route('settings');
+
 	}
 }
