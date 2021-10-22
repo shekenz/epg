@@ -16,7 +16,7 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         <x-tabler-gauge class="mr-1"/>{{ ___('dashboard') }}
                     </x-nav-link>
-					<x-nav-link :href="route('books')" :active="request()->routeIs('books')">
+										<x-nav-link :href="route('books')" :active="request()->routeIs('books')">
                         <x-tabler-book class="mr-1"/>{{ ___('books') }}
                     </x-nav-link>
                     <x-nav-link :href="route('media')" :active="request()->routeIs('media')">
@@ -25,13 +25,16 @@
                     <x-nav-link :href="route('orders')" :active="request()->routeIs('orders')">
                         <x-tabler-receipt class="mr-1"/>{{ ___('orders') }}<span id="orderUnread" class="notification hidden"></span>
                     </x-nav-link>
+                    <x-nav-link :href="route('clients')" :active="request()->routeIs('clients')">
+                        <x-tabler-mood-smile class="mr-1"/>{{ ___('clients') }}
+                    </x-nav-link>
                     <x-nav-link :href="route('users')" :active="request()->routeIs('users')">
                         <x-tabler-users class="mr-1"/>{{ ___('users') }}
                     </x-nav-link>
-					<x-nav-link :href="route('settings')" :active="request()->routeIs('settings')">
+										<x-nav-link :href="route('settings')" :active="request()->routeIs('settings')">
                         <x-tabler-settings class="mr-1"/>{{ ___('settings') }}
                     </x-nav-link>
-					<x-nav-link :href="route('users.display', Auth::user()->id)" :active="request()->routeIs('users.display')">
+										<x-nav-link :href="route('users.display', Auth::user()->id)" :active="request()->routeIs('users.display')">
                         <x-tabler-user class="mr-1"/>{{ Auth::user()->username }}
                     </x-nav-link>
                 </div>
@@ -46,7 +49,7 @@
                             onclick="event.preventDefault();
                                         this.closest('form').submit();">
                         <x-tabler-logout class="mr-1 inline"/>{{ ___('logout') }}
-				</a>
+										</a>
                 </form>
             </div>
 
@@ -87,6 +90,12 @@
         <div class="border-t border-gray-200">
             <x-responsive-nav-link :href="route('orders')" :active="request()->routeIs('orders')">
                 <x-tabler-receipt class="mr-1 inline"/>{{ ___('orders') }}
+            </x-responsive-nav-link>
+        </div>
+
+        <div class="border-t border-gray-200">
+            <x-responsive-nav-link :href="route('clients')" :active="request()->routeIs('clients')">
+                <x-tabler-mood-smile class="mr-1 inline"/>{{ ___('clients') }}
             </x-responsive-nav-link>
         </div>
 

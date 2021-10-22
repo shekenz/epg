@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Order;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use PDF;
 
 class OrdersMassController extends Controller

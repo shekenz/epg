@@ -14,6 +14,7 @@ use App\Http\Controllers\CouponsController;
 use App\Http\Controllers\OrdersMassController;
 use App\Http\Controllers\ArchivedOrdersController;
 use App\Http\Controllers\PriceStopsController;
+use App\Http\Controllers\ClientsController;
 use App\Models\ShippingMethod;
 
 /*
@@ -115,6 +116,10 @@ Route::post('/dashboard/media/delete/{id}', [MediaController::class, 'delete'])-
 Route::post('/dashboard/settings/coupon/add/', [CouponsController::class, 'add'])->middleware('auth')->name('coupons.add');
 // TODO Should be post or delete method, but I'm too lazy to create a form in the blade view
 Route::get('/dashboard/settings/coupon/delete/{coupon}', [CouponsController::class, 'delete'])->middleware('auth')->name('coupons.delete');
+
+// Clients
+Route::get('/dashboard/clients', [ClientsController::class, 'list'])->middleware('auth')->name('clients');
+Route::get('/dashboard/export', [ClientsController::class, 'csv'])->middleware('auth')->name('clients.export');
 
 // Settings
 Route::get('/dashboard/settings', [SettingsController::class, 'main'])->middleware('auth')->name('settings');

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Coupon;
 use App\Models\Order;
-use Carbon\Carbon;
 
 class CouponsController extends Controller
 {

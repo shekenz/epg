@@ -204,7 +204,6 @@ const updateShippingForm = input => {
 
 		// In case it's international shipping, we don't have to check for free hand delivery
 		// we just select the first input
-		console.log(shippingMethodInputsInternational[0]);
 		shippingMethodInputsInternational[0].firstElementChild.firstElementChild.checked = true;
 	}
 
@@ -432,7 +431,7 @@ if(checkCartButton) {
 					cartCheckResponseJSON => {
 						let needUpdating = false;
 						for(const bookInCart of Object.values(cartCheckResponseJSON)) {
-							console.log(bookInCart);
+							//console.log(bookInCart);
 							if(!(document.getElementsByClassName(`quantity-for-id-${bookInCart.id}`)[0].firstChild.nodeValue === bookInCart.cartQuantity.toString())) {
 								needUpdating = true;
 							}
@@ -470,6 +469,8 @@ if(checkCartButton) {
 										popUp('An internal error has occured while creating your order. Our team has been warned and we will work on it as soon as possible. Please try to purchase your goods later. We are sorry for the inconvenience.');
 									}
 								}
+							).catch(
+								error => { console.warn(error); }
 							);
 						}
 					}

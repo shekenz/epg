@@ -8,6 +8,7 @@ use App\Models\Book;
 use App\Models\User;
 use App\Models\ShippingMethod;
 use App\Models\Coupon;
+use App\Models\Client;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use Exception;
 use Illuminate\Support\Facades\Log;
@@ -115,7 +116,27 @@ class OrdersController extends Controller
 			'admin_area_1' => 'nullable|string|max:300',
 			'postal_code' => 'required|string|max:60',
 			'country_code' => 'required|string|max:2',
+			'newsletter' => 'nullable|boolean',
 		]);
+
+		if(isset($data['newsletter'])) {
+			$existing_client = Client::where('email', $data['contact_email'])->first();
+			if($existing_client === NULL) {
+				Client::create([
+					'firstname' => $data['given_name'],
+					'lastname' => $data['surname'],
+					'email' => $data['contact_email'],
+					'country_code' => $data['country_code'],
+				]);
+				Log::info('Created client '.$data['contact_email']);
+			} else {
+				$existing_client->firstname = $data['given_name'];
+				$existing_client->lastname = $data['surname'];
+				$existing_client->country_code = $data['country_code'];
+				$existing_client->save();
+				Log::info('Updated client '.$data['contact_email']);
+			}
+		}
 		
 		$shippingMethod->load('priceStops');
 
