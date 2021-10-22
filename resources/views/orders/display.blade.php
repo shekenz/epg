@@ -70,7 +70,8 @@
 					<p class="my-2"><span class="font-bold">{{ ___('order ID') }} : </span>{{ $order->order_id }}</p>
 					<p class="my-2"><span class="font-bold">{{ ___('client ID') }} : </span>{{ $order->payer_id }}</p>
 					<p class="my-2"><span class="font-bold">{{ ___('client') }} : </span>{{ $order->surname }} {{ $order->given_name }}</p>
-					<p class="my-2"><span class="font-bold">{{ ___('client email') }} : </span><a href="mailto:{{ $order->email_address }}" class="hover:underline">{{ $order->email_address }}</a></p>
+					<p class="my-2"><span class="font-bold">{{ ___('contact email') }} : </span><a href="mailto:{{ $order->contact_email ?? '#'}}" class="hover:underline">{{ $order->contact_email ?? ''}}</a></p>
+					<p class="my-2"><span class="font-bold">{{ ___('paypal email') }} : </span><a href="mailto:{{ $order->email_address }}" class="hover:underline">{{ $order->email_address }}</a></p>
 					<p class="my-2"><span class="font-bold">{{ ___('client phone') }} : </span>{{ $order->phone_number }}</p>
 				</div>
 			</div>

@@ -108,7 +108,7 @@ class OrdersController extends Controller
 			'given_name' => 'required|string|max:140',
 			'surname' => 'required|string|max:140',
 			'phone_number' => 'nullable|string|max:15',
-			'email_address' => 'email|required',
+			'contact_email' => 'email|required',
 			'address_line_1' => 'required|string|max:300',
 			'address_line_2' => 'nullable|string|max:300',
 			'admin_area_2' => 'required|string|max:120',
@@ -188,7 +188,7 @@ class OrdersController extends Controller
 				'shipping_preference' => 'SET_PROVIDED_ADDRESS',
 			],
 			'payer' => [
-				'email_address' => $data['email_address'],
+				'email_address' => $data['contact_email'],
 				/*
 				'name' => [
 					'given_name' => 'André',
@@ -253,6 +253,7 @@ class OrdersController extends Controller
 				'order_id' => $paypalOrder['id'],
 				'status' => $paypalOrder['status'],
 				'phone_number' => (isset($data['phone_number'])) ? $data['phone_number'] : '',
+				'contact_email' => $data['contact_email'],
 				'shipping_method_id' => $shippingMethod->id,
 				'total_weight' => $totalWeight,
 				'pre_order' => ($preOrder),
@@ -262,7 +263,7 @@ class OrdersController extends Controller
 			$order = Order::create([
 				'status' => 'FAILED',
 				'phone_number' => (isset($data['phone_number'])) ? $data['phone_number'] : '',
-				'email_address' => $data['email_address'],
+				'contact_email' => $data['contact_email'],
 				'shipping_method_id' => $shippingMethod->id,
 				'total_weight' => $totalWeight,
 				'pre_order' => ($preOrder),

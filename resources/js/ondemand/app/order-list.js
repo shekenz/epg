@@ -55,7 +55,6 @@ const request = () => {
 	let hidden = (window.location.pathname.match(/\/hidden$/)) ? true : false;
 	let preorder = preorderInput.checked;
 	let url = `/api/orders/get/${method}/${from}/${to}/${hidden}/${preorder}/${data}`;
-	//console.log(url);
 	fetch(url, {
 		method: 'get',
 		headers: {
@@ -99,7 +98,7 @@ const request = () => {
 						row.append(firstCell);
 
 						// Cells depending on their index
-						const rowCells = [order.order_id, order.full_name, order.email_address, order.pre_order, order.status, order.created_at_formated];
+						const rowCells = [order.order_id, order.full_name, order.contact_email, order.pre_order, order.status, order.created_at_formated];
 						rowCells.forEach((cellData, index) => {
 							const cell = document.createElement('td');
 							
@@ -149,7 +148,6 @@ const request = () => {
 
 						// Last cell
 						const toolsCell = document.createElement('td');
-						console.log(order.status);
 						switch(order.status) {
 							case('FAILED') :
 								toolsCell.append(createToolButton(window.location.origin+'/dashboard/order/cancel/'+order.id, trashBlueprint));

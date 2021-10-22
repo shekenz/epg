@@ -54,7 +54,10 @@
 						<input class="shipping-address-input" type="text" name="surname" placeholder="{{ ___('last name') }}" autocomplete="family-name" maxlength="140" required /><span class="input-error">{{ __('This field is required') }}</span>
 						<input class="shipping-address-input" type="text" name="given_name" placeholder="{{ ___('first name') }}" autocomplete="given-name" maxlength="140" required /><span class="input-error">{{ __('This field is required') }}</span>
 						<input class="shipping-address-input" type="tel" name="phone_number" placeholder="{{ ___('phone') }}" autocomplete="tel" maxlength="15" /><span class="input-error">{{ __('This field is required') }}</span>
-						<input class="shipping-address-input" type="email" name="email_address" placeholder="{{ ___('email') }}" autocomplete="email" maxlength="254" required /><span class="input-error">{{ __('This field is required') }}</span>
+						<input class="shipping-address-input" type="email" name="contact_email" placeholder="{{ ___('email') }}" autocomplete="email" maxlength="254" required /><span class="input-error">{{ __('This field is required') }}</span>
+						<div class="shipping-address-checkbox-wrapper">
+							<input type="checkbox" value="true" name="newsletter" id="shipping-address-newsletter" checked><label for="shipping-address-newsletter">{{ ___('subscribe to newsletter') }}</label>
+						</div>
 						<h5 class="mt-6 subdivision">{{ ___('shipping address') }}</h5>
 						<input class="shipping-address-input" type="text" name="address_line_1" placeholder="{{ ___('address line 1') }}" autocomplete="shipping address-line1" maxlength="300" required /><span class="input-error">{{ __('This field is required') }}</span>
 						<input class="shipping-address-input" type="text" name="address_line_2" placeholder="{{ ___('address line 2') }}" autocomplete="shipping address-line2" maxlength="300" /><span class="input-error">{{ __('This field is required') }}</span>

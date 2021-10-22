@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ShippingMethod extends Model
 {
-    use HasFactory;
+  use HasFactory;
 	use SoftDeletes;
 
 	public $timestamps = false;

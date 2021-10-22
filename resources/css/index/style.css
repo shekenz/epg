@@ -141,6 +141,10 @@
 		@apply py-1 px-2 mt-4 w-full;
 	}
 
+	.shipping-address-checkbox-wrapper {
+		@apply mt-4;
+	}
+
 	/*--------------- Cart form misc. ---------------*/
 	.about img {
 		@apply inline-block;

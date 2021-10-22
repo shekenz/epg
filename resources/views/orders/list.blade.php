@@ -92,7 +92,7 @@
 				<td><input type="checkbox" id="checkall" title="{{ ___('select all') }}"></td>
 				<td>{{ ___('order') }}</td>
 				<td>{{ ___('client') }}</td>
-				<td>{{ ___('client email') }}</td>
+				<td>{{ ___('email') }}</td>
 				<td>{{ ___('pre') }}</td>
 				<td>{{ ___('status') }}</td>
 				<td>{{ ___('created at') }}</td>
