@@ -24,22 +24,30 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 //TODO secure the api
 
-// Live cart
-Route::post('/cart/add/{book}', [CartController::class, 'add'])->middleware('shop')->name('cart.api.add');
-Route::post('/cart/remove/{book}', [CartController::class, 'remove'])->middleware('shop')->name('cart.api.remove');
-Route::post('/cart/remove-all/{book}', [CartController::class, 'removeAll'])->middleware('shop')->name('cart.api.removeAll');
-Route::post('/cart/check/', [CartController::class, 'checkCart'])->middleware('shop')->name('cart.api.check');
+Route::middleware('shop')->group(function() {
 
-// Order (Paypal)
-Route::post('/order/create/{shippingMethod}/{couponID}', [OrdersController::class, 'createOrder'])->middleware('shop');
-Route::post('/order/check-country/{countryCode}', [OrdersController::class, 'checkCountry'])->middleware('shop');
-Route::post('/order/cancel/{order}', [OrdersController::class, 'cancel'])->middleware('shop');
-Route::post('/order/details/{orderID}', [OrdersController::class, 'details'])->middleware('shop');
-Route::post('/order/capture/{orderID}', [OrdersController::class, 'capture'])->middleware('shop');
-Route::post('/orders/unread/count', [OrdersController::class, 'countUnread']);
+	// Live cart
+	Route::prefix('cart')->name('cart.api')->group(function() {
+		Route::post('/add/{book}', [CartController::class, 'add'])->name('.add');
+		Route::post('/remove/{book}', [CartController::class, 'remove'])->name('.remove');
+		Route::post('/remove-all/{book}', [CartController::class, 'removeAll'])->name('.removeAll');
+		Route::post('/check', [CartController::class, 'checkCart'])->name('.check');
+	});
 
-// Coupon
-Route::post('/coupon/get/{couponLabel}', [CouponsController::class, 'get'])->middleware('shop');
+	// Order (Paypal)
+	Route::prefix('order')->group(function() {
+		Route::post('/create/{shippingMethod}/{couponID}', [OrdersController::class, 'createOrder']);
+		Route::post('/check-country/{countryCode}', [OrdersController::class, 'checkCountry']);
+		Route::post('/cancel/{order}', [OrdersController::class, 'cancel']);
+		Route::post('/details/{orderID}', [OrdersController::class, 'details']);
+		Route::post('/capture/{orderID}', [OrdersController::class, 'capture']);
+	});
+
+	// Coupon
+	Route::post('/coupon/get/{couponLabel}', [CouponsController::class, 'get']);
+
+});
 
 // Backend API
+Route::post('/orders/unread/count', [OrdersController::class, 'countUnread']);
 Route::get('/orders/get/{method}/{from}/{to}/{visibility}/{preorder}/{data?}', [OrdersMassController::class, 'get']);
