@@ -15,7 +15,7 @@ use App\Http\Controllers\OrdersMassController;
 use App\Http\Controllers\ArchivedOrdersController;
 use App\Http\Controllers\PriceStopsController;
 use App\Http\Controllers\ClientsController;
-use App\Models\ShippingMethod;
+use App\Http\Controllers\VariationsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,112 +28,163 @@ use App\Models\ShippingMethod;
 |
 */
 
-// Main index route
-Route::get('/', [BooksController::class, 'index'])->middleware('published')->name('index');
-Route::get('/about', [IndexController::class, 'about'])->middleware('published')->name('about');
-Route::view('/contact', 'index.contact')->middleware('published')->name('contact');
-Route::post('/contact', [MessagesController::class, 'forward'])->middleware('published')->name('messages.forward');
-Route::get('/order/{orderID}', [OrdersController::class, 'index'])->middleware(['published', 'shop'])->name('orders.index');
+Route::middleware('published')->group(function() {
 
-// Cart
-Route::get('/cart', [CartController::class, 'viewCart'])->middleware(['published', 'shop'])->name('cart');
-Route::get('/cart/clear', [CartController::class, 'clearCart'])->middleware(['published', 'shop'])->name('cart.clear');
-Route::get('/cart/success', [CartController::class, 'success'])->middleware(['published', 'shop'])->name('cart.success');
-Route::view('/cart/checkout', 'index.cart.shipping')->middleware(['published', 'shop'])->name('cart.checkout');
+	// Main index route
+	Route::get('/', [BooksController::class, 'index'])->name('index');
+	Route::get('/about', [IndexController::class, 'about'])->name('about');
+	Route::view('/contact', 'index.contact')->name('contact');
+	Route::post('/contact', [MessagesController::class, 'forward'])->name('messages.forward');
 
-// Dashboard
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware('auth')->name('dashboard');
+	// Cart
+	Route::middleware('shop')->prefix('cart')->name('cart')->group(function() {
+		Route::get('/', [CartController::class, 'viewCart']);
+		Route::get('/clear', [CartController::class, 'clearCart'])->name('.clear');
+		Route::get('/success', [CartController::class, 'success'])->name('.success');
+		Route::view('/checkout', 'index.cart.shipping')->name('.checkout');
+	});
 
-// Orders
-Route::get('/dashboard/orders/', [OrdersController::class, 'list'])->middleware('auth')->name('orders');
-Route::get('/dashboard/order/{id}', [OrdersController::class, 'display'])->middleware('auth')->name('orders.display');
-Route::get('/dashboard/order/cancel/{order}', [OrdersController::class, 'cancel'])->middleware('auth')->name('orders.cancel');
-Route::get('/dashboard/order/recycle/{orderID}', [OrdersController::class, 'recycle'])->middleware('auth')->name('orders.recycle');
-Route::post('/dashboard/order/shipped/{orderID}', [OrdersController::class, 'shipped'])->middleware('auth')->name('orders.shipped');
-Route::get('/dashboard/orders/hidden', [OrdersController::class, 'hidden'])->middleware('auth')->name('orders.hidden');
+});
 
-// Archived Orders
-Route::post('/dashboard/order/archive/{order}', [ArchivedOrdersController::class, 'archive'])->middleware('auth')->name('archive.order');
-Route::get('/dashboard/order/archived/{archivedOrder}', [ArchivedOrdersController::class, 'display'])->middleware('auth')->name('archive.display');
-Route::get('/dashboard/orders/archived', [ArchivedOrdersController::class, 'list'])->middleware('auth')->name('archive.list');
+Route::middleware('auth')->prefix('dashboard')->group(function() {
 
-// Orders mass process
-Route::post('/dashboard/orders/csv', [OrdersMassController::class, 'csv'])->middleware('auth')->name('orders.csv');
-Route::post('/dashboard/orders/hide', [OrdersMassController::class, 'hide'])->middleware('auth')->name('orders.hide');
-Route::post('/dashboard/orders/unhide', [OrdersMassController::class, 'unhide'])->middleware('auth')->name('orders.unhide');
-Route::post('/dashboard/orders/print/{view}', [OrdersMassController::class, 'pdf'])->middleware('auth')->name('orders.print');
-Route::post('/dashboard/orders/print/labels/preview', [OrdersMassController::class, 'labelsPreview'])->middleware('auth')->name('orders.labelsPreview');
-Route::post('/dashboard/orders/print/labels/{extra?}', [OrdersMassController::class, 'labels'])->middleware('auth')->name('orders.labels');
+	// Dashboard
+	Route::get('/', function () {
+		return view('dashboard');
+	})->name('dashboard');
 
-// Shipping methods
-Route::post('/dashboard/shipping-methods/add/', [ShippingMethodsController::class, 'add'])->middleware('auth')->name('shippingMethods.add');
-Route::post('/dashboard/shipping-methods/add-stop/{shippingMethod}', [PriceStopsController::class, 'add'])->middleware('auth')->name('shippingMethods.addStop');
-// TODO Should be post or delete method, but I'm too lazy to create a form in the blade view
-Route::get('/dashboard/shipping-methods/delete-stop/{priceStop}', [PriceStopsController::class, 'delete'])->middleware('auth')->name('shippingMethods.deleteStop');
-// TODO Should be post or delete method, but I'm too lazy to create a form in the blade view
-Route::get('/dashboard/shipping-methods/delete/{shippingMethod}', [ShippingMethodsController::class, 'delete'])->middleware('auth')->name('shippingMethods.delete');
-Route::get('dashboard/shipping-methods/edit/{shippingMethod}', [ShippingMethodsController::class, 'edit'])->middleware('auth')->name('shippingMethods.edit');
-Route::patch('dashboard/shipping-methods/edit/{shippingMethod}', [ShippingMethodsController::class, 'update'])->middleware('auth')->name('shippingMethods.update');
+	// Orders
+	Route::name('orders')->group(function() {
+		Route::get('/orders', [OrdersController::class, 'list']);
+		Route::get('/order/{id}', [OrdersController::class, 'display'])->name('.display');
+		Route::get('/order/cancel/{order}', [OrdersController::class, 'cancel'])->name('.cancel');
+		Route::get('/order/recycle/{orderID}', [OrdersController::class, 'recycle'])->name('.recycle');
+		Route::post('/order/shipped/{orderID}', [OrdersController::class, 'shipped'])->name('.shipped');
+		Route::get('/orders/hidden', [OrdersController::class, 'hidden'])->name('.hidden');
+	});
+	
+	Route::prefix('orders')->group(function() {
 
-// Users
-Route::get('/dashboard/users', [UsersController::class, 'list'])->middleware('auth')->name('users');
-Route::get('/dashboard/user/{user}', [UsersController::class, 'display'])->middleware('auth')->name('users.display');
-Route::get('/dashboard/user/edit/{user}', [UsersController::class, 'edit'])->middleware('auth')->name('users.edit');
-Route::patch('/dashboard/user/{user}', [UsersController::class, 'update'])->middleware('auth')->name('users.update');
-Route::post('/dashboard/user/delete/{user}', [UsersController::class, 'delete'])->middleware('auth')->name('users.delete');
-Route::get('/dashboard/users/invite', [UsersController::class, 'invitation'])->middleware('auth')->name('users.invitation');
-Route::post('/dashboard/users/invite', [UsersController::class, 'invite'])->middleware('auth')->name('users.invite');
+		// Orders mass process
+		Route::name('orders')->group(function() {
+			Route::post('/csv', [OrdersMassController::class, 'csv'])->name('.csv');
+			Route::post('/hide', [OrdersMassController::class, 'hide'])->name('.hide');
+			Route::post('/unhide', [OrdersMassController::class, 'unhide'])->name('.unhide');
 
-// Books
-Route::get('/dashboard/books', [BooksController::class, 'list'])->middleware('auth')->name('books');
-Route::get('/dashboard/book/create', [BooksController::class, 'create'])->middleware('auth')->name('books.create');
-Route::post('/dashboard/books', [BooksController::class, 'store'])->middleware('auth')->name('books.store');
-Route::get('/dashboard/book/edit/{id}', [BooksController::class, 'edit'])->middleware('auth')->name('books.edit');
-Route::patch('/dashboard/book/{book}', [BooksController::class, 'update'])->middleware('auth')->name('books.update');
-Route::get('/dashboard/book/{id}', [BooksController::class, 'display'])->middleware('auth')->name('books.display');
-Route::get('/dashboard/book/archive/{book}', [BooksController::class, 'archive'])->middleware('auth')->name('books.archive');
-Route::post('/dashboard/book/delete/{id}', [BooksController::class, 'delete'])->middleware('auth')->name('books.delete');
-Route::post('/dashboard/books/archived/delete', [BooksController::class, 'deleteAll'])->middleware('auth')->name('books.deleteAll');
-Route::get('/dashboard/book/restore/{id}', [BooksController::class, 'restore'])->middleware('auth')->name('books.restore');
-Route::get('/dashboard/books/archived', [BooksController::class, 'archived'])->middleware('auth')->name('books.archived');
+			Route::prefix('print')->group(function() {
+				Route::post('/{view}', [OrdersMassController::class, 'pdf'])->name('.print');
+				Route::post('/labels/preview', [OrdersMassController::class, 'labelsPreview'])->name('.labelsPreview');
+				Route::post('/labels/{extra?}', [OrdersMassController::class, 'labels'])->name('.labels');
+			});
+		});
 
-// Media
-Route::get('/dashboard/media', [MediaController::class, 'list'])->middleware('auth')->name('media');
-Route::post('/dashboard/media', [MediaController::class, 'store'])->middleware('auth')->name('media.store');
-Route::get('/dashboard/media/create', [MediaController::class, 'create'])->middleware('auth')->name('media.create');
-Route::get('/dashboard/media/refresh', [MediaController::class, 'refreshAll'])->middleware('auth')->name('media.optimize.refreshAll');
-Route::get('/dashboard/media/rebuild', [MediaController::class, 'rebuildAll'])->middleware('auth')->name('media.optimize.rebuildAll');
-Route::get('/dashboard/media/{medium}', [MediaController::class, 'display'])->middleware('auth')->name('media.display');
-Route::patch('/dashboard/media/{medium}', [MediaController::class, 'update'])->middleware('auth')->name('media.update');
-Route::get('/dashboard/media/refresh/{medium}', [MediaController::class, 'refresh'])->middleware('auth')->name('media.optimize.refresh');
-Route::get('/dashboard/media/rebuild/{medium}', [MediaController::class, 'rebuild'])->middleware('auth')->name('media.optimize.rebuild');
-Route::get('/dashboard/media/{medium}/break/{book}', [MediaController::class, 'breakLink'])->middleware('auth')->name('media.break');
-Route::post('/dashboard/media/delete/{id}', [MediaController::class, 'delete'])->middleware('auth')->name('media.delete');
+		// Archived Orders
+		Route::name('archive')->group(function() {
+			Route::post('/archive/{order}', [ArchivedOrdersController::class, 'archive'])->name('.order');
+			Route::get('/archived/{archivedOrder}', [ArchivedOrdersController::class, 'display'])->name('.display');
+			Route::get('s/archived', [ArchivedOrdersController::class, 'list'])->name('.list');
+		});
 
-// Coupons
-Route::post('/dashboard/settings/coupon/add/', [CouponsController::class, 'add'])->middleware('auth')->name('coupons.add');
-// TODO Should be post or delete method, but I'm too lazy to create a form in the blade view
-Route::get('/dashboard/settings/coupon/delete/{coupon}', [CouponsController::class, 'delete'])->middleware('auth')->name('coupons.delete');
+	});
 
-// Clients
-Route::get('/dashboard/clients', [ClientsController::class, 'list'])->middleware('auth')->name('clients');
-Route::get('/dashboard/export', [ClientsController::class, 'csv'])->middleware('auth')->name('clients.export');
+	// Shipping methods
+	Route::prefix('shipping-methods')->name('shippingMethods')->group(function() {
+		Route::post('/add', [ShippingMethodsController::class, 'add'])->name('.add');
+		Route::post('/add-stop/{shippingMethod}', [PriceStopsController::class, 'add'])->name('.addStop');
+		// TODO Should be post or delete method, but I'm too lazy to create a form in the blade view
+		Route::get('/delete-stop/{priceStop}', [PriceStopsController::class, 'delete'])->name('.deleteStop');
+		// TODO Should be post or delete method, but I'm too lazy to create a form in the blade view
+		Route::get('/delete/{shippingMethod}', [ShippingMethodsController::class, 'delete'])->name('.delete');
+		Route::get('/edit/{shippingMethod}', [ShippingMethodsController::class, 'edit'])->name('.edit');
+		Route::patch('/edit/{shippingMethod}', [ShippingMethodsController::class, 'update'])->name('.update');
+	});
 
-// Settings
-Route::get('/dashboard/settings', [SettingsController::class, 'main'])->middleware('auth')->name('settings');
-Route::patch('/dashboard/settings', [SettingsController::class, 'update'])->middleware('auth')->name('settings.update');
-Route::post('/dashboard/settings/publish', [SettingsController::class, 'publish'])->middleware('auth')->name('settings.publish');
-Route::post('/dashboard/settings/toggleshop', [SettingsController::class, 'toggleShop'])->middleware('auth')->name('settings.toggleShop');
-Route::post('/dashboard/settings/acronyms/add', [SettingsController::class, 'addAcronym'])->middleware('auth')->name('settings.addAcronym');
-// TODO Should be post or delete method, but I'm too lazy to create a form in the blade view
-Route::get('/dashboard/settings/acronyms/delete/{acronym}', [SettingsController::class, 'deleteAcronym'])->middleware('auth')->name('settings.deleteAcronym');
+	// Users
+	Route::name('users')->group(function() {
+		Route::get('/users', [UsersController::class, 'list']);
+		Route::get('/user/{user}', [UsersController::class, 'display'])->name('.display');
+		Route::get('/user/edit/{user}', [UsersController::class, 'edit'])->name('.edit');
+		Route::patch('/user/{user}', [UsersController::class, 'update'])->name('.update');
+		Route::post('/user/delete/{user}', [UsersController::class, 'delete'])->name('.delete');
+		Route::get('/users/invite', [UsersController::class, 'invitation'])->name('.invitation');
+		Route::post('/users/invite', [UsersController::class, 'invite'])->name('.invite');
+	});
 
-// Misc/Debug/Log
-Route::get('/dashboard/mails/log', [MessagesController::class, 'log'])->middleware('auth')->name('mails.log');
-Route::get('/dashboard/phpinfo', function() {
-	return view('other.phpinfo');
-})->middleware('auth')->name('phpinfo');
+	// Books
+	Route::name('books')->group(function() {
+		Route::get('/books', [BooksController::class, 'list']);
+		Route::get('/book/create', [BooksController::class, 'create'])->name('.create');
+		Route::post('/books', [BooksController::class, 'store'])->name('.store');
+		Route::get('/book/edit/{id}', [BooksController::class, 'edit'])->name('.edit');
+		Route::patch('/book/{book}', [BooksController::class, 'update'])->name('.update');
+		Route::get('/book/{id}', [BooksController::class, 'display'])->name('.display');
+		Route::get('/book/archive/{book}', [BooksController::class, 'archive'])->name('.archive');
+		Route::post('/book/delete/{id}', [BooksController::class, 'delete'])->name('.delete');
+		Route::post('/books/archived/delete', [BooksController::class, 'deleteAll'])->name('.deleteAll');
+		Route::get('/book/restore/{id}', [BooksController::class, 'restore'])->name('.restore');
+		Route::get('/books/archived', [BooksController::class, 'archived'])->name('.archived');
+	});
+
+	// Variation
+	Route::prefix('book/variations')->name('variations')->group(function() {
+		Route::get('/{book}', [VariationsController::class, 'list']);
+		Route::post('/add', [VariationsController::class, 'add'])->name('.add');
+		Route::post('/delete', [VariationsController::class, 'delete'])->name('.delete');
+	});
+
+	// Media
+	Route::prefix('media')->name('media')->group(function() {
+		Route::get('/', [MediaController::class, 'list']);
+		Route::post('/', [MediaController::class, 'store'])->name('.store');
+		Route::get('/create', [MediaController::class, 'create'])->name('.create');
+		Route::get('/refresh', [MediaController::class, 'refreshAll'])->name('.optimize.refreshAll');
+		Route::get('/rebuild', [MediaController::class, 'rebuildAll'])->name('.optimize.rebuildAll');
+		Route::get('/{medium}', [MediaController::class, 'display'])->name('.display');
+		Route::patch('/{medium}', [MediaController::class, 'update'])->name('.update');
+		Route::get('/refresh/{medium}', [MediaController::class, 'refresh'])->name('.optimize.refresh');
+		Route::get('/rebuild/{medium}', [MediaController::class, 'rebuild'])->name('.optimize.rebuild');
+		Route::get('/{medium}/break/{book}', [MediaController::class, 'breakLink'])->name('.break');
+		Route::post('/delete/{id}', [MediaController::class, 'delete'])->name('.delete');
+	});
+
+	// Settings
+	Route::prefix('settings')->group(function() {
+
+		// Coupons
+		Route::prefix('coupon')->name('coupons')->group(function() {
+			Route::post('/add', [CouponsController::class, 'add'])->name('.add');
+			// TODO Should be post or delete method, but I'm too lazy to create a form in the blade view
+			Route::get('/delete/{coupon}', [CouponsController::class, 'delete'])->name('.delete');
+		});
+
+		// Settings
+		Route::name('settings')->group(function() {
+
+			Route::get('/', [SettingsController::class, 'main']);
+			Route::patch('/', [SettingsController::class, 'update'])->name('.update');
+			Route::post('/publish', [SettingsController::class, 'publish'])->name('.publish');
+			Route::post('/toggleshop', [SettingsController::class, 'toggleShop'])->name('.toggleShop');
+
+			// Acronyms
+			Route::prefix('acronyms')->group(function() {
+				Route::post('/add', [SettingsController::class, 'addAcronym'])->name('.addAcronym');
+				// TODO Should be post or delete method, but I'm too lazy to create a form in the blade view
+				Route::get('/delete/{acronym}', [SettingsController::class, 'deleteAcronym'])->name('.deleteAcronym');
+			});
+			
+		});
+	});
+
+	// Clients
+	Route::get('/clients', [ClientsController::class, 'list'])->name('clients');
+	Route::get('/export', [ClientsController::class, 'csv'])->name('clients.export');
+
+	// Misc/Debug/Log
+	Route::get('/mails/log', [MessagesController::class, 'log'])->name('mails.log');
+	Route::get('/phpinfo', function() {
+		return view('other.phpinfo');
+	})->name('phpinfo');
+
+});
 
 require __DIR__.'/auth.php';
