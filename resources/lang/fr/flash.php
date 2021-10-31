@@ -19,6 +19,9 @@ return [
 		'some-still-linked' => 'Impossible de supprimer certain livres car ils sont toujours liés à une commande active. Archivez d\'abord la commande.',
 		'all-deleted' => 'Tous les livres archivés ont été supprimés.',
 	],
+	'variation' => [
+		'deleted' => 'Variation supprimée'
+	],
 	'media' => [
 		'added' => 'Nouveau(x) média(s) ajouté(s) !',
 		'deleted' => 'Média supprimé.',

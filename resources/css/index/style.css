@@ -136,6 +136,25 @@
 		@apply text-inherit;
 	}
 
+	/*--------------- Variation form ---------------*/
+	.variations-form {
+		@apply
+			mr-2;
+	}
+
+	.variations-form select {
+		@apply 
+			border-gray-800
+			text-custom
+			py-1
+			pl-2
+			pr-8
+			md:py-3
+			md:pl-4
+			md:pr-10
+			focus:ring-0;
+	}
+
 	/*--------------- Shipping form ---------------*/
 	.shipping-address-input {
 		@apply py-1 px-2 mt-4 w-full;
@@ -262,8 +281,8 @@
 			no-underline
 			border
 
-			border-black
-			text-black
+			border-gray-800
+			text-gray-800
 			bg-transparent
 			hover:text-white
 			hover:bg-black

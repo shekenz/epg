@@ -1,16 +1,21 @@
-<article id="{{ Str::slug($book->title, '-') }}" class="grid grid-cols-9">
+<article id="{{ Str::slug($bookInfo->title, '-') }}" class="grid grid-cols-9">
 	<div class="
 		carousel
 		col-span-9
 		mr-0
 		xl:col-span-7
 		xl:mr-12
-	" data-slick='{"slidesToShow": 1, "slidesToScroll": 4}'>
-		<div class="glide">
+	">
+		<div class="glide" id="glide-{{ $glideIndex }}">
 			<div data-glide-el="track" class="glide__track">
 				<ul class="glide__slides">
-					@foreach ($book->media as $medium)
+					@php $mediaIDs = []; @endphp
+					@foreach ($bookInfo->books->first()->media as $index => $medium)
 						<li class="glide__slide text-center"><img class="m-auto w-full" src="{{ asset('storage/'.$medium->preset('hd')) }}"></li>
+						@php
+								$mediaIDs[$medium->id] = $index;
+								// Set media's position in the glide as 'media_id' => 'position_in_glide'
+						@endphp
 					@endforeach
 				</ul>
 			</div>
@@ -19,15 +24,15 @@
 				<button class="glide__arrow2 glide__arrow2--right" data-glide-dir=">"></button>
 			</div>
 			<div class="glide__bullets xl:hidden" data-glide-el="controls[nav]">
-				@if(count($book->media) != 1)
-					@foreach ($book->media as $medium)
+				@if(count($bookInfo->books->first()->media) != 1)
+					@foreach ($bookInfo->books->first()->media as $medium)
 						<button class="glide__bullet" data-glide-dir="={{ $medium->order }}"></button>
 					@endforeach
 				@endif
 			</div>
 					
 		</div>
-		<div id="counter-{{ $glideIndex }}" class="hidden xl:block xl:mt-8 xl:mb-12"><span class="counter-index">1</span>/<span class="counter-total">{{ $book->media->count() }}</span></div>
+		<div id="counter-{{ $glideIndex }}" class="hidden xl:block xl:mt-8 xl:mb-12"><span class="counter-index">1</span>/<span class="counter-total">{{ $bookInfo->books->first()->media->count() }}</span></div>
 	</div>
 	<div class="
 		info
@@ -42,37 +47,51 @@
 		xl:col-span-2
 	">
 		<div class="mr-4 xl:mr-0">
-				{{ $book->title }}<br>
-				@if( !empty($book->author) )
-				{{ $book->author }}<br>
+				{{ $bookInfo->title }}<br>
+				@if( !empty($bookInfo->author) )
+				{{ $bookInfo->author }}<br>
 				@endif
-				@if( !(empty($book->height) && empty($book->width) && empty($book->cover) && empty($book->pages) && empty($book->year)) )
+				@if( !(empty($bookInfo->height) && empty($bookInfo->width) && empty($bookInfo->cover) && empty($bookInfo->pages) && empty($bookInfo->year)) )
 				<br>
 				@endif
-				@if( !(empty($book->height) || empty($book->width)) )
-				{{ $book->height }}mm x {{ $book->width }}mm<br>
+				@if( !(empty($bookInfo->height) || empty($bookInfo->width)) )
+				{{ $bookInfo->height }}mm x {{ $bookInfo->width }}mm<br>
 				@endif
-				@if ( !empty($book->cover) )
-				{{ $book->cover }}<br>
+				@if ( !empty($bookInfo->cover) )
+				{{ $bookInfo->cover }}<br>
 				@endif
-				@if( !empty($book->pages) )
-					{{ $book->pages }} pages<br>
+				@if( !empty($bookInfo->pages) )
+					{{ $bookInfo->pages }} pages<br>
 				@endif
-				@isset($book->copies)
-					{{ $book->copies.' '.__('copies') }}<br>
+				@isset($bookInfo->copies)
+					{{ $bookInfo->copies.' '.__('copies') }}<br>
 				@endif
-				@if( !empty($book->year) )
-					{{ $book->year }}<br>
+				@if( !empty($bookInfo->year) )
+					{{ $bookInfo->year }}<br>
 				@endif
 
-				@if( !empty($book->price) && setting('app.shop.enabled'))
-					<br>{{ $book->price }} €<br>
-					@if( $book->quantity > 0)
+				@if($bookInfo->books->count() > 1)
+					<br>
+					<div class="flex items-center">
+						<form class="variations-form" id="variations-form-{{ $glideIndex }}">
+							<select class="variations-select" data-glide-index="{{ $glideIndex }}">
+							@foreach($bookInfo->books as $variation)
+								<option value="{{ json_encode($variation->media->map(function($item) { return 'storage/'.$item->preset('hd'); })) }}">{{ $variation->label }}</option>
+							@endforeach
+							</select>
+						</form>
+						<img id="variations-loader-{{ $glideIndex }}" src="{{ asset('img/loading-windows98.gif') }}" class="w-10 h-10 inline-block hidden">
+					</div>
+				@endif
+
+				@if( !empty($bookInfo->books->first()->price) && setting('app.shop.enabled'))
+					<br>{{ $bookInfo->books->first()->price }} €<br>
+					@if( $bookInfo->books->first()->stock > 0)
 						<br>
-						<a href="{{ route('cart.api.add', $book->id)}}" class="add-to-cart-button button-lg">{{ ___('add to cart') }}</a><br>
-					@elseif( $book->pre_order)
+						<a href="{{ route('cart.api.add', $bookInfo->books->first()->id)}}" class="add-to-cart-button button-lg">{{ ___('add to cart') }}</a><br>
+					@elseif( $bookInfo->books->first()->pre_order)
 						<br>
-						<a href="{{ route('cart.api.add', $book->id)}}" class="add-to-cart-button button-lg">{{ ___('pre-order') }}</a><br>
+						<a href="{{ route('cart.api.add', $bookInfo->books->first()->id)}}" class="add-to-cart-button button-lg">{{ ___('pre-order') }}</a><br>
 					@else
 						<br>
 						({{ __('Out of stock') }})<br>
@@ -80,12 +99,15 @@
 				@endif
 				<br>
 				@auth
-					<div class="hideable mb-4"><a href="{{ route('books.edit', $book->id) }}" class="user-edit">{{ ___('edit') }}</a><a href="{{ route('books.archive', $book->id) }}" class="user-edit">{{ ___('archive') }}</a></div>
+					<div class="hideable mb-4">
+						<a href="{{ route('books.edit', $bookInfo->id) }}" class="user-edit">{{ ___('edit') }}</a>
+						{{-- <a href="{{ route('books.archive', $bookInfo->id) }}" class="user-edit">{{ ___('archive') }}</a> --}}
+					</div>
 				@endauth
 		</div>
 		<div class="col-span-2">
 			<p class="mb-6 mr-6">
-				{!! nl2br(e($book->description)) !!}
+				{!! nl2br(e($bookInfo->description)) !!}
 			</p>
 		</div>
 	</div>

@@ -79,7 +79,7 @@ const inputError = (inputName, message = '') => {
 		throw new Error(`C\'ant find element with name "${inputName}"`);
 	} else {
 		input.classList.add('error');
-		if(input.nextElementSibling.tagName === 'SPAN' && message !== '') {
+		if(input.nextElementSibling.toUpperCase() === 'SPAN' && message !== '') {
 			input.nextElementSibling.innerHTML = message;
 		}
 	}
@@ -88,7 +88,7 @@ const inputError = (inputName, message = '') => {
 const inputErrorReset = input => {
 	if(input.classList.contains('error')) {
 		input.classList.remove('error');
-		if(input.nextElementSibling.tagName === 'SPAN') {
+		if(input.nextElementSibling.tagName.toUpperCase() === 'SPAN') {
 			input.nextElementSibling.innerHTML = '';
 		}
 	}

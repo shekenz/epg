@@ -9,49 +9,54 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+	use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'username',
-        'lastname',
-        'firstname',
-        'email',
-        'birthdate',
-        'password',
-    ];
+	/**
+	 * The attributes that are mass assignable.
+	 *
+	 * @var array
+	 */
+	protected $fillable = [
+			'username',
+			'lastname',
+			'firstname',
+			'email',
+			'birthdate',
+			'password',
+	];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+	/**
+	 * The attributes that should be hidden for arrays.
+	 *
+	 * @var array
+	 */
+	protected $hidden = [
+			'password',
+			'remember_token',
+	];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+	/**
+	 * The attributes that should be cast to native types.
+	 *
+	 * @var array
+	 */
+	protected $casts = [
+			'email_verified_at' => 'datetime',
+	];
 
 
 
-    // model relationship
-    public function media() {
-        return $this->hasMany(Medium::class)->orderBy('created_at', 'DESC');
-    }
+	// model relationship
+	public function media() {
+			return $this->hasMany(Medium::class)->orderBy('created_at', 'DESC');
+	}
 
-	public function books() {
-        return $this->hasMany(Book::class)->orderBy('created_at', 'DESC');
-    }
+
+
+	public function bookInfos() {
+      return $this->hasMany(BookInfo::class);
+  }
+
+
+
 }

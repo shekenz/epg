@@ -23,7 +23,7 @@ module.exports = {
 				dashboard: ['Nunito', ...defaultTheme.fontFamily.sans],
             },
 			fontSize: {
-				custom: ['1.1em', '1.2em'],
+				custom: ['1.1rem', '1.35rem'],
 				'custom-sm': ['1em', '1.15em'],
 			},
 			colors: {

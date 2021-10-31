@@ -52,7 +52,7 @@
 	}
 
 	.label-shared {
-		@apply mt-2 font-medium text-sm text-gray-500;
+		@apply font-medium text-sm text-gray-500;
 	}
 
 	.label-shared-first {
@@ -135,6 +135,13 @@
 		@apply text-red-500;
 	}
 
+	.mini-button {
+		@apply
+			bg-gray-800 border border-gray-800 rounded-md inline-flex items-center justify-center h-8 w-8 p-1 text-white
+			hover:bg-white
+			hover:text-gray-800;
+	}
+
 	/* --------------------------------------------------------------------------------------------- TABLES */
 
 	/* --------------------------- Base Table */
@@ -167,12 +174,6 @@
 		@apply
 			text-blue-600
 			font-bold;
-	}
-
-	/* --------------------------- Small row Table */
-
-	table.app-table-small td {
-		@apply p-0 px-1;
 	}
 
 	/* --------------------------- Shipping methods Table */
@@ -301,10 +302,11 @@
 		-webkit-user-drag: none;
 	}
 
-	input[type=text].error {
+	input.error {
 		@apply
 			ring-red-500
-			bg-red-100;
+			bg-red-100
+			border-red-500;
 	}
 
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Book;
+use App\Models\BookInfo;
 use App\Models\Medium;
 use App\Traits\MediaManager;
 
@@ -12,60 +13,67 @@ use App\Traits\MediaManager;
  */
 class BooksController extends Controller
 {
+
 	use MediaManager;
 
+
+
 	/** @var array $validation contains the validation rules for creating or updating a book */
-	protected $validation = [
+	protected $bookValidation = [
+		'label' => ['required', 'max:128'],
+		'weight' => ['required', 'min:0', 'integer'],
+		'stock' => ['required', 'integer'],
+		'pre_order' => ['nullable', 'boolean'],
+		'price' => ['required', 'min:0', 'numeric'],
+		'media' => ['nullable', 'array'],
+		'files.*' => ['nullable', 'file', 'mimes:jpg,gif,png'],
+	];
+
+	protected $infoValidation = [
 		'title' => ['required', 'string', 'max:128'],
 		'author' => ['nullable', 'string', 'max:64'],
+		'position' => ['nullable', 'integer'],
 		'width' => ['nullable', 'integer'],
 		'height' => ['nullable', 'integer'],
 		'pages' => ['nullable', 'integer'],
 		'cover' => ['nullable', 'string', 'max:32'],
-		'weight' => ['required', 'integer', 'min:0'],
 		'copies' => ['nullable', 'integer'],
-		'quantity' => ['required', 'integer'],
-		'pre_order' => ['nullable', 'boolean'],
 		'year' => ['nullable', 'integer', 'digits_between:0,4'],
-		'price' => ['nullable', 'numeric'],
 		'description' => ['required', 'string'],
-		'files.*' => ['nullable', 'file', 'mimes:jpg,gif,png'],
-		'media' => ['nullable', 'array'],
 	];
 
-	public function __contruct() {
-    }
+
 
 	/** Lists all books from the library for the frontend index. Filters out books with no linked media. */
-    public function index() {
-		// We need to filter out the books without linked images because gilde.js hangs if it have no child elements.
+  public function index() {
+		// We need to filter out the books without linked images because gilde.js hangs if it has no child elements.
 		// We also need a clean ordered index to link each glides to its corresponding counter.
-		$books = Book::with([
-				'media' => function($q) { $q->orderBy('pivot_order', 'asc'); }
-			])
-			->orderBy('created_at', 'DESC')
-			->get()
-			->filter(function($value) {
-				return $value->media->isNotEmpty();
-			})
-			->values();
-        return view('books/index', compact('books'));
+		$bookInfos = BookInfo::with([
+			'books'
+		])
+		->orderBy('id', 'DESC')
+		->get();
+		
+		return view('books/index', compact('bookInfos'));
 	}
+
+
 
 	/** Lists all books from the library. Index of the books library in backend. */
 	public function list() {
-		$books = Book::orderBy('created_at', 'DESC')->get();
-		$archived = Book::onlyTrashed()->count();
-        return view('books/list', compact('books', 'archived'));
+		$bookInfos = BookInfo::orderBy('id', 'DESC')->get();
+		//$archived = Book::onlyTrashed()->count();
+      return view('books/list', compact('bookInfos'));
 	}
+
+
 	
 	/** Displays the book resume in backend. */
-	public function display($id) {
-		$book = Book::with([
-			'media' => function($q) { $q->orderBy('pivot_order', 'asc'); }
-		])->findOrFail($id);
-		return view('books.display', compact('book'));
+	public function display(BookInfo $bookInfo) {
+		return view('books.display', compact('bookInfo'));
 	}
+
+
 
 	/** Displays new book creation page. */
 	public function create() {
@@ -73,34 +81,45 @@ class BooksController extends Controller
 		return view('books/create', compact('media'));
 	}
 
+
+
 	/** Create a new book in the database and links it with provided media. */
 	public function store(Request $request) {
-		$data = $request->validate($this->validation);
+		$bookData = $request->validate($this->bookValidation);
+		$infoData = $request->validate($this->infoValidation);
 		$mediaIDs = array(); // Array containing all media ids to attach to the new book
 
 		// Storing all uploaded images
-		if(array_key_exists('files', $data)) {
-			foreach($data['files'] as $file) {
+		if(array_key_exists('files', $bookData)) {
+			foreach($bookData['files'] as $file) {
 				// Pushing new files ids for attachment
 				array_push($mediaIDs, self::storeMedia($file));
 			}
 		}
 
 		// Merging files uploaded and files from library together for attachment
-		if(array_key_exists('media', $data)) {
-			$mediaIDs = array_merge($data['media'], $mediaIDs);
+		if(array_key_exists('media', $bookData)) {
+			// $bookData['media'] is also an array of ids
+			$mediaIDs = array_merge($bookData['media'], $mediaIDs);
 		}
 
 		// Saving book in database
-		$book = auth()->user()->books()->create($data);
-
-		/** Creating a new array with ids as key and a table of order_field => order as value.
-		 * This table allows us to save data in the order field of the pivot table
-		 * It is order following the original $mediaIDs array. Hence uploaded files will be ordered at the end.
+		// Creating bookInfo from user/bookInfo model relationship to insert the user_id
+		$bookInfo = auth()->user()->bookInfos()->create($infoData);
+		// Creating book from bookInfo/book model relationship to insert the book_info_id
+		$book = $bookInfo->books()->create($bookData);
+		
+		/** 
+		 * Creating a new array with ids as key, and a second array [ 'order' => position ] as value that holds media position (In the pivot table)
+		 * According to documentation : "For convenience, attach and detach also accept arrays of IDs as input"
+		 * https://laravel.com/docs/8.x/eloquent-relationships#updating-many-to-many-relationships
+		 * $mediaIDsWithOrder = [
+		 * 		int:media_id => [ 'order' => int:position ]
+		 * ]
 		 */
 		$mediaIDsWithOrder = [];
 		foreach($mediaIDs as $order => $id) {
-			$mediaIDsWithOrder[$id] = ['order' => $order+1];
+			$mediaIDsWithOrder[$id] = ['order' => $order];
 		}
 
 		// Attach
@@ -114,55 +133,23 @@ class BooksController extends Controller
 		]);
 	}
 
+
+
 	/** Displays the book edition page. */
-	public function edit($id) {
+	public function edit(BookInfo $bookInfo) {
 		$media = Medium::all();
-		$book = Book::with([
-			'media' => function($q) { $q->orderBy('pivot_order', 'asc'); },
-			'orders',
-		])->findOrFail($id);
-		return view('books/edit', compact('book', 'media'));
+		return view('books/edit', compact('bookInfo', 'media'));
 	}
 
+
+
 	/** Updates the book's info and re-links media if necessary. */
-	public function update(Book $book, Request $request) {
-		$data = $request->validate($this->validation);
-		$mediaIDs = array(); // Array containing all media ids to attach to the book
+	public function update(Request $request, BookInfo $bookInfo) {
 
-		// Storing all uploaded images
-		if(array_key_exists('files', $data)) {
-			foreach($data['files'] as $file) {
-				// Pushing new files ids for attachment
-				array_push($mediaIDs, self::storeMedia($file));
-			}
-		}
-
-		// Merging uploaded and from library IDs to attach
-		if(array_key_exists('media', $data)) {
-			$mediaIDs = array_merge($data['media'], $mediaIDs);
-		}
-
-		/** Creating a new array with ids as key and a table of order_field => order as value.
-		 * This table allows us to save data in the order field of the pivot table
-		 * It is order following the original $mediaIDs array. Hence uploaded files will be ordered at the end.
-		 */
-		$mediaIDsWithOrder = [];
-		foreach($mediaIDs as $order => $id) {
-			$mediaIDsWithOrder[$id] = ['order' => $order+1];
-		}
-
-		/** We sync up the media array with the attach table.
-		 *  If a media id is in mediaIDs, it is attached.
-		 *  If it is not and was previously attached, it is detached.
-		 */
-		$book->media()->sync($mediaIDsWithOrder);
-
-		if(empty($data['pre_order'])) {
-			$data['pre_order'] = 0;
-		}
+		$data = $request->validate($this->infoValidation);
 
 		// Updating book
-		$book->update($data);
+		$bookInfo->update($data);
 		
 		return redirect()->route('books')->with([
 			'flash' => __('flash.book.updated'),
@@ -170,12 +157,16 @@ class BooksController extends Controller
 		]);
 	}
 
+
+
 	// Lists all archived books. Index of archives in backend.
 	public function archived() {
 		$books = Book::onlyTrashed()->get();
 		$archived = Book::onlyTrashed()->count();
 		return view('books/archived', compact('books', 'archived'));
 	}
+
+
 
 	// Archives a book (SoftDelete)
 	public function archive(Book $book) {
@@ -186,6 +177,8 @@ class BooksController extends Controller
 		]);
 	}
 
+
+
 	// Restore a book from archives to library.
 	public function restore($id) {
 		// Can't bind a deleted model, will throw a 404
@@ -195,6 +188,8 @@ class BooksController extends Controller
 			'flash-type' => 'success'
 		]);
 	}
+
+
 
 	// Permanently deletes a book from archives.
 	public function delete($id) {
@@ -216,6 +211,8 @@ class BooksController extends Controller
 			]);
 		}
 	}
+
+
 
 	// Permanently deletes ALL books from archives.
 	public function deleteAll() {
@@ -241,6 +238,8 @@ class BooksController extends Controller
 				'flash-type' => 'error'
 			]);
 		}
-		
 	}
+
+
+
 }

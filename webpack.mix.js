@@ -20,8 +20,10 @@ mix.js('resources/js/app.js', 'public/js'); // Main backend script available in 
 // App JS (Backend)
 mix.js('resources/js/ondemand/app/settings.js', 'public/js'); // Loaded on settings view
 mix.js('resources/js/ondemand/app/media-optimized.js', 'public/js'); // Loaded on display media view
-mix.js('resources/js/ondemand/app/media-library-dragdrop.js', 'public/js'); // Loaded on edit and create book view
-mix.js('resources/js/ondemand/app/books-form.js', 'public/js'); // Loaded on edit and create book view
+mix.js('resources/js/ondemand/app/media-library-dragdrop.js', 'public/js'); // Loaded on create book, create variation and edit variation views
+mix.js('resources/js/ondemand/app/books-edit.js', 'public/js'); // Loaded on edit book view
+mix.js('resources/js/ondemand/app/variations-create.js', 'public/js'); // Loaded on create variaiton and edit variation views
+mix.js('resources/js/ondemand/app/variations-edit.js', 'public/js'); // Loaded on edit variation view
 mix.js('resources/js/ondemand/app/order-ship.js', 'public/js'); // Loaded on display order view
 mix.js('resources/js/ondemand/app/order-list.js', 'public/js'); // Loaded on list order view
 mix.js('resources/js/ondemand/app/labels.js', 'public/js'); // Loaded on labels preview view

@@ -111,25 +111,27 @@ Route::middleware('auth')->prefix('dashboard')->group(function() {
 	});
 
 	// Books
-	Route::name('books')->group(function() {
-		Route::get('/books', [BooksController::class, 'list']);
-		Route::get('/book/create', [BooksController::class, 'create'])->name('.create');
-		Route::post('/books', [BooksController::class, 'store'])->name('.store');
-		Route::get('/book/edit/{id}', [BooksController::class, 'edit'])->name('.edit');
-		Route::patch('/book/{book}', [BooksController::class, 'update'])->name('.update');
-		Route::get('/book/{id}', [BooksController::class, 'display'])->name('.display');
-		Route::get('/book/archive/{book}', [BooksController::class, 'archive'])->name('.archive');
-		Route::post('/book/delete/{id}', [BooksController::class, 'delete'])->name('.delete');
-		Route::post('/books/archived/delete', [BooksController::class, 'deleteAll'])->name('.deleteAll');
-		Route::get('/book/restore/{id}', [BooksController::class, 'restore'])->name('.restore');
-		Route::get('/books/archived', [BooksController::class, 'archived'])->name('.archived');
+	Route::prefix('books')->name('books')->group(function() {
+		Route::get('/', [BooksController::class, 'list']);
+		Route::get('/create', [BooksController::class, 'create'])->name('.create');
+		Route::post('/', [BooksController::class, 'store'])->name('.store');
+		Route::get('/edit/{bookInfo}', [BooksController::class, 'edit'])->name('.edit');
+		Route::patch('/edit/{bookInfo}', [BooksController::class, 'update'])->name('.update');
+		Route::get('/{bookInfo}', [BooksController::class, 'display'])->name('.display');
+		Route::get('/archive/{book}', [BooksController::class, 'archive'])->name('.archive');
+		Route::post('/delete/{id}', [BooksController::class, 'delete'])->name('.delete');
+		Route::post('/archived/delete', [BooksController::class, 'deleteAll'])->name('.deleteAll');
+		Route::get('/restore/{id}', [BooksController::class, 'restore'])->name('.restore');
+		Route::get('/archived', [BooksController::class, 'archived'])->name('.archived');
 	});
 
-	// Variation
-	Route::prefix('book/variations')->name('variations')->group(function() {
-		Route::get('/{book}', [VariationsController::class, 'list']);
-		Route::post('/add', [VariationsController::class, 'add'])->name('.add');
-		Route::post('/delete', [VariationsController::class, 'delete'])->name('.delete');
+	//Variation
+	Route::prefix('books/variations')->name('variations')->group(function() {
+		Route::get('/{bookInfo}/add', [VariationsController::class, 'create'])->name('.create');
+		Route::post('/{bookInfo}/add', [VariationsController::class, 'store'])->name('.store');
+		Route::get('/edit/{book}', [VariationsController::class, 'edit'])->name('.edit');
+		Route::patch('/edit/{book}', [VariationsController::class, 'update'])->name('.update');
+		Route::delete('/delete/{book}', [VariationsController::class, 'delete'])->name('.delete');
 	});
 
 	// Media

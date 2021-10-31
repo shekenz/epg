@@ -7,7 +7,7 @@
 		<script src="{{ asset('js/add-to-cart.js') }}" defer></script>
 	</x-slot>
 	
-	@foreach ($books as $glideIndex => $book)
+	@foreach ($bookInfos as $glideIndex => $bookInfo)
 		@include('books.book')
 	@endforeach
 

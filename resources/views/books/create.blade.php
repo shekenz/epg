@@ -27,61 +27,74 @@
         </div>
         @endif
 
-        <form action="{{ route('books.store') }}" method="post" enctype="multipart/form-data" class="flex flex-col gap-y-2 md:grid md:grid-cols-4 lg:m-2 md:gap-x-4">
-            @csrf
-			<div>
-				<label class="label-shared lg:text-lg" for="title">{{ ___('title') }} :</label>
-				<input class="input-shared" id="title" name="title" type="text" value="{{ old('title') }}" maxlength="128">
-			</div>
-			<div class="md:row-start-2">
-				<label class="label-shared lg:text-lg" for="author">{{ ___('author') }} :</label>
-				<input class="input-shared" id="author" name="author" type="text" value="{{ old('author') }}" maxlength="64">
-			</div>
-			<div class="md:row-start-3">
-            	<label class="label-shared lg:text-lg" for="year">{{ ___('year') }} :</label>
-            	<input class="input-shared" id="year" name="year" type="number" value="{{ old('year') }}" min="0" max="{{ now()->addYear(1)->year }}">
-			</div>
-			<div class="md:row-start-4">
-				<label class="label-shared lg:text-lg" for="copies">{{ ___('copies') }} :</label>
-				<input class="input-shared" id="copies" name="copies" type="number" value="{{ old('copies') }}">
-			</div>
-			<div class="md:row-start-5">
-				<label class="label-shared lg:text-lg" for="quantity">{{ ___('stock') }} :</label>
-				<input class="input-shared" id="quantity" name="quantity" type="number" min="0" value="{{ old('quantity') }}">
-				<input class="input-shared" id="quantity-hidden" name="quantity" type="hidden" disabled="true" value="0">
-				<div class="mt-1">
-					<input class="" id="pre-order" name="pre_order" type="checkbox" value="1" @if(old('pre_order')) {{ 'checked' }} @endif><label for="pre-order"> {{ ___('pre-order') }}</label>
+      <form action="{{ route('books.store') }}" method="post" enctype="multipart/form-data" class="flex flex-col gap-y-2 md:grid md:grid-cols-4 lg:m-2 md:gap-x-4" autocomplete="off">
+        @csrf
+				<div>
+					<label class="label-shared lg:text-lg" for="title">{{ ___('title') }} :</label>
+					<input class="input-shared" id="title" name="title" type="text" value="{{ old('title') }}" maxlength="128">
 				</div>
-			</div>
-			<div class="md:col-start-2">
-				<label class="label-shared lg:text-lg" for="width">{{ __('width') }} (mm) :</label>
-				<input class="input-shared" id="width" name="width" type="number" value="{{ old('width') }}">
-			</div>
-			<div class="md:row-start-2 md:col-start-2">
-				<label class="label-shared lg:text-lg" for="height">{{ ___('height') }} (mm) :</label>
-				<input class="input-shared" id="height" name="height" type="number" value="{{ old('height') }}">
-			</div>
-			<div class="md:row-start-3 md:col-start-2">
-				<label class="label-shared lg:text-lg" for="cover">{{ ___('cover') }} :</label>
-				<input class="input-shared" id="cover" name="cover" type="text" value="{{ old('cover') }}" maxlength="32">
-			</div>
-			<div class="md:row-start-4 md:col-start-2">
-				<label class="label-shared lg:text-lg" for="weight">{{ ___('weight') }} (g) :</label>
-				<input class="input-shared" id="weight" name="weight" type="number" value="{{ old('weight') }}" min="0">
-			</div>
-			<div class="md:row-start-5 md:col-start-2">
-				<label class="label-shared lg:text-lg" for="pages">{{ ___('pages count') }} :</label>
-				<input class="input-shared" id="pages" name="pages" type="number" value="{{ old('pages') }}">
-			</div>
-			<div class="md:row-start-6 md:col-start-2">
-				<label class="label-shared lg:text-lg" for="price">{{ ___('price') }} :</label>
-				<input class="input-shared" id="price" name="price" type="text" value="{{ old('price') }}" maxlength="10">
-			</div>
-			<div class="col-start-3 col-span-2 row-start-1 row-span-5">
-				<label class="label-shared lg:text-lg" for="description">{{ ___('description') }} :</label>
-				<textarea id="description" class="input-shared h-[22rem]" name="description">{{ old('description') }}</textarea>
-			</div>
-			<input type="hidden" name="lang" value="fr">
+				<div class="md:row-start-2">
+					<label class="label-shared lg:text-lg" for="author">{{ ___('author') }} :</label>
+					<input class="input-shared" id="author" name="author" type="text" value="{{ old('author') }}" maxlength="64">
+				</div>
+				<div class="md:row-start-3">
+					<label class="label-shared lg:text-lg" for="year">{{ ___('year') }} :</label>
+					<input class="input-shared" id="year" name="year" type="number" value="{{ old('year') }}" min="0" max="{{ now()->addYear(1)->year }}">
+				</div>
+				<div class="md:row-start-4">
+					<label class="label-shared lg:text-lg" for="copies">{{ ___('copies') }} :</label>
+					<input class="input-shared" id="copies" name="copies" type="number" value="{{ old('copies') }}">
+				</div>
+				<div class="md:col-start-2">
+					<label class="label-shared lg:text-lg" for="width">{{ ___('width') }} (mm) :</label>
+					<input class="input-shared" id="width" name="width" type="number" value="{{ old('width') }}">
+				</div>
+				<div class="md:row-start-2 md:col-start-2">
+					<label class="label-shared lg:text-lg" for="height">{{ ___('height') }} (mm) :</label>
+					<input class="input-shared" id="height" name="height" type="number" value="{{ old('height') }}">
+				</div>
+				<div class="md:row-start-3 md:col-start-2">
+					<label class="label-shared lg:text-lg" for="cover">{{ ___('cover') }} :</label>
+					<input class="input-shared" id="cover" name="cover" type="text" value="{{ old('cover') }}" maxlength="32">
+				</div>
+				
+				<div class="md:row-start-4 md:col-start-2">
+					<label class="label-shared lg:text-lg" for="pages">{{ ___('pages count') }} :</label>
+					<input class="input-shared" id="pages" name="pages" type="number" value="{{ old('pages') }}">
+				</div>
+				<div class="col-start-3 col-span-2 row-start-1 row-span-4 flex flex-col">
+					<label class="label-shared lg:text-lg" for="description">{{ ___('description') }} :</label>
+					<textarea id="description" class="input-shared flex-1" name="description">{{ old('description') }}</textarea>
+				</div>
+
+				<h2 class="col-span-4 text-lg font-bold border-b border-gray-500 mb-4 mt-8">{{ ___('base variation') }}</h2>
+
+				<div class="md:row-start-6 md:col-start-1">
+					<label class="label-shared lg:text-lg" for="label">{{ ___('label') }} :</label>
+					<input class="input-shared" id="label" name="label" type="text" value="{{ old('label') }}" max="128">
+				</div>
+
+				<div class="md:row-start-6 md:col-start-2">
+					<label class="label-shared lg:text-lg" for="weight">{{ ___('weight') }} (g) :</label>
+					<input class="input-shared" id="weight" name="weight" type="number" value="{{ old('weight') }}" min="0">
+				</div>
+
+				<div class="md:row-start-6 md:col-start-3">
+					<label class="label-shared lg:text-lg" for="stock">{{ ___('stock') }} :</label>
+					<input class="input-shared" id="stock" name="stock" type="number" min="0" value="{{ old('stock') }}">
+					{{-- <input class="input-shared" id="quantity-hidden" name="quantity" type="hidden" disabled="true" value="0"> --}}
+					<div class="mt-1">
+						<input class="" id="pre-order" name="pre_order" type="checkbox" value="1" @if(old('pre_order')) {{ 'checked' }} @endif><label for="pre-order" class="text-gray-500"> {{ ___('pre-order') }}</label>
+					</div>
+				</div>
+
+				<div class="md:row-start-6 md:col-start-4">
+					<label class="label-shared lg:text-lg" for="price">{{ ___('price') }} :</label>
+					<input class="input-shared" id="price" name="price" type="text" value="{{ old('price') }}" maxlength="10">
+				</div>
+				
+				<input type="hidden" name="lang" value="fr">
+				
 
 			@if( $media->isNotEmpty() )
 				<div class="col-span-4">

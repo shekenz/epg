@@ -1,146 +1,153 @@
 <x-app-layout>
 	<x-slot name="title">
-		{{ ___('edit book') }}
+		{{ ___('edit book').' "'.$bookInfo->title.'"' }}
 	</x-slot>
 
 	<x-slot name="scripts">
-		<script src="{{ asset('js/media-library-dragdrop.js') }}" type="text/javascript" defer></script>
-		<script src="{{ asset('js/books-form.js') }}" type="text/javascript" defer></script>
+		<script src="{{ asset('js/books-edit.js') }}" type="text/javascript" defer></script>
 	</x-slot>
 	
 	<div class="m-4">
-        @if ($errors->any())
-        <div class="mb-4" :errors="$errors">
-            <div class="font-medium text-red-600">
-                {{ __('Whoops! Something went wrong.') }}
-            </div>
+	@if ($errors->any())
+		<div class="mb-4" :errors="$errors">
+			<div class="font-medium text-red-600">
+				{{ __('Whoops! Something went wrong.') }}
+			</div>
 
-            <ul class="mt-3 list-disc list-inside text-sm text-red-600">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-        @endif
+			<ul class="mt-3 list-disc list-inside text-sm text-red-600">
+			@foreach ($errors->all() as $error)
+				<li>{{ $error }}</li>
+			@endforeach
+			</ul>
+		</div>
+	@endif
 
-        <form id="edit-form" action="{{ route('books.update', $book->id) }}" method="post" enctype="multipart/form-data" class="flex flex-col gap-y-2 md:grid md:grid-cols-4 lg:m-2 md:gap-x-4">
-            @csrf
+  	<form id="edit-form" action="{{ route('books.update', $bookInfo->id) }}" method="post" enctype="multipart/form-data" class="flex flex-col gap-y-2 md:grid md:grid-cols-4 lg:m-2 md:gap-x-4" autocomplete="off">
+      @csrf
 			@method('patch')
 			<div>
-            	<label class="label-shared lg:text-lg" for="title">{{ ___('title') }} :</label>
-            	<input class="input-shared" id="title" name="title" type="text" value="{{ old('title') ?? $book->title }}" maxlength="128">
+        <label class="label-shared lg:text-lg" for="title">{{ ___('title') }} :</label>
+        <input class="input-shared" id="title" name="title" type="text" value="{{ old('title') ?? $bookInfo->title }}" maxlength="128">
 			</div>
 			<div class="md:row-start-2">
-            	<label class="label-shared lg:text-lg" for="author">{{ ___('author') }} :</label>
-            	<input class="input-shared" id="author" name="author" type="text" value="{{ old('author') ?? $book->author }}" maxlength="64">
+        <label class="label-shared lg:text-lg" for="author">{{ ___('author') }} :</label>
+        <input class="input-shared" id="author" name="author" type="text" value="{{ old('author') ?? $bookInfo->author }}" maxlength="64">
 			</div>
 			<div class="md:row-start-3">
-            	<label class="label-shared lg:text-lg" for="year">{{ ___('year') }} :</label>
-            	<input class="input-shared" id="year" name="year" type="number" value="{{ old('year') ?? $book->year }}" min="0" max="{{ now()->addYear(1)->year }}">
+        <label class="label-shared lg:text-lg" for="year">{{ ___('year') }} :</label>
+        <input class="input-shared" id="year" name="year" type="number" value="{{ old('year') ?? $bookInfo->year }}" min="0" max="{{ now()->addYear(1)->year }}">
 			</div>
 			<div class="md:row-start-4">
 				<label class="label-shared lg:text-lg" for="copies">{{ ___('copies') }} :</label>
-				<input class="input-shared" id="copies" name="copies" type="number" value="{{ old('copies') ?? $book->copies }}">
-			</div>
-			<div class="md:row-start-5">
-				<label class="label-shared lg:text-lg" for="quantity">{{ ___('stock') }} :</label>
-				<input class="input-shared" id="quantity" name="quantity" type="number" min="0" value="{{ old('quantity') ?? $book->quantity }}">
-				<input class="input-shared" id="quantity-hidden" name="quantity" type="hidden" disabled="true" value="{{ old('quantity') ?? $book->quantity }}">
-				<div class="mt-1">
-					<input class="" id="pre-order" name="pre_order" type="checkbox" value="1" @if(old('pre_order') ?? $book->pre_order){{ 'checked' }}@endif><label for="pre-order"> {{ ___('pre-order') }}</label>
-				</div>
+				<input class="input-shared" id="copies" name="copies" type="number" value="{{ old('copies') ?? $bookInfo->copies }}">
 			</div>
 			<div class="md:col-start-2">
 				<label class="label-shared lg:text-lg" for="width">{{ ___('width') }} (mm) :</label>
-				<input class="input-shared" id="width" name="width" type="number" value="{{ old('width') ?? $book->width }}">
+				<input class="input-shared" id="width" name="width" type="number" value="{{ old('width') ?? $bookInfo->width }}">
 			</div>
 			<div class="md:row-start-2 md:col-start-2">
 				<label class="label-shared lg:text-lg" for="height">{{ ___('height') }} (mm) :</label>
-				<input class="input-shared" id="height" name="height" type="number" value="{{ old('height') ?? $book->height }}">
+				<input class="input-shared" id="height" name="height" type="number" value="{{ old('height') ?? $bookInfo->height }}">
 			</div>
 			<div  class="md:row-start-3 md:col-start-2">
 				<label class="label-shared lg:text-lg" for="cover">{{ ___('cover') }} :</label>
-				<input class="input-shared" id="cover" name="cover" type="text" value="{{ old('cover') ?? $book->cover }}" maxlength="32">
+				<input class="input-shared" id="cover" name="cover" type="text" value="{{ old('cover') ?? $bookInfo->cover }}" maxlength="32">
 			</div>
 			<div class="md:row-start-4 md:col-start-2">
-				<label class="label-shared lg:text-lg" for="weight">{{ ___('weight') }} (g) :</label>
-				@if($book->orders->isNotEmpty())
-            	<input class="input-shared" disabled="true" type="number" value="{{ $book->weight }}">
-            	<input name="weight" type="hidden" value="{{ $book->weight }}">
-				<div class="mt-1  leading-[0.4rem]">
-					<span class="text-gray-400 italic text-sm">{{ __('app.weight-frozen') }}.</span>
-				</div>
-				@else
-				<input class="input-shared" id="weight" name="weight" type="number" value="{{ old('weight') ?? $book->weight }}" min="0">
-				@endif
-			</div>
-			<div class="md:row-start-5 md:col-start-2">
 				<label class="label-shared lg:text-lg" for="pages">{{ ___('pages count') }} :</label>
-				<input class="input-shared" id="pages" name="pages" type="number" value="{{ old('pages') ?? $book->pages }}">
+				<input class="input-shared" id="pages" name="pages" type="number" value="{{ old('pages') ?? $bookInfo->pages }}">
 			</div>
-			<div class="md:row-start-6 md:col-start-2">
-            	<label class="label-shared lg:text-lg" for="price">{{ ___('price') }} :</label>
-				@if($book->orders->isNotEmpty())
-            	<input class="input-shared" disabled="true" type="text" value="{{ $book->price }}">
-            	<input name="price" type="hidden" value="{{ $book->price }}">
-				<div class="mt-1  leading-[0.4rem]">
-					<span class="text-gray-400 italic text-sm">{{ __('app.price-frozen') }}.</span>
-				</div>
-				@else
-            	<input class="input-shared" id="price" name="price" type="text" value="{{ old('price') ?? $book->price }}" maxlength="10">
-				@endif
-			</div>
-			<div class="col-start-3 col-span-2 row-start-1 row-span-5">
-            	<label class="label-shared lg:text-lg" for="description">{{ ___('description') }} :</label>
-            	<textarea id="description" class="input-shared h-[22rem]" name="description">{{ old('description') ?? $book->description }}</textarea>
+			<div class="col-start-3 col-span-2 row-start-1 row-span-4 flex flex-col">
+        <label class="label-shared lg:text-lg" for="description">{{ ___('description') }} :</label>
+        <textarea id="description" class="input-shared flex-1" name="description">{{ old('description') ?? $bookInfo->description }}</textarea>
 			</div>
 			<input type="hidden" name="lang" value="fr">
 
-			@if( $media->isNotEmpty() )
-				<div class="col-span-4">
-					<label class="label-shared lg:text-lg">{{ ___('linked media') }} :</label>
-					<div id="media-link" class="dropzone input-mimic">
-						@php $input = true; @endphp
-						@if($book->media->isEmpty())
-							<div id="media-link-placeholder" class="placeholder flex m-3 justify-center items-center">
-								<span class="text-3xl text-gray-300 font-bold">{{ __('Drop media from the library here')}}.</span>
-							</div>
-						@endif
-						@foreach( $book->media as $medium )
-							@include('books.form-image')
-						@endforeach
-					</div>
-				</div>
-				
-				<div class="col-span-4">
-					<label class="label-shared lg:text-lg">{{ ___('media library') }} :</label>
-					<div id="media-library" class="dropzone input-mimic">
-						@php $input = false; @endphp
-						@if($media->isNotEmpty() && $media->diff($book->media)->isEmpty())
-							<div id="media-library-placeholder" class="placeholder flex m-3 justify-center items-center">
-								<span class="text-3xl text-gray-300 font-bold">{{ ___('move media here to unlink from book')}}.</span>
-							</div>
-						@endif
-						@foreach($media->diff($book->media) as $medium)
-							@include('books.form-image')
-						@endforeach
-					</div>
-				</div>
-			@endif
-
-			<div class="col-span-4">
-				<label class="label-shared lg:text-lg">{{ __('Upload and link new media') }} :</label>
-				<div class="input-mimic">
-					<input type="file" name="files[]" accept=".jpg,.jpeg,.png,.gif" multiple>
-				</div>
+			<div class="col-span-4 my-4 flex justify-end">
+				<input class="button-shared w-full lg:w-auto px-4 py-2 cursor-pointer" type="submit"  value="{{ ___('save') }}">
 			</div>
 
-			<div class="col-span-4 my-12 flex justify-between">
-				<a href="{{ route('books') }}" class="button-shared px-4 py-2 text-lg">{{ ___('cancel') }}</a> 
-            	<input class="button-shared w-full lg:w-auto px-4 py-2 cursor-pointer text-lg" type="submit"  value="{{ ___('save') }}">
+			</form>
+
+			<h2 class="col-span-4 text-lg font-bold border-b border-gray-500 my-4">{{ ___('variations') }}</h2>
+
+			<table class="my-4 col-span-4 mt-4">
+				<thead class="font-bold">
+					<tr>
+						<td class="whitespace-nowrap"></td>
+						<td class="whitespace-nowrap">{{ __('ID') }}</td>
+						<td class="whitespace-nowrap">{{ ___('label') }}</td>
+						<td class="whitespace-nowrap">{{ ___('weight') }}</td>
+						<td class="whitespace-nowrap">{{ ___('stock') }}</td>
+						<td class="whitespace-nowrap">{{ ___('pre order') }}</td>
+						<td class="whitespace-nowrap">{{ ___('price') }}</td>
+						<td class="whitespace-nowrap">{{ ___('media') }}</td>
+						<td class="text-right">{{ ___('actions') }}</td>
+					</tr>
+				</thead>
+				<tbody id="variation-table-body">
+				@foreach ($bookInfo->books as $key => $book)
+					<tr>
+						<td><x-tabler-grip-vertical class="h-8 w-8 cursor-grab"/></td>
+						<td>{{ $book->id }}</td>
+						<td class="whitespace-nowrap">
+							{{ $book->label }}
+						</td>
+						<td class="whitespace-nowrap">
+							{{ $book->weight }} g
+						</td>
+						<td>
+							@isset($book->stock)
+								{{ $book->stock }}
+							@else
+								0
+							@endif
+						</td>
+						<td>
+							{{ ___b($book->pre_order) }}
+						</td>
+						<td class="whitespace-nowrap">
+							@isset($book->price)
+								{{ $book->price }} €
+							@else
+								{{ $book->price.' € ('.___('base price').')' }}
+							@endisset
+						</td>
+						<td>
+							<div class="flex flex-wrap gap-1">
+							@if($book->media->isNotEmpty())
+								@foreach ($book->media as $medium)
+									<img src="{{ asset('storage/'.$medium->preset('thumb')) }}" class="inline-block h-[50px] w-[50px] hover-thumb">
+									<div class="hidden fixed border-[3px] border-gray-800">
+										<img src="{{ asset('storage/'.$medium->preset('md')) }}">
+									</div>
+								@endforeach
+							@else
+								<div class="inline-flex h-[50px] items-center">{{ ___('no linked medium') }}</div>
+							@endif
+							</div>
+						</td>
+						<td class="text-right whitespace-nowrap">
+							<a class="mini-button" href="{{ route('variations.edit', $book->id) }}">
+									<x-tabler-edit class="inline-block" />
+							</a>
+							<form class="inline-block" method="POST" action="{{ route('variations.delete', $book->id) }}">
+								@csrf
+								@method('delete')
+								<button class="mini-button">
+									<x-tabler-trash class="inline-block" />
+								</button>
+							</form>
+						</td>
+					</tr>
+				@endforeach
+				</tbody>
+			</table>
+
+			<div class="col-span-4 my-8 flex justify-end">
+				<a href="{{ route('variations.create', $bookInfo->id) }}" class="button-shared w-full lg:w-auto px-4 py-2 cursor-pointer">{{ ___('add variation') }}</a>
 			</div>
-			
-        </form>
-    </div>
+
+  </div>
 
 </x-app-layout>

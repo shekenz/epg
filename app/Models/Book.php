@@ -8,46 +8,36 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Book extends Model
 {
-    use HasFactory;
+  use HasFactory;
 	use SoftDeletes;
 
+	public $timestamps = false;
+
 	protected $fillable = [
-        'title',
-        'author',
-        'width',
-		'height',
-		'cover',
-		'pages',
-		'weight',
-		'copies',
-		'quantity',
+		'label',
 		'pre_order',
-		'year',
 		'price',
-		'description',
-    ];
+		'stock',
+		'weight',
+  ];
 
-	public function getIsAvailable() {
-		
+	public function setCartQuantity($value) {
+		$this->attributes['cartQuantity'] = intval($value);
 	}
-
-	public function setCartQuantity($value)
-    {
-        $this->attributes['cartQuantity'] = intval($value);
-    }
-
-    public function user() {
-        return $this->belongsTo(User::class);
-    }
 
 	// Books relation with media
 	public function media() {
-		return $this->belongsToMany(Medium::class, 'book_medium', 'book_id', 'medium_id')->withPivot('order');
+		return $this->belongsToMany(Medium::class, 'book_medium', 'book_id', 'medium_id')->withPivot('order')->orderBy('pivot_order', 'asc');
 	}
 
 	// Book relation with orders
 	public function orders() {
 		return $this->belongsToMany(Order::class);
+	}
+
+	// Book relation with its bookInfo
+	public function bookInfo() {
+		return $this->belongsTo(BookInfo::class);
 	}
 
 }

@@ -92,20 +92,26 @@
 		@else
 			<h4>{{ ___('linked to') }} :</h4>
 		@endif
-		<table class="w-full app-table app-table-small">
-		@foreach ($medium->books as $book)
-			<tr>
-				<td><a class="default" href="{{ route('books.display', $book->id) }}">{{ $book->title }}</a></td>
-				<td>{{ __('by') }} {{ $book->author }}</td>
-				@if( !empty($book->edition ))
-					<td>{{ $book->edition }}</td>
-				@else
-					<td>({{ __('no edition') }})</td>
-				@endif
-				<td>{{ __('published by') }} <a class="default" href="{{ route('users.display', $book->user->id) }}">{{ $book->user->username }}</a></td>
-				<td class="text-right w-8"><a class="icon" title="Break link" href="{{ route('media.break', [$medium, $book]) }}"><x-tabler-unlink /></a></td>
-			</tr>
-		@endforeach
+		<table>
+			<thead>
+			</thead>
+			<tbody>
+				<tr>
+					<td>{{ ___('book') }}</td>
+					<td>{{ ___('author') }}</td>
+					<td>{{ ___('variation') }}</td>
+					<td>{{ ___('published by') }}</td>
+					<td>{{ ___('actions') }}</td>
+			@foreach ($medium->books as $book)
+				<tr>
+					<td><a class="default" href="{{ route('books.display', $book->bookInfo->id) }}">{{ $book->bookInfo->title }}</a></td>
+					<td>{{ $book->bookInfo->author }}</td>
+					<td><a class="default" href="{{ route('variations.edit', $book->id) }}">{{ $book->label }}</a></td>
+					<td><a class="default" href="{{ route('users.display', $book->bookInfo->user->id) }}">{{ $book->bookInfo->user->username }}</a></td>
+					<td class="text-right w-8"><a class="mini-button" title="Break link" href="{{ route('media.break', [$medium, $book]) }}"><x-tabler-unlink /></a></td>
+				</tr>
+			@endforeach
+			</tbody>
 		</table>
 	</div>
 </x-app-layout>

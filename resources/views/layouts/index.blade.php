@@ -33,7 +33,7 @@
 		
 		{{-- //TODO Fix the connection_refused error when deployed on VPS --}}
         {{-- @if(config('app.env') == 'local') --}}
-            <link rel="stylesheet" href="{{ asset('css/index.css') }}">
+      <link rel="stylesheet" href="{{ asset('css/index.css') }}">
 			<script src="{{ asset('js/index.js') }}" defer></script>
         {{-- @else {{-- Cache bustin in production DISBLED BECAUSE OF CONNECTION REFUSED ERROR WHEN DEPLOYED ON VPS 
             <link rel="stylesheet" href="{{ asset(mix('css/index.css'), true) }}">

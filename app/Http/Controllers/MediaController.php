@@ -91,7 +91,7 @@ class MediaController extends Controller
 	/** Breaks link between a medium and its related book. */
 	public function breakLink(Medium $medium, Book $book) {
 		$medium->books()->detach($book);
-		return redirect(route('books.display', $book));
+		return redirect()->route('media.display', $medium->id);
 	}
 
 	/**  Permanently deletes media from the library, and deletes all its related stored files. */

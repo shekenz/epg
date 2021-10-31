@@ -26,7 +26,7 @@ let disablePlaceholder = e => {
 
 let toggleInput = e => {
 	let firstElement = e.item.firstElementChild;
-	if(firstElement.tagName.toUpperCase() == 'INPUT') {
+	if(firstElement.tagName.toUpperCase() === 'INPUT') {
 	 	e.item.removeChild(firstElement);
 	} else {
 		let input = document.createElement('input');

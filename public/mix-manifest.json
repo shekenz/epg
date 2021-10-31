@@ -4,7 +4,9 @@
     "/js/settings.js": "/js/settings.js",
     "/js/media-optimized.js": "/js/media-optimized.js",
     "/js/media-library-dragdrop.js": "/js/media-library-dragdrop.js",
-    "/js/books-form.js": "/js/books-form.js",
+    "/js/books-edit.js": "/js/books-edit.js",
+    "/js/variations-create.js": "/js/variations-create.js",
+    "/js/variations-edit.js": "/js/variations-edit.js",
     "/js/order-ship.js": "/js/order-ship.js",
     "/js/order-list.js": "/js/order-list.js",
     "/js/labels.js": "/js/labels.js",
@@ -37,5 +39,6 @@
     "/fonts/MonumentGroteskTrial-Regular.woff": "/fonts/MonumentGroteskTrial-Regular.woff",
     "/fonts/Nunito-Bold.ttf": "/fonts/Nunito-Bold.ttf",
     "/fonts/Nunito-Regular.ttf": "/fonts/Nunito-Regular.ttf",
-    "/fonts/Roboto-Bold.ttf": "/fonts/Roboto-Bold.ttf"
+    "/fonts/Roboto-Bold.ttf": "/fonts/Roboto-Bold.ttf",
+    "/img/loading-windows98.gif": "/img/loading-windows98.gif"
 }

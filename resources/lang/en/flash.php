@@ -19,6 +19,9 @@ return [
 		'some-still-linked' => 'Can\'t delete certain books that are linked to an order. Archive the order first.',
 		'all-deleted' => 'All archived book have been deleted.',
 	],
+	'variation' => [
+		'deleted' => 'Variation deleted'
+	],
 	'media' => [
 		'added' => 'New media added!',
 		'deleted' => 'Media deleted.',
