@@ -26,6 +26,7 @@ let shippingPrice = 0;
 let shippingMethod = 0;
 let couponValue = 0;
 let couponId = 0;
+let couponIsFixed = true;
 let couponPrice = 0;
 let weightTotal = parseInt(document.getElementById('cart-total-weight').dataset.totalWeight);
 let total = 0;
@@ -231,6 +232,8 @@ const runCommonUpdates = book => {
 	updateCartSubTotal(book.price * book.modifier);
 	// Update total weight
 	updateWeightTotal(book.weight * book.modifier);
+	// Update coupon price
+	updateCoupon();
 	// Update shipping prices inputs in shipping form
 	updateShippingMethodsPrice();
 	// Update global shipping price
@@ -242,6 +245,13 @@ const runCommonUpdates = book => {
 }
 
 // ----------------------------------------------------------- Coupons logic
+const updateCoupon = () => {
+	couponPrice = couponIsFixed ? 
+		(-1 * couponValue)
+		: (Math.round(couponValue * cartSubTotal) / -100);
+	couponInfo.innerHTML = `<span>Coupon (-${couponValue}${couponIsFixed ? '&nbsp;€' : '%'})</span><span>${couponPrice}&nbsp;€</span>`;
+}
+
 const resetCoupon = () => {
 	couponValue = 0;
 	couponId = 0;
@@ -376,12 +386,8 @@ couponInput.addEventListener('input', coolDown(
 					couponInfo.classList.remove('hidden');
 					couponValue = parseFloat(jr.value);
 					couponId = jr.id;
-					// jr.type === false for percentage coupon price
-					// jr.type === true for fixed coupon price
-					couponPrice = (jr.type) ? 
-						(-1 * couponValue)
-						: (Math.round(couponValue * cartTotal) / -100);
-					couponInfo.innerHTML = `<span>Coupon (-${couponValue}${(jr.type) ? '&nbsp;€' : '%'})</span><span>${couponPrice}&nbsp;€</span>`;
+					couponIsFixed = (jr.type);
+					updateCoupon();
 					updateCartTotal();
 				} else { // if coupon is invalid
 					couponAlert.classList.remove('hidden');
