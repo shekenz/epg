@@ -48,29 +48,29 @@ class OrdersController extends Controller
 		$this->provider->getAccessToken();
 	}
 
-    /**
-     * List all visible & active orders
-     *
-     * @return void
-     */
-    public function list() {
+	/**
+	 * List all visible & active orders
+	 *
+	 * @return void
+	 */
+	public function list() {
 		$orders = Order::where('hidden', false)->orderBy('created_at', 'DESC')->get();
 		$coupons = Coupon::withTrashed()->get();
 		$shippingMethods = ShippingMethod::withTrashed()->orderBy('price', 'ASC')->get();
-		$books = Book::withTrashed()->orderBy('title', 'ASC')->get();
+		$books = Book::withTrashed()->orderBy('label', 'ASC')->get();
 		return view('orders.list', compact('orders', 'coupons', 'shippingMethods', 'books'));
 	}
 
-    /**
-     * List all hidden orders
-     *
-     * @return void
-     */
-    public function hidden() {
+	/**
+	 * List all hidden orders
+	 *
+	 * @return void
+	 */
+	public function hidden() {
 		$orders = Order::with('books')->where('hidden', true)->orderBy('created_at', 'DESC')->get();
 		$coupons = Coupon::withTrashed()->get();
 		$shippingMethods = ShippingMethod::withTrashed()->orderBy('price', 'ASC')->get();
-		$books = Book::withTrashed()->orderBy('title', 'DESC')->get();
+		$books = Book::withTrashed()->orderBy('label', 'DESC')->get();
 		return view('orders.list', compact('orders', 'coupons', 'shippingMethods', 'books'));
 	}
 	
@@ -162,7 +162,7 @@ class OrdersController extends Controller
 			$booksInCart->each(function($book) use ($cart, &$items, &$preOrder, &$totalWeight) {
 				if($cart[$book->id]['quantity'] > 0) {
 					array_push($items, [
-						'name' => $book->title,
+						'name' => ($book->bookInfo->books->count() > 1) ? $book->bookInfo->title.' - '.$book->label : $book->bookInfo->title,
 						'unit_amount' => [
 							'currency_code' => 'EUR',
 							'value' => $book->price,
@@ -326,7 +326,7 @@ class OrdersController extends Controller
 
 			// Updating books quantity
 			$booksInCart->each(function($book) use ($cart) {
-				$book->quantity = $book->quantity - $cart[$book->id]['quantity'];
+				$book->stock = $book->stock - $cart[$book->id]['quantity'];
 				$book->save();
 			});
 
@@ -498,7 +498,7 @@ class OrdersController extends Controller
 		try {
 			// Reinserting quantities in stock
 			$order->books()->each(function($book) {
-				$book->quantity = $book->quantity + $book->pivot->quantity;
+				$book->stock = $book->stock + $book->pivot->quantity;
 				$book->save();
 			});
 			// Detaching books

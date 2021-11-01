@@ -76,7 +76,14 @@
 						<form class="variations-form" id="variations-form-{{ $glideIndex }}">
 							<select class="variations-select" data-glide-index="{{ $glideIndex }}">
 							@foreach($bookInfo->books as $variation)
-								<option value="{{ json_encode($variation->media->map(function($item) { return 'storage/'.$item->preset('hd'); })) }}">{{ $variation->label }}</option>
+								@php
+									$variationData = [
+										'id' => $variation->id,
+										'media' => $variation->media->map(function($item) { return 'storage/'.$item->preset('hd'); }),
+										'price' => $variation->price
+									];
+								@endphp
+								<option value="{{ json_encode($variationData) }}">{{ $variation->label }}</option>
 							@endforeach
 							</select>
 						</form>
@@ -85,13 +92,13 @@
 				@endif
 
 				@if( !empty($bookInfo->books->first()->price) && setting('app.shop.enabled'))
-					<br>{{ $bookInfo->books->first()->price }} €<br>
+					<br><span id="price-{{ $glideIndex }}">{{ $bookInfo->books->first()->price }}</span> €<br>
 					@if( $bookInfo->books->first()->stock > 0)
 						<br>
-						<a href="{{ route('cart.api.add', $bookInfo->books->first()->id)}}" class="add-to-cart-button button-lg">{{ ___('add to cart') }}</a><br>
+						<a id="add-to-cart-{{ $glideIndex }}" href="{{ route('cart.api.add', $bookInfo->books->first()->id)}}" class="add-to-cart-button button-lg">{{ ___('add to cart') }}</a><br>
 					@elseif( $bookInfo->books->first()->pre_order)
 						<br>
-						<a href="{{ route('cart.api.add', $bookInfo->books->first()->id)}}" class="add-to-cart-button button-lg">{{ ___('pre-order') }}</a><br>
+						<a id="add-to-cart-{{ $glideIndex }}" href="{{ route('cart.api.add', $bookInfo->books->first()->id)}}" class="add-to-cart-button button-lg">{{ ___('pre-order') }}</a><br>
 					@else
 						<br>
 						({{ __('Out of stock') }})<br>

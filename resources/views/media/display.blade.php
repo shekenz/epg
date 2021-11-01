@@ -88,30 +88,30 @@
 
 	<div>
 		@if( $medium->books->isEmpty() )
-		<h4>{{ __('No linked books') }}.</h4>
+			<h4>{{ __('No linked variation') }}.</h4>
 		@else
 			<h4>{{ ___('linked to') }} :</h4>
+			<table>
+				<thead>
+				</thead>
+				<tbody>
+					<tr>
+						<td>{{ ___('book') }}</td>
+						<td>{{ ___('author') }}</td>
+						<td>{{ ___('variation') }}</td>
+						<td>{{ ___('published by') }}</td>
+						<td>{{ ___('actions') }}</td>
+				@foreach ($medium->books as $book)
+					<tr>
+						<td><a class="default" href="{{ route('books.display', $book->bookInfo->id) }}">{{ $book->bookInfo->title }}</a></td>
+						<td>{{ $book->bookInfo->author }}</td>
+						<td><a class="default" href="{{ route('variations.edit', $book->id) }}">{{ $book->label }}</a></td>
+						<td><a class="default" href="{{ route('users.display', $book->bookInfo->user->id) }}">{{ $book->bookInfo->user->username }}</a></td>
+						<td class="text-right w-8"><a class="mini-button" title="Break link" href="{{ route('media.break', [$medium, $book]) }}"><x-tabler-unlink /></a></td>
+					</tr>
+				@endforeach
+				</tbody>
+			</table>
 		@endif
-		<table>
-			<thead>
-			</thead>
-			<tbody>
-				<tr>
-					<td>{{ ___('book') }}</td>
-					<td>{{ ___('author') }}</td>
-					<td>{{ ___('variation') }}</td>
-					<td>{{ ___('published by') }}</td>
-					<td>{{ ___('actions') }}</td>
-			@foreach ($medium->books as $book)
-				<tr>
-					<td><a class="default" href="{{ route('books.display', $book->bookInfo->id) }}">{{ $book->bookInfo->title }}</a></td>
-					<td>{{ $book->bookInfo->author }}</td>
-					<td><a class="default" href="{{ route('variations.edit', $book->id) }}">{{ $book->label }}</a></td>
-					<td><a class="default" href="{{ route('users.display', $book->bookInfo->user->id) }}">{{ $book->bookInfo->user->username }}</a></td>
-					<td class="text-right w-8"><a class="mini-button" title="Break link" href="{{ route('media.break', [$medium, $book]) }}"><x-tabler-unlink /></a></td>
-				</tr>
-			@endforeach
-			</tbody>
-		</table>
 	</div>
 </x-app-layout>

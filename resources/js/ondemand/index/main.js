@@ -1,6 +1,42 @@
-import Glide from '@glidejs/glide';
 import { arrayByClass } from '../../shared/helpers.mjs';
+import { updateCartQuantity } from '../../shared/update-cart.mjs';
+import { popFlash } from '../../shared/popup.mjs';
+import Glide from '@glidejs/glide';
 import Html from '@glidejs/glide/src/components/html';
+
+const addToCartButtons = arrayByClass('add-to-cart-button');
+const translationHelper = document.getElementById('translation-helper');
+
+const flashSuccessCooledDown = popFlash('<img src="/img/frog_logo_heart.svg" alt="Frog that loves you"><span class="mx-4">'+translationHelper.dataset.addedMessage+'</span><a class="button-lg" href="/cart">'+translationHelper.dataset.checkoutButton+'</a>');
+
+const flashErrorCooledDown = message => {
+	popFlash('<img src="/img/frog_logo_warning.svg" alt="Frog that warns you"><span class="mx-4">'+message+'</span>')();
+};
+
+addToCartButtons.map(buttons => {
+	buttons.addEventListener('click', e => {
+		e.preventDefault();
+		e.target.blur();
+		fetch(e.target.href, {
+			method: 'post',
+			headers: {
+				'accept': 'application/json'
+			}
+		}).then( r => {
+			if(r.status === 200) {
+				updateCartQuantity(1);
+				flashSuccessCooledDown();
+			} else {
+				flashErrorCooledDown(r.statusText);
+			}
+		})
+		.catch(error => {
+			console.error(error);
+		});
+	});
+});
+
+// Glide ---------------------------------------------------------------------
 
 // Update fix from driskell
 // https://github.com/glidejs/glide/pull/457
@@ -41,15 +77,24 @@ for(let input of variationInput) {
 	// When selecting a new variation
 	input.addEventListener('input', e => {
 
-		// Init
+		// Elements
 		const glideIndex = e.target.dataset.glideIndex; // Get the glide index
 		const track = document.getElementById('glide-' + glideIndex).firstElementChild.firstElementChild; // Get the track wrapper
 		const loader = document.getElementById('variations-loader-' + glideIndex);
-		loader.classList.remove('hidden');
+		const price = document.getElementById('price-' + glideIndex);
+		const addToCart = document.getElementById('add-to-cart-' + glideIndex);
 
 		// Images arrays
-		const imagesURLs = JSON.parse(e.target.value);
+		const variationData = JSON.parse(e.target.value);
 		const imagesLoaded = [];
+
+		// Init
+		loader.classList.remove('hidden');
+		// Updating price
+		price.firstChild.nodeValue = variationData.price;
+		// Updating add to cart url
+		addToCart.href = addToCart.href.replace(/\/[0-9]+$/, '/'+variationData.id);
+		console.log(`Updated URL to ${addToCart.href}`);
 
 		const allLoaded = () => {
 
@@ -79,13 +124,13 @@ for(let input of variationInput) {
 		}
 
 		// Preloading all images
-		imagesURLs.forEach((url, index) => {
+		variationData.media.forEach((url, index) => {
 			const imageRessource = new Image();
 			imageRessource.src = window.location.origin+'/'+url;
 			imageRessource.addEventListener('load', () => {
 				imagesLoaded[index] = imageRessource;
 				console.log(`Loaded image ${url}`);
-				if(imagesLoaded.length === imagesURLs.length) {
+				if(imagesLoaded.length === variationData.media.length) {
 					allLoaded();
 				}
 			});

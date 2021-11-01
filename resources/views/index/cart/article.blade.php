@@ -9,9 +9,9 @@
 		<img class="mb-4 w-full" src="{{ asset('storage/'.$article->media->get(0)->preset('md')) }}" alt="test thumbnail">
 	</div>
 	<p>
-		{{ $article->title }}<br>
-		@if(isset($article->author))
-			{{ $article->author }}
+		{{ $article->bookInfo->title }}@if($article->bookInfo->books->count() > 1){{ ' - '.$article->label }}@endif<br>
+		@if(isset($article->bookInfo->author))
+			{{ $article->bookInfo->author }}
 		@else
 			&nbsp;
 		@endif

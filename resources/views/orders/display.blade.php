@@ -124,8 +124,8 @@
 					$total += round($book->pivot->quantity * $book->price, 2)
 				@endphp
 				<tr>
-					<td>@if($book->trashed())<span title="{{ ___('book is archived') }}"><x-tabler-alert-triangle class="inline-block text-yellow-500" /></span>@endif {{ $book->title }}</td>
-					<td>{{ $book->author }}</td>
+					<td>@if($book->trashed())<span title="{{ ___('book is archived') }}"><x-tabler-alert-triangle class="inline-block text-yellow-500" /></span>@endif {{ $book->bookInfo->title }}@if($book->bookInfo->books->count() > 1){{ ' - '.$book->label }}@endif</td>
+					<td>{{ $book->bookInfo->author }}</td>
 					<td>{{ $book->pivot->quantity }}</td>
 					@if($order->pre_order)
 						@if($book->pre_order)

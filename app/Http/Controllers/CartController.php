@@ -62,8 +62,8 @@ class CartController extends Controller
 			
 			// Check stock limits
 			array_walk($cart, function(&$article, $id) use ($books, &$quantityUpdated) {
-				if($article['quantity'] > $books[$id]->quantity && !$books[$id]->pre_order) {
-					$article['quantity'] = $books[$id]->quantity;
+				if($article['quantity'] > $books[$id]->stock && !$books[$id]->pre_order) {
+					$article['quantity'] = $books[$id]->stock;
 					$this->cartUpdated = true;
 				}
 			});
@@ -136,7 +136,7 @@ class CartController extends Controller
 			if(array_key_exists($book->id, $cart)) {
 				// Checking for stock
 				// Adding book only if cartQuantity < stockQuantity or if book is in pre_order
-				if($cart[$book->id]['quantity'] < $book->quantity || $book->pre_order) {
+				if($cart[$book->id]['quantity'] < $book->stock || $book->pre_order) {
 					$cart[$book->id]['quantity'] += 1;
 				} else { // Redirect and inform the user book is not in stock anymore
 					return response()->json($bookReturnedDetails)->setStatusCode(500, __('flash.cart.stockLimit'));
@@ -144,7 +144,7 @@ class CartController extends Controller
 			} else { // Else push new book id with an array with quantity of 1 and price
 				// Checking for stock
 				// Adding book only if stockQuantity > 0 or if book is in pre_order
-				if($book->quantity > 0 || $book->pre_order) { // Check for stock
+				if($book->stock > 0 || $book->pre_order) { // Check for stock
 					$cart[$book->id] = [ 'price' => $book->price, 'quantity' => 1];
 				} else {
 					return response()->json($bookReturnedDetails)->setStatusCode(500, __('flash.cart.stockLimit'));

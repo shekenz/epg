@@ -80,7 +80,7 @@
 					@foreach($books as $book)
 						@php $totalWeight += ($book->weight * $book->cartQuantity) @endphp
 						<div id="summarize-book-{{ $book->id }}" class="my-1 flex justify-between items-end">
-							<span>{{ $book->title }}
+							<span>{{ $book->bookInfo->title }}@if($book->bookInfo->books->count() > 1){{ ' - '.$book->label }}@endif
 								<span class="parenthesis-block @if($book->cartQuantity <= 1) hidden @endif">(<span class="quantity-for-id-{{ $book->id }}">{{$book->cartQuantity}}</span>)</span>
 							</span>
 							<span>&nbsp;<span class="subtotal-for-id-{{ $book->id }}">{{ round($book->price * $book->cartQuantity, 2) }}</span>&nbsp;€</span>

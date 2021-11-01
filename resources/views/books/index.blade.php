@@ -5,6 +5,7 @@
 	<x-slot name="scripts">
 		<script src="{{ asset('js/glide.js') }}" defer></script>
 		<script src="{{ asset('js/add-to-cart.js') }}" defer></script>
+		<script src="{{ asset('js/main.js') }}" defer></script>
 	</x-slot>
 	
 	@foreach ($bookInfos as $glideIndex => $bookInfo)
