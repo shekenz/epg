@@ -51,6 +51,13 @@ mix.postCss('resources/css/index.css', 'public/css', [
     require('autoprefixer'),
 ]);
 
+// Terms CSS (Frontend)
+mix.postCss('resources/css/terms.css', 'public/css', [
+	require('postcss-import'),
+	require('tailwindcss'),
+	require('autoprefixer'),
+]);
+
 // LabelsPreview CSS (Frontend)
 mix.postCss('resources/css/labels.css', 'public/css', [
     require('postcss-import'),

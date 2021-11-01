@@ -178,6 +178,7 @@
 				<label for="paypal-sandbox" class="label-shared lg:text-lg">{{ ___('sandbox') }} : </label>
 				<input type="checkbox" class="" id="paypal-sandbox" name="paypal-sandbox" value="true" {{ (old('paypal-sandbox') || setting('app.paypal.sandbox')) ? 'checked' : '' }}>
 			</div>
+
 			{{-------------------------------------- About --------------------------------------}}
 			<div class="mt-8">
 				<label class="label-shared lg:text-lg" for="about-0">{{ __('About: First Column') }}</label>
@@ -186,6 +187,12 @@
 			<div class="mt-8">
 				<label class="label-shared lg:text-lg" for="about-1">{{ __('About: Second Column') }}</label>
 				<textarea class="input-shared h-96" id="about-1" name="about[]">{!! (Storage::disk('raw')->exists('about_1.txt')) ? Storage::disk('raw')->get('about_1.txt') : '' !!}</textarea>
+			</div>
+
+			{{-------------------------------------- Terms --------------------------------------}}
+			<div class="mt-8 col-span-2">
+				<label class="label-shared lg:text-lg" for="terms">{{ ___('terms & conditions') }}</label>
+				<textarea class="input-shared h-96" id="terms" name="terms">{!! (Storage::disk('raw')->exists('terms.txt')) ? Storage::disk('raw')->get('terms.txt') : '' !!}</textarea>
 			</div>
 		</div>
 		<div class="text-right mt-8 col-span-2">

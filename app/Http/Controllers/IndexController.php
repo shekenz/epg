@@ -8,7 +8,8 @@ use App\Models\Acronym;
 
 class IndexController extends Controller
 {
-    public function about() {
+
+  public function about() {
 
 		$acronyms = Acronym::all()->pluck('label')->toArray();
 
@@ -20,4 +21,14 @@ class IndexController extends Controller
 		return view('index.about', compact('abouts', 'acronyms'));
 
 	}
+
+	public function terms() {
+
+		$terms = Markdown::parse(nl2br(Storage::disk('raw')->get('terms.txt')));
+
+		return view('index.terms', compact('terms'));
+
+	}
+
+
 }

@@ -33,6 +33,7 @@ Route::middleware('published')->group(function() {
 	// Main index route
 	Route::get('/', [BooksController::class, 'index'])->name('index');
 	Route::get('/about', [IndexController::class, 'about'])->name('about');
+	Route::get('/terms', [IndexController::class, 'terms'])->name('terms');
 	Route::view('/contact', 'index.contact')->name('contact');
 	Route::post('/contact', [MessagesController::class, 'forward'])->name('messages.forward');
 

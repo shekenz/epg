@@ -43,6 +43,10 @@ class SettingsController extends Controller
 				'string',
 				'nullable',
 			],
+			'terms' => [
+				'string',
+				'nullable',
+			],
 		]);
 
 		// String to upper to array
@@ -73,6 +77,8 @@ class SettingsController extends Controller
 				Storage::disk('raw')->put('about_'.$key.'.txt', e($item));
 			}
 		}
+
+		Storage::disk('raw')->put('terms.txt', e($data['terms']));
 
 		return redirect()->route('settings')->with([
 			'flash' => __('flash.settings.updated'),

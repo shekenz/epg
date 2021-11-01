@@ -1,0 +1,46 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@import './fonts.css';
+
+html {
+	@apply
+		bg-gray-50;
+}
+
+body {
+	@apply
+		text-custom-sm
+		md:text-custom
+		text-gray-900;
+}
+
+main {
+	@apply
+		w-[800px]
+		m-auto
+		my-16;
+}
+
+h1 {
+	@apply
+		text-3xl
+		font-bold
+		my-6
+		border-b
+		border-gray-500;
+}
+
+h2 {
+	@apply
+		text-2xl
+		font-bold
+		my-2;
+}
+
+a {
+	@apply
+		text-blue-500
+		hover:underline;
+}
