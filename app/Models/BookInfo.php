@@ -22,10 +22,11 @@ class BookInfo extends Model
 		'copies',
 		'year',
 		'description',
+		'position',
 	];
 
 	public function books() {
-		return $this->hasMany(Book::class);
+		return $this->hasMany(Book::class)->orderBy('position', 'ASC');
 	}
 
 	public function user() {

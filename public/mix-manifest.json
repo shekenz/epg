@@ -4,6 +4,7 @@
     "/js/settings.js": "/js/settings.js",
     "/js/media-optimized.js": "/js/media-optimized.js",
     "/js/media-library-dragdrop.js": "/js/media-library-dragdrop.js",
+    "/js/books-reorder.js": "/js/books-reorder.js",
     "/js/books-edit.js": "/js/books-edit.js",
     "/js/variations-create.js": "/js/variations-create.js",
     "/js/variations-edit.js": "/js/variations-edit.js",

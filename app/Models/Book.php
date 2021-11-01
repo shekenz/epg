@@ -19,6 +19,7 @@ class Book extends Model
 		'price',
 		'stock',
 		'weight',
+		'position',
   ];
 
 	public function setCartQuantity($value) {

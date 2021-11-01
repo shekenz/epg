@@ -46,6 +46,9 @@ class VariationsController extends Controller
 	{
 		$data = $request->validate($this->validation);
 
+		// Variation's position
+		$data['position'] = $bookInfo->books()->count();
+
 		// New variation (or new book)
 		$book = $bookInfo->books()->create($data);
 
@@ -176,5 +179,24 @@ class VariationsController extends Controller
 	public function destroy(Book $book)
 	{
 			//
+	}
+
+	// Reorder variations
+	public function reorder(Request $request, BookInfo $bookInfo) {
+
+		$variations = $bookInfo->books;
+
+		$data = $request->validate([
+			'order' => ['string', 'required']
+		]);
+
+		$data['order'] = json_decode($data['order'], true);
+
+		$variations->each(function ($item, $key) use ($data) {
+			$item->position = $data['order'][$item->id];
+			$item->save();
+		});
+
+		return response()->noContent();
 	}
 }

@@ -1,29 +1,31 @@
 <x-app-layout>
-    <x-slot name="title">
-        {{ ___('books') }}
-    </x-slot>
 
-    <x-slot name="controls">
+	<x-slot name="title">
+			{{ ___('books') }}
+	</x-slot>
+
+	<x-slot name="controls">
 		@if( !empty($archived) )
-		<a href="{{ route('books.archived') }}" class="button-shared">{{ ___('archived') }} ({{ $archived }})</a>
+			<a href="{{ route('books.archived') }}" class="button-shared">{{ ___('archived') }} ({{ $archived }})</a>
 		@endif
-        <a href="{{ route('books.create') }}" class="button-shared">{{ ___('new') }}</a>
-    </x-slot>
+		<a href="{{ route('books.create') }}" class="button-shared">{{ ___('new') }}</a>
+	</x-slot>
+
+	<x-slot name="scripts">
+		<script src="{{ asset('js/books-reorder.js') }}" type="text/javascript" defer></script>
+	</x-slot>
 
 	<table class="w-full app-table">
-		{{-- <thead>
-		</thead> --}}
-		<tbody>
-			<thead class="font-bold">
-				<td class="w-8"></td>
-				<td>{{ ___('title') }}</td>
-				<td>{{ ___('author') }}</td>
-				<td>{{ ___('position') }}</td>
-				<td>{{ ___('published by') }}</td>
-				<td class="text-right">{{ ___('actions') }}</td>
-			</thead>
-			@foreach($bookInfos as $bookInfo)
-			<tr>
+		<thead class="font-bold">
+			<td class="w-8"></td>
+			<td>{{ ___('title') }}</td>
+			<td>{{ ___('author') }}</td>
+			<td>{{ ___('published by') }}</td>
+			<td class="text-right">{{ ___('actions') }}</td>
+		</thead>
+		<tbody id="books-sortable">
+		@foreach($bookInfos as $bookInfo)
+			<tr data-id="{{ $bookInfo->id }}">
 				<td><x-tabler-grip-vertical class="h-8 w-8 cursor-grab"/></td>
 				<td>
 					@php 
@@ -42,14 +44,13 @@
 					<a href="{{ route('books.display', $bookInfo->id) }}" class="default">{{ $bookInfo->title }}</a></td>
 				<td>{{ $bookInfo->author }}</td>
 				
-				<td class="hidden md:table-cell">{{ $bookInfo->position }}</td>
 				<td class="hidden md:table-cell">{{ $bookInfo->user->username }}</td>
 				<td class="text-right">
 					{{-- <a class="icon" title="{{ ___('archive') }}" href="{{ route('books.archive', $book->id)}}"><x-tabler-archive /></a> --}}
 					<a class="mini-button" title="{{ ___('edit') }}" href="{{ route('books.edit', $bookInfo->id) }}"><x-tabler-edit /></a>
 				</td>
 			</tr>
-			@endforeach
+		@endforeach
 		</tbody>
 	</table>
     

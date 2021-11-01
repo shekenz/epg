@@ -7,6 +7,7 @@ use App\Models\Book;
 use App\Models\BookInfo;
 use App\Models\Medium;
 use App\Traits\MediaManager;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Controller for the Books Library
@@ -51,7 +52,7 @@ class BooksController extends Controller
 		$bookInfos = BookInfo::with([
 			'books'
 		])
-		->orderBy('id', 'DESC')
+		->orderBy('position', 'ASC')
 		->get();
 		
 		return view('books/index', compact('bookInfos'));
@@ -61,7 +62,7 @@ class BooksController extends Controller
 
 	/** Lists all books from the library. Index of the books library in backend. */
 	public function list() {
-		$bookInfos = BookInfo::orderBy('id', 'DESC')->get();
+		$bookInfos = BookInfo::orderBy('position', 'ASC')->get();
 		//$archived = Book::onlyTrashed()->count();
       return view('books/list', compact('bookInfos'));
 	}
@@ -88,6 +89,9 @@ class BooksController extends Controller
 		$bookData = $request->validate($this->bookValidation);
 		$infoData = $request->validate($this->infoValidation);
 		$mediaIDs = array(); // Array containing all media ids to attach to the new book
+
+		// Book's position
+		$infoData['position'] = BookInfo::count();
 
 		// Storing all uploaded images
 		if(array_key_exists('files', $bookData)) {
@@ -242,4 +246,22 @@ class BooksController extends Controller
 
 
 
+	// Reorder books
+	public function reorder(Request $request) {
+
+		$books = BookInfo::all();
+
+		$data = $request->validate([
+			'order' => ['string', 'required']
+		]);
+
+		$data['order'] = json_decode($data['order'], true);
+
+		$books->each(function ($item, $key) use ($data) {
+			$item->position = $data['order'][$item->id];
+			$item->save();
+		});
+
+		return response()->noContent();
+	}
 }

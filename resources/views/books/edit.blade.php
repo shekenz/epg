@@ -75,7 +75,6 @@
 				<thead class="font-bold">
 					<tr>
 						<td class="whitespace-nowrap"></td>
-						<td class="whitespace-nowrap">{{ __('ID') }}</td>
 						<td class="whitespace-nowrap">{{ ___('label') }}</td>
 						<td class="whitespace-nowrap">{{ ___('weight') }}</td>
 						<td class="whitespace-nowrap">{{ ___('stock') }}</td>
@@ -85,11 +84,10 @@
 						<td class="text-right">{{ ___('actions') }}</td>
 					</tr>
 				</thead>
-				<tbody id="variation-table-body">
+				<tbody id="variation-table-body" data-book-info-id="{{ $bookInfo->id }}">
 				@foreach ($bookInfo->books as $key => $book)
-					<tr>
+					<tr data-id="{{ $book->id }}">
 						<td><x-tabler-grip-vertical class="h-8 w-8 cursor-grab"/></td>
-						<td>{{ $book->id }}</td>
 						<td class="whitespace-nowrap">
 							{{ $book->label }}
 						</td>

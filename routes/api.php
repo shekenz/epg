@@ -6,6 +6,8 @@ use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\OrdersMassController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CouponsController;
+use App\Http\Controllers\BooksController;
+use App\Http\Controllers\VariationsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,3 +53,6 @@ Route::middleware('shop')->group(function() {
 // Backend API
 Route::post('/orders/unread/count', [OrdersController::class, 'countUnread']);
 Route::get('/orders/get/{method}/{from}/{to}/{visibility}/{preorder}/{data?}', [OrdersMassController::class, 'get']);
+
+Route::post('/books/reorder', [BooksController::class, 'reorder']);
+Route::post('/variations/{bookInfo}/reorder', [VariationsController::class, 'reorder']);

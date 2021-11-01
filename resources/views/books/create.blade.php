@@ -9,7 +9,6 @@
 
 	<x-slot name="scripts">
 		<script src="{{ asset('js/media-library-dragdrop.js') }}" type="text/javascript" defer></script>
-		<script src="{{ asset('js/books-form.js') }}" type="text/javascript" defer></script>
 	</x-slot>
 	
 	<div class="m-4">
