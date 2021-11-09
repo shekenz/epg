@@ -62,6 +62,7 @@ class ArchivedOrdersController extends Controller
 			'status' => $order->status,
 			'pre_order' => $order->pre_order,
 			'created_at' => $order->created_at,
+			'version' => config('app.archives_version'),
 		]);
 
 		$order->books()->detach();

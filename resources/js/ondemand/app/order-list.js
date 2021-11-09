@@ -224,7 +224,7 @@ const request = () => {
 								break;
 							case('SHIPPED') :
 								const archiveButtonForm = document.createElement('form');
-								archiveButtonForm.setAttribute('action', window.location.origin+'/dashboard/order/archive/'+order.id);
+								archiveButtonForm.setAttribute('action', window.location.origin+'/dashboard/orders/archive/'+order.id);
 								archiveButtonForm.setAttribute('method', 'POST');
 								const tokenInput = document.createElement('input');
 								tokenInput.setAttribute('type', 'hidden');

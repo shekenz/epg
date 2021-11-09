@@ -86,6 +86,7 @@
 				<td>{{ __('Client email') }}</td>
 				<td>{{ __('Created at') }}</td>
 				<td>{{ __('Archived at') }}</td>
+				<td>{{ __('Version') }}</td>
 			</thead>
 			<tbody id="order-rows">
 				@foreach($archivedOrders as $archiveOrder)
@@ -96,6 +97,7 @@
 					<td>{{ $archiveOrder->email_address }}</td>
 					<td>{{ $archiveOrder->created_at }}</td>
 					<td>{{ $archiveOrder->archived_at }}</td>
+					<td>{{ $archiveOrder->version }}</td>
 				</tr>
 				@endforeach
 				{{--
