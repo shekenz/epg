@@ -21,3 +21,4 @@ todo.txt
 resources/js/ondemand/app/media-library-dragdrop-custom.js
 resources/views/orders/list.blade.php.backup
 resources/img/sources/favicons.ai
+public/mix-manifest.json
