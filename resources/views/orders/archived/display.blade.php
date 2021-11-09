@@ -36,7 +36,7 @@
 	@endphp
 
 	<div>
-		<div class="bg-yellow-500 text-white font-bold text-center p-4">{{ __('This order has been archived') }}</div>
+		<div class="bg-yellow-500 text-white font-bold text-center p-4">{{ __('This order has been archived').' (Version '.$archivedOrder->version.')' }}</div>
 		{{-- Header --}}
 		<div class="flex mt-6 justify-between items-center">
 			<div class="">

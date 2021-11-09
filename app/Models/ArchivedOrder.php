@@ -36,5 +36,6 @@ class ArchivedOrder extends Model
 		'status',
 		'pre_order',
 		'created_at',
+		'version'
 	];
 }
