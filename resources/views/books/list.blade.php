@@ -20,7 +20,6 @@
 			<td class="w-8"></td>
 			<td>{{ ___('title') }}</td>
 			<td>{{ ___('author') }}</td>
-			<td>{{ ___('published by') }}</td>
 			<td class="text-right">{{ ___('actions') }}</td>
 		</thead>
 		<tbody id="books-sortable">
@@ -44,7 +43,6 @@
 					<a href="{{ route('books.display', $bookInfo->id) }}" class="default">{{ $bookInfo->title }}</a></td>
 				<td>{{ $bookInfo->author }}</td>
 				
-				<td class="hidden md:table-cell">{{ $bookInfo->user->username }}</td>
 				<td class="text-right">
 					{{-- <a class="icon" title="{{ ___('archive') }}" href="{{ route('books.archive', $book->id)}}"><x-tabler-archive /></a> --}}
 					<a class="mini-button" title="{{ ___('edit') }}" href="{{ route('books.edit', $bookInfo->id) }}"><x-tabler-edit /></a>

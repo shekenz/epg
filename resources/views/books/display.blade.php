@@ -73,7 +73,6 @@
 						<td>{{ ___('stock') }}</td>
 						<td>{{ ___('pre order') }}</td>
 						<td>{{ ___('price') }}</td>
-						<td>{{ ___('linked media') }}</td>
 					</tr>
 				</thead>
 				<tbody>
@@ -85,7 +84,6 @@
 						<td>{{ $book->stock }}</td>
 						<td>{{ ___b($book->pre_order) }}</td>
 						<td>{{ $book->price }} €</td>
-						<td>{{ $book->media->count() }}</td>
 				@endforeach
 				</tbody>
 			</table>

@@ -20,7 +20,7 @@ class MediaController extends Controller
 
 	/** Lists all media from the library. Index of the media library in backend. */
     public function list(){
-        $media = Medium::orderBy('id', 'DESC')->get();
+        $media = Medium::without('user')->orderBy('id', 'DESC')->get();
         return view('media/list', compact('media'));
     }
 
