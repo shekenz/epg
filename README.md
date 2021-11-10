@@ -29,9 +29,12 @@ npm install
 cp .env.example .env
 ```
 
-*** Notes : ***
+**Notes :**
+
 `APP_LANG` : Used for faker locale, formated as en_US.
+
 `APP_ALLOW_REGISTER` : Determines if any user can create an account, or if only invited users can.
+
 `IMAGE_DRIVER` : Determines which PHP image library to use. Possible choices : gd or imagick.
 
 After edition, don't forget to run `php artisan config:cache` to make the changes available.
@@ -68,7 +71,7 @@ php artisan invite user.adress@mail.com
 
 You can now follow the instructions you received by mail to register as the first user.
 
-*** Important : *** The mail configs need to be correctly set up in the .env file in order for the app to send mails.
+**Important :** The mail configs need to be correctly set up in the .env file in order for the app to send mails.
 
 8. Login
 
@@ -77,9 +80,13 @@ Go to http://yourdomaine.name/login and login with your freshly created credenti
 ## Custom artisan commands
 
 `invite user.adress@mail.com` : Invite a new user to register.
+
 `db:seed` : Fills up database with fake books and fake orders (books will be created with existing media from the library).
+
 `db:clean` : Empties books, orders and related pivot tables.
+
 `backup:table table_name`: Creates a backup of a table.
+
 `restore:table table_name`: Restores a backup of a table.
 
 
