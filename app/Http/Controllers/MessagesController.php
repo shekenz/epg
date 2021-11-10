@@ -23,7 +23,7 @@ class MessagesController extends Controller
 				'required',
 				function($attribute, $value, $fail) {
 					if(str_word_count($value) <= 1) {
-						$fail('The :attribute field must be have more than one word.');
+						$fail('The :attribute field must have more than one word.');
 					}
 				}
 			],
