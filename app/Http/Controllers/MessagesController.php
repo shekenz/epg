@@ -19,7 +19,14 @@ class MessagesController extends Controller
 		$data = $request->validate([
 			'email' => ['max:256', 'required', 'email'],
 			'subject' => ['max:256', 'required'],
-			'message' => ['required'],
+			'message' => [
+				'required',
+				function($attribute, $value, $fail) {
+					if(str_word_count($value) <= 1) {
+						$fail('The :attribute field must be have more than one word.');
+					}
+				}
+			],
 		]);
 
 		$users = User::where('role', 'admin')->orWhere('role', 'postmaster')->get();
