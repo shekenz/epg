@@ -108,7 +108,7 @@ return [
     |
     */
 
-    'faker_locale' => env('APP_POSIX_LOCALE', 'en_US'),
+    'faker_locale' => env('APP_LANG', 'en_US'),
 
     /*
     |--------------------------------------------------------------------------
