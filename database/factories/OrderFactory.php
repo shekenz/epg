@@ -77,7 +77,7 @@ class OrderFactory extends Factory
 			'email_address' => $this->faker->email(),
 			'address_line_1' => $this->faker->streetAddress(),
 			'address_line_2' => null,
-			'admin_area_2' => $this->faker->state(),
+			'admin_area_2' => $this->faker->department(),
 			'admin_area_1' => $this->faker->city(),
 			'postal_code' => $this->faker->postcode(),
 			'country_code' => 'FR',

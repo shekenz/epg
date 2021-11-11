@@ -3,10 +3,10 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Book;
+use App\Models\BookInfo;
 use Illuminate\Support\Facades\DB;
 
-class BookSeeder extends Seeder
+class BookInfoSeeder extends Seeder
 {
 	/**
 	 * Run the database seeds.
@@ -16,9 +16,7 @@ class BookSeeder extends Seeder
 	public function run()
 	{
 		// Emptying database first
-		Book::truncate();
-		DB::table('book_medium')->truncate();
-    
-		Book::factory()->count(rand(10,20))->create();
-  }
+		BookInfo::truncate();
+		BookInfo::factory()->count(rand(4, 10))->create();
+	}
 }
