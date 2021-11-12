@@ -185,8 +185,16 @@ class BooksController extends Controller
 
 	// Restore a book from archives to library.
 	public function restore($id) {
+
+		// Select 'last' position row
+		$lastBookInfo = BookInfo::orderBy('position', 'DESC')->first();
+
 		// Can't bind a deleted model, will throw a 404
-		BookInfo::onlyTrashed()->findOrFail($id)->restore();
+		$restoredBookInfo = BookInfo::onlyTrashed()->findOrFail($id);
+		$restoredBookInfo->position = $lastBookInfo->position + 1;
+		$restoredBookInfo->save();
+		$restoredBookInfo->restore();
+
 		return redirect()->route('books.archives')->with([
 			'flash' => __('flash.book.restored'),
 			'flash-type' => 'success'
