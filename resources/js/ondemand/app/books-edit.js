@@ -1,6 +1,7 @@
 import { displayPanel } from '../../shared/helpers.mjs';
 import Sortable from 'sortablejs';
 
+const saveLoader = document.getElementById('save-loader');
 const thumbs = document.getElementsByClassName('hover-thumb');
 
 for(const thumb of thumbs) {
@@ -28,12 +29,15 @@ const reorderRequest = e => {
 	const form = new FormData()
 	form.set('order', JSON.stringify(order));
 
+	saveLoader.classList.remove('hidden');
 	window.fetch(`/api/variations/${sortWrapper.dataset.bookInfoId}/reorder`, {
 		method: 'post',
 		headers: {
 			'accept': 'application/json'
 		},
 		body: form
+	}).then(() => {
+		saveLoader.classList.add('hidden');
 	});
 
 }

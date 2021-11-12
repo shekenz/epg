@@ -19,6 +19,10 @@
 	<body class="font-dashboard antialiased">
 		<div class="min-h-screen bg-gray-100">
 			@include('layouts.navigation')
+
+			<div id="save-loader" class="hidden fixed m-4 py-2 pl-4 pr-3 bg-white rounded-md border border-gray-200 shadow-sm">
+				Saving&nbsp;<img src="{{ asset('img/loader2.gif') }}" class="inline-block h-6 w-6 ml-2">
+			</div>
 				
 			<!-- Page Content -->
 			<main>
@@ -37,7 +41,7 @@
 							@if(isset($title))
 							<div class="flex flex-row py-2 px-3 sm:py-4 sm:px-5 bg-white border-b border-gray-200 items-center">
 								@isset($leftControls)
-								<div id="left-controls" class="mr-2">
+								<div id="left-controls" class="mr-4">
 									{{ $leftControls }}
 								</div>
 								@endif

@@ -1,5 +1,7 @@
 import Sortable from 'sortablejs';
 
+const saveLoader = document.getElementById('save-loader');
+
 const reorderRequest = e => {
 
 	const books = e.target.children;
@@ -12,12 +14,15 @@ const reorderRequest = e => {
 	const form = new FormData()
 	form.set('order', JSON.stringify(order));
 
+	saveLoader.classList.remove('hidden');
 	window.fetch('/api/books/reorder', {
 		method: 'post',
 		headers: {
 			'accept': 'application/json'
 		},
 		body: form
+	}).then(() => {
+		saveLoader.classList.add('hidden');
 	});
 
 }
