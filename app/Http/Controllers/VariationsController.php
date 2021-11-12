@@ -164,7 +164,7 @@ class VariationsController extends Controller
 	 */
 	public function delete(Book $book) {
 		$book->delete();
-		return redirect()->route('books')->with([
+		return redirect()->back()->with([
 			'flash' => __('flash.variation.deleted'),
 			'flash-type' => 'success'
 		]);
