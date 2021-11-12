@@ -22,7 +22,7 @@ class BookInfoFactory extends Factory
 	public function definition()
 	{
 		return [
-			'title' => $this->faker->sentence(4),
+			'title' => rtrim($this->faker->sentence(4), '.'),
 			'author' => $this->faker->firstName().' '.$this->faker->lastName(),
 			'user_id' => 1,
 			'width' => rand(150, 300),
