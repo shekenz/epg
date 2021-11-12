@@ -83,7 +83,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function() {
 		Route::name('archive')->group(function() {
 			Route::post('/archive/{order}', [ArchivedOrdersController::class, 'archive'])->name('.order');
 			Route::get('/archived/{archivedOrder}', [ArchivedOrdersController::class, 'display'])->name('.display');
-			Route::get('s/archived', [ArchivedOrdersController::class, 'list'])->name('.list');
+			Route::get('/archived', [ArchivedOrdersController::class, 'list'])->name('.list');
 		});
 
 	});
@@ -113,17 +113,22 @@ Route::middleware('auth')->prefix('dashboard')->group(function() {
 
 	// Books
 	Route::prefix('books')->name('books')->group(function() {
+
+		Route::prefix('archives')->name('.archives')->group(function() {
+			Route::get('/', [BooksController::class, 'archived']);
+			Route::get('/{bookInfo}', [BooksController::class, 'archive'])->name('.store');
+			Route::post('/delete/all', [BooksController::class, 'deleteAll'])->name('.delete.all');
+			Route::post('/delete/{bookInfo}', [BooksController::class, 'delete'])->name('.delete');
+			Route::get('/restore/{id}', [BooksController::class, 'restore'])->name('.restore');
+		});
+		
 		Route::get('/', [BooksController::class, 'list']);
 		Route::get('/create', [BooksController::class, 'create'])->name('.create');
 		Route::post('/', [BooksController::class, 'store'])->name('.store');
 		Route::get('/edit/{bookInfo}', [BooksController::class, 'edit'])->name('.edit');
 		Route::patch('/edit/{bookInfo}', [BooksController::class, 'update'])->name('.update');
 		Route::get('/{bookInfo}', [BooksController::class, 'display'])->name('.display');
-		Route::get('/archive/{book}', [BooksController::class, 'archive'])->name('.archive');
 		Route::post('/delete/{id}', [BooksController::class, 'delete'])->name('.delete');
-		Route::post('/archived/delete', [BooksController::class, 'deleteAll'])->name('.deleteAll');
-		Route::get('/restore/{id}', [BooksController::class, 'restore'])->name('.restore');
-		Route::get('/archived', [BooksController::class, 'archived'])->name('.archived');
 	});
 
 	//Variation

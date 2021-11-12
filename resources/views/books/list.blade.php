@@ -6,7 +6,7 @@
 
 	<x-slot name="controls">
 		@if( !empty($archived) )
-			<a href="{{ route('books.archived') }}" class="button-shared">{{ ___('archived') }} ({{ $archived }})</a>
+			<a href="{{ route('books.archives') }}" class="button-shared">{{ ___('archived') }} ({{ $archived }})</a>
 		@endif
 		<a href="{{ route('books.create') }}" class="button-shared">{{ ___('new') }}</a>
 	</x-slot>
@@ -44,8 +44,9 @@
 				<td>{{ $bookInfo->author }}</td>
 				
 				<td class="text-right">
-					{{-- <a class="icon" title="{{ ___('archive') }}" href="{{ route('books.archive', $book->id)}}"><x-tabler-archive /></a> --}}
+					<a class="mini-button" title="{{ ___('archive') }}" href="{{ route('books.archives.store', $bookInfo->id)}}"><x-tabler-archive /></a>
 					<a class="mini-button" title="{{ ___('edit') }}" href="{{ route('books.edit', $bookInfo->id) }}"><x-tabler-edit /></a>
+					
 				</td>
 			</tr>
 		@endforeach

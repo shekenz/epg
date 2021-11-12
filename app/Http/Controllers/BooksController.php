@@ -63,8 +63,8 @@ class BooksController extends Controller
 	/** Lists all books from the library. Index of the books library in backend. */
 	public function list() {
 		$bookInfos = BookInfo::orderBy('position', 'ASC')->get();
-		//$archived = Book::onlyTrashed()->count();
-      return view('books/list', compact('bookInfos'));
+		$archived = BookInfo::onlyTrashed()->count();
+    return view('books/list', compact('bookInfos', 'archived'));
 	}
 
 
@@ -165,16 +165,16 @@ class BooksController extends Controller
 
 	// Lists all archived books. Index of archives in backend.
 	public function archived() {
-		$books = Book::onlyTrashed()->get();
-		$archived = Book::onlyTrashed()->count();
-		return view('books/archived', compact('books', 'archived'));
+		$bookInfos = BookInfo::onlyTrashed()->get();
+		$archived = $bookInfos->count();
+		return view('books.archived', compact('bookInfos', 'archived'));
 	}
 
 
 
 	// Archives a book (SoftDelete)
-	public function archive(Book $book) {
-		$book->delete();
+	public function archive(BookInfo $bookInfo) {
+		$bookInfo->delete();
 		return redirect()->route('books')->with([
 			'flash' => __('flash.book.archived'),
 			'flash-type' => 'info'
@@ -186,8 +186,8 @@ class BooksController extends Controller
 	// Restore a book from archives to library.
 	public function restore($id) {
 		// Can't bind a deleted model, will throw a 404
-		Book::onlyTrashed()->findOrFail($id)->restore();
-		return redirect()->route('books.archived')->with([
+		BookInfo::onlyTrashed()->findOrFail($id)->restore();
+		return redirect()->route('books.archives')->with([
 			'flash' => __('flash.book.restored'),
 			'flash-type' => 'success'
 		]);
@@ -198,37 +198,62 @@ class BooksController extends Controller
 	// Permanently deletes a book from archives.
 	public function delete($id) {
 		// Can't bind a deleted model, will throw a 404
-		$book = Book::with(['media', 'orders'])->onlyTrashed()->findOrFail($id);
+		$bookInfo = BookInfo::onlyTrashed()->findOrFail($id);
 
-		// Check if book is still attached to an order
-		if($book->orders->isEmpty()) {
+		// Check if any variations is still attached to an order
+		foreach($bookInfo->books as $book) {
+			if($book->orders->isNotEmpty()) {
+				return redirect()->route('books.archives')->with([
+					'flash' => __('flash.book.still-linked'),
+					'flash-type' => 'error'
+				]);
+			}
+		}
+
+		// Delete books (AKA variations)
+		// We running a second loop that goes over all the books no matter what
+		// The previous loop interrupts and redirect if book is still in an order,
+		// and the following code won't be run anyway
+		// We also call ->withTrashed()->get() on the relationship to delete all variation
+		// If we were to call directly the models, the softdeleted variations would stay in the db
+		$bookInfo->books()->withTrashed()->get()->each(function($book) {
 			$book->media()->detach();
 			$book->forceDelete();
-			return redirect()->route('books.archived')->with([
-				'flash' => __('flash.book.deleted'),
-				'flash-type' => 'success'
-			]);
-		} else {
-			return redirect()->route('books.archived')->with([
-				'flash' => __('flash.book.still-linked'),
-				'flash-type' => 'error'
-			]);
-		}
+		});
+
+		// Finally we delete once and for all BookInfo
+		$bookInfo->forceDelete();
+
+		return redirect()->route('books.archives')->with([
+			'flash' => __('flash.book.deleted'),
+			'flash-type' => 'error'
+		]);
+
 	}
 
 
 
 	// Permanently deletes ALL books from archives.
 	public function deleteAll() {
-		$books = Book::with(['media', 'orders'])->onlyTrashed()->get();
-		$booksForDeletion = $books->filter(function($book) {
-			return $book->orders->isEmpty();
+		$bookInfos = BookInfo::onlyTrashed()->get();
+		$booksForDeletion = $bookInfos->filter(function($bookInfo) {
+			$deleteBook = true;
+			foreach($bookInfo->books as $book) {
+				if($book->orders->isNotEmpty()) {
+					$deleteBook = false;
+				}
+			}
+			return $deleteBook;
 		});
 
-		$booksNotDeleted = $books->diff($booksForDeletion);
-		$booksForDeletion->each(function($book) {
-			$book->media()->detach();
-			$book->forceDelete();
+		$booksNotDeleted = $bookInfos->diff($booksForDeletion);
+
+		$booksForDeletion->each(function($bookInfo) {
+			$bookInfo->books()->withTrashed()->get()->each(function($book) {
+				$book->media()->detach();
+				$book->forceDelete();
+			});
+			$bookInfo->forceDelete();
 		});
 
 		if($booksNotDeleted->isEmpty()) {
@@ -257,7 +282,7 @@ class BooksController extends Controller
 
 		$data['order'] = json_decode($data['order'], true);
 
-		$books->each(function ($item, $key) use ($data) {
+		$books->each(function ($item) use ($data) {
 			$item->position = $data['order'][$item->id];
 			$item->save();
 		});

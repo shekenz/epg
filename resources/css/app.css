@@ -47,10 +47,6 @@
 		@apply w-6 inline transition-colors duration-300 hover:text-indigo-500;
 	}
 
-	.warning svg {
-		@apply text-red-500 hover:text-red-300;
-	}
-
 	.label-shared {
 		@apply font-medium text-sm text-gray-500;
 	}
@@ -140,6 +136,11 @@
 			bg-gray-800 border border-gray-800 rounded-md inline-flex items-center justify-center h-8 w-8 p-1 text-white
 			hover:bg-white
 			hover:text-gray-800;
+	}
+
+	.mini-button.warning {
+		@apply
+			bg-red-500 border-red-500 hover:text-red-500 hover:bg-white;
 	}
 
 	/* --------------------------------------------------------------------------------------------- TABLES */

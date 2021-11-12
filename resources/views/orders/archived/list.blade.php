@@ -3,11 +3,9 @@
 			{{ __('Archived orders') }}
 	</x-slot>
 
-	{{--
-	<x-slot name="scripts">
-		<script src="{{ asset('js/order-list.js') }}" type="text/javascript" defer></script>
+	<x-slot name="leftControls">
+		<a href="{{ route('orders') }}" class="mini-button"><x-tabler-chevron-left /></a>
 	</x-slot>
-	--}}
 
 	<div class="flex justify-between mb-3">
 		<div class="hidden">
