@@ -4,7 +4,7 @@ const colors = require('tailwindcss/colors');
 module.exports = {
 	darkMode: 'class',
 	mode: 'jit',
-    purge: {
+		purge: {
 		content: [
 			'./storage/framework/views/*.php',
 			'./resources/views/**/*.blade.php',
@@ -16,12 +16,12 @@ module.exports = {
 		},
 	},
 
-    theme: {
-        extend: {
-            fontFamily: {
-                sans: ['Monument Grotesk', 'Nunito', ...defaultTheme.fontFamily.sans],
+	theme: {
+		extend: {
+			fontFamily: {
+				sans: ['"Monument Grotesk"', 'Nunito', ...defaultTheme.fontFamily.sans],
 				dashboard: ['Nunito', ...defaultTheme.fontFamily.sans],
-            },
+			},
 			fontSize: {
 				custom: ['1.1rem', '1.35rem'],
 				'custom-sm': ['1em', '1.15em'],
@@ -39,16 +39,16 @@ module.exports = {
 			outline: {
 				light: [`1px solid ${colors.black}`, '2px'],
 				dark: [`1px solid ${colors.gray[200]}`, '2px'],
-			  }
-        },
-    },
+				}
+			},
+		},
 
-    variants: {
-        extend: {
-            opacity: ['disabled'],
-			display: ['dark'],
-        },
-    },
+		variants: {
+			extend: {
+				opacity: ['disabled'],
+				display: ['dark'],
+			},
+		},
 
-    plugins: [require('@tailwindcss/forms')],
+		plugins: [require('@tailwindcss/forms')],
 };
