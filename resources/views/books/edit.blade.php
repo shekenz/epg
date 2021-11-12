@@ -3,12 +3,16 @@
 		{{ ___('edit book').' "'.$bookInfo->title.'"' }}
 	</x-slot>
 
+	<x-slot name="leftControls">
+		<a href="{{ route('books') }}" class="mini-button"><x-tabler-chevron-left /></a>
+	</x-slot>
+
 	<x-slot name="scripts">
 		<script src="{{ asset('js/books-edit.js') }}" type="text/javascript" defer></script>
 	</x-slot>
 	
 	<div class="m-4">
-	@if ($errors->any())
+		@if ($errors->any())
 		<div class="mb-4" :errors="$errors">
 			<div class="font-medium text-red-600">
 				{{ __('Whoops! Something went wrong.') }}
@@ -20,7 +24,7 @@
 			@endforeach
 			</ul>
 		</div>
-	@endif
+		@endif
 
   	<form id="edit-form" action="{{ route('books.update', $bookInfo->id) }}" method="post" enctype="multipart/form-data" class="flex flex-col gap-y-2 md:grid md:grid-cols-4 lg:m-2 md:gap-x-4" autocomplete="off">
       @csrf
@@ -71,7 +75,7 @@
 
 			<h2 class="col-span-4 text-lg font-bold border-b border-gray-500 my-4">{{ ___('variations') }}</h2>
 
-			<table class="my-4 col-span-4 mt-4">
+			<table class="mt-4 col-span-4">
 				<thead class="font-bold">
 					<tr>
 						<td class="whitespace-nowrap"></td>

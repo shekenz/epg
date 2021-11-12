@@ -3,6 +3,10 @@
 		{{ ___('new book') }}
 	</x-slot>
 
+	<x-slot name="leftControls">
+		<a href="{{ route('books') }}" class="mini-button"><x-tabler-chevron-left /></a>
+	</x-slot>
+
 	<x-slot name="controls">
 		<a href="{{ route('books') }}" class="button-shared">{{ ___('cancel') }}</a> 
 	</x-slot>
@@ -12,22 +16,22 @@
 	</x-slot>
 	
 	<div class="m-4">
-        @if ($errors->any())
-        <div class="mb-4" :errors="$errors">
-            <div class="font-medium text-red-600">
-                {{ __('Whoops! Something went wrong.') }}
-            </div>
+				@if ($errors->any())
+				<div class="mb-4" :errors="$errors">
+						<div class="font-medium text-red-600">
+								{{ __('Whoops! Something went wrong.') }}
+						</div>
 
-            <ul class="mt-3 list-disc list-inside text-sm text-red-600">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-        @endif
+						<ul class="mt-3 list-disc list-inside text-sm text-red-600">
+								@foreach ($errors->all() as $error)
+										<li>{{ $error }}</li>
+								@endforeach
+						</ul>
+				</div>
+				@endif
 
-      <form action="{{ route('books.store') }}" method="post" enctype="multipart/form-data" class="flex flex-col gap-y-2 md:grid md:grid-cols-4 lg:m-2 md:gap-x-4" autocomplete="off">
-        @csrf
+			<form action="{{ route('books.store') }}" method="post" enctype="multipart/form-data" class="flex flex-col gap-y-2 md:grid md:grid-cols-4 lg:m-2 md:gap-x-4" autocomplete="off">
+				@csrf
 				<div>
 					<label class="label-shared lg:text-lg" for="title">{{ ___('title') }} :</label>
 					<input class="input-shared" id="title" name="title" type="text" value="{{ old('title') }}" maxlength="128">
@@ -128,11 +132,11 @@
 				</div>
 			</div>
 
-			<div class="col-span-4 mt-2 lg:text-right">
-            	<input class="button-shared w-full lg:w-auto" type="submit" value="{{ ___('create') }}">
+			<div class="col-span-4 mt-6 mb-4 lg:text-right">
+				<input class="button-shared w-full lg:w-auto" type="submit" value="{{ ___('create') }}">
 			</div>
 			
-        </form>
-    </div>
+		</form>
+	</div>
 
 </x-app-layout>

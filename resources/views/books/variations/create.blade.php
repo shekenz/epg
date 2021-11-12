@@ -3,6 +3,10 @@
 		{{ ___('add variation to book').' "'.$bookInfo->title.'"' }}
 	</x-slot>
 
+	<x-slot name="leftControls">
+		<a href="{{ route('books.edit', $bookInfo->id) }}" class="mini-button"><x-tabler-chevron-left /></a>
+	</x-slot>
+
 	<x-slot name="scripts">
 		<script src="{{ asset('js/media-library-dragdrop.js') }}" type="text/javascript" defer></script>
 		<script src="{{ asset('js/variations-create.js') }}" type="text/javascript" defer></script>
@@ -74,7 +78,7 @@
 				</div>
 			</div>
 
-			<div class="col-span-4 mt-2 lg:text-right">
+			<div class="col-span-4 mt-6 mb-4 lg:text-right">
 				<input class="button-shared" type="submit" value="{{ ___('add') }}">
 			</div>
 	
