@@ -83,6 +83,7 @@ for(let input of variationInput) {
 		const loader = document.getElementById('variations-loader-' + glideIndex);
 		const price = document.getElementById('price-' + glideIndex);
 		const addToCart = document.getElementById('add-to-cart-' + glideIndex);
+		const counter = document.getElementById('counter-' + glideIndex);
 
 		// Images arrays
 		const variationData = JSON.parse(e.target.value);
@@ -121,6 +122,9 @@ for(let input of variationInput) {
 
 			loader.classList.add('hidden');
 
+			// Updating counter
+			counter.lastElementChild.firstChild.nodeValue = variationData.media.length;
+
 		}
 
 		// Preloading all images
@@ -129,7 +133,7 @@ for(let input of variationInput) {
 			imageRessource.src = window.location.origin+'/'+url;
 			imageRessource.addEventListener('load', () => {
 				imagesLoaded[index] = imageRessource;
-				console.log(`Loaded image ${url}`);
+				//console.log(`Loaded image ${url}`);
 				if(imagesLoaded.length === variationData.media.length) {
 					allLoaded();
 				}
