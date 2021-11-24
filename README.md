@@ -45,7 +45,15 @@ After edition, don't forget to run `php artisan config:cache` to make the change
 php artisan key:generate
 ```
 
-5. Run NPM script
+5. Link storage to public folder
+
+```
+php artisan storage:link
+```
+
+If you get an "Image source not readable" exception, you probably missed this step.
+
+6. Run NPM script
 
 ```
 npm run prod
@@ -55,13 +63,13 @@ or
 npm run dev
 ```
 
-6. Run migrations
+7. Run migrations
 
 ```
 php artisan migrate
 ```
 
-7. Invite user
+8. Invite user
 
 If `APP_ALLOW_REGISTER` is set to false, you have to invite users to join the backend admin panel with this command :
 
@@ -73,7 +81,7 @@ You can now follow the instructions you received by mail to register as the firs
 
 **Important :** The mail configs need to be correctly set up in the .env file in order for the app to send mails.
 
-8. Login
+9. Login
 
 Go to http://yourdomaine.name/login and login with your freshly created credentials and start publishing.
 

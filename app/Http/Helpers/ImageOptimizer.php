@@ -31,6 +31,7 @@ class ImageOptimizer {
 		// For each presets found in imageoptimizer.family
 		foreach(config('imageoptimizer.'.$fileInfo['dirname']) as $preset => $config) {
 			if (!Storage::disk('public')->exists($fileInfo['dirname'].'/'.$fileInfo['filename'].'_'.$preset.'.'.$fileInfo['extension'])) {
+				// TODO Check for storage link with an exception
 				$img = $imgManager
 					->make('storage/'.$filePath) // ImageIntervention needs to load image direclty from its path in order to read EXIF data.
 					->orientate() // Re-orient images from phones (Orientation info is in EXIF data).
