@@ -13,8 +13,8 @@
 					@foreach ($bookInfo->books->first()->media as $index => $medium)
 						<li class="glide__slide text-center"><img class="m-auto w-full" src="{{ asset('storage/'.$medium->preset('hd')) }}"></li>
 						@php
-								$mediaIDs[$medium->id] = $index;
 								// Set media's position in the glide as 'media_id' => 'position_in_glide'
+								$mediaIDs[$medium->id] = $index;
 						@endphp
 					@endforeach
 				</ul>
@@ -76,14 +76,19 @@
 						<form class="variations-form" id="variations-form-{{ $glideIndex }}">
 							<select class="variations-select" data-glide-index="{{ $glideIndex }}">
 							@foreach($bookInfo->books as $variation)
-								@php
-									$variationData = [
-										'id' => $variation->id,
-										'media' => $variation->media->map(function($item) { return 'storage/'.$item->preset('hd'); }),
-										'price' => $variation->price
-									];
-								@endphp
-								<option value="{{ json_encode($variationData) }}">{{ $variation->label }}</option>
+								@if($variation->media->isNotEmpty())
+									{{-- TODO get those data threw API --}}
+									@php
+										$variationData = [
+											'id' => $variation->id,
+											'media' => $variation->media->map(function($item) { return 'storage/'.$item->preset('hd'); }),
+											'price' => $variation->price,
+											'pre-order' => $variation->pre_order,
+											'stock' => $variation
+										];
+									@endphp
+									<option value="{{ json_encode($variationData) }}">{{ $variation->label }}</option>
+								@endif
 							@endforeach
 							</select>
 						</form>

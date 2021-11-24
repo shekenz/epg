@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\BookInfo;
+use App\Models\Medium;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -14,17 +15,29 @@ class DatabaseSeeder extends Seeder
 	 */
 	public function run()
 	{
-		$this->call([
-			BookInfoSeeder::class,
-			BookSeeder::class,
-		]);
 
-		BookInfo::all()->each(function($bookInfo) {
-			$books = $bookInfo->books;
-			if($books->isEmpty()) {
-				$bookInfo->delete();
-			}
-		});
+		$media = Medium::first();
+
+		if(isset($media)) {
+			
+			$this->call([
+				BookInfoSeeder::class,
+				BookSeeder::class,
+			]);
+	
+			BookInfo::all()->each(function($bookInfo) {
+				$books = $bookInfo->books;
+				if($books->isEmpty()) {
+					$bookInfo->delete();
+				}
+			});
+
+		} else {
+
+			$this->command->error('Media library is empty. Please upload media before seeding books');
+
+		}
+
 
 	}
 }

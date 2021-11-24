@@ -22,6 +22,7 @@ class VariationsController extends Controller
 		'pre_order' => ['nullable', 'boolean'],
 		'price' => ['required', 'min:0', 'numeric'],
 		'media' => ['nullable', 'array'],
+		'files' => ['required_without:media', 'array'],
 		'files.*' => ['nullable', 'file', 'mimes:jpg,gif,png'],
 	];
 

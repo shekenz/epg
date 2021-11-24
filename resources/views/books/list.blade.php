@@ -29,16 +29,13 @@
 				<td>
 					@php 
 						$warnings = false;
-						// if($book->media->isEmpty()) {
-						// 	$warnings[] = __('No media linked ! Book will not be displayed on front page').'.';
-						// }
-						// if(empty($book->price)) {
-						// 	$warnings[] = __('No price found ! Book will not be sellable').'.';
-						// }
+						if($bookInfo->books->isEmpty()) {
+							$warnings[] = __('No variation found ! Book will not be displayed on front page').'.';
+						}
 					@endphp
 
 					@if($warnings)
-						<a href="{{ route('books.display', $bookInfo->id) }}" class="icon warning" title="{{ implode("\n", $warnings) }}"><x-tabler-alert-triangle />{{ $bookInfo->title }}</a>
+						<a href="{{ route('books.display', $bookInfo->id) }}" class="icon warning" title="{{ implode("\n", $warnings) }}"><x-tabler-alert-triangle /></a>
 					@endif
 					<a href="{{ route('books.display', $bookInfo->id) }}" class="default">{{ $bookInfo->title }}</a></td>
 				<td>{{ $bookInfo->author }}</td>
@@ -46,7 +43,6 @@
 				<td class="text-right">
 					<a class="mini-button" title="{{ ___('archive') }}" href="{{ route('books.archives.store', $bookInfo->id)}}"><x-tabler-archive /></a>
 					<a class="mini-button" title="{{ ___('edit') }}" href="{{ route('books.edit', $bookInfo->id) }}"><x-tabler-edit /></a>
-					
 				</td>
 			</tr>
 		@endforeach

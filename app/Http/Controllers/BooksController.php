@@ -27,6 +27,7 @@ class BooksController extends Controller
 		'pre_order' => ['nullable', 'boolean'],
 		'price' => ['required', 'min:0', 'numeric'],
 		'media' => ['nullable', 'array'],
+		'files' => ['required_without:media', 'array'],
 		'files.*' => ['nullable', 'file', 'mimes:jpg,gif,png'],
 	];
 
@@ -49,9 +50,7 @@ class BooksController extends Controller
   public function index() {
 		// We need to filter out the books without linked images because gilde.js hangs if it has no child elements.
 		// We also need a clean ordered index to link each glides to its corresponding counter.
-		$bookInfos = BookInfo::with([
-			'books'
-		])
+		$bookInfos = BookInfo::has('books')
 		->orderBy('position', 'ASC')
 		->get();
 		

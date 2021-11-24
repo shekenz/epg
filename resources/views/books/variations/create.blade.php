@@ -33,15 +33,15 @@
 		@csrf
 			<div>
 				<label for="label" class="label-shared lg:text-lg">{{ ___('label') }} :</label>
-				<input id="label" name="label" type="text" maxlength="128" class="input-shared">
+				<input id="label" name="label" type="text" maxlength="128" class="input-shared" value="{{ old('label') }}">
 			</div>
 			<div>
 				<label for="weight" class="label-shared lg:text-lg">{{ ___('weight') }} :</label>
-				<input id="weight" name="weight" type="number" min="0" class="input-shared">
+				<input id="weight" name="weight" type="number" min="0" class="input-shared" value="{{ old('weight') }}">
 			</div>
 			<div>
 				<label for="stock" class="label-shared lg:text-lg">{{ ___('stock') }} :</label>
-				<input id="stock" name="stock" type="number" class="input-shared">
+				<input id="stock" name="stock" type="number" class="input-shared" value="{{ old('stock') }}">
 				<input id="stock-hidden" name="stock" type="hidden">
 				<div class="mt-1">
 					<input class="" id="pre-order" name="pre_order" type="checkbox" value="1" @if(old('pre_order')) {{ 'checked' }} @endif><label for="pre-order" class="text-gray-500"> {{ ___('pre-order') }}</label>
@@ -49,7 +49,7 @@
 			</div>
 			<div>
 				<label for="price" class="label-shared lg:text-lg">{{ ___('price') }} :</label>
-				<input id="price" name="price" type="number" min="0" step="0.01" class="input-shared">
+				<input id="price" name="price" type="number" min="0" step="0.01" class="input-shared" value="{{ old('price') }}">
 			</div>
 
 				<div class="col-span-4">
