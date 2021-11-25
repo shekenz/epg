@@ -54,13 +54,23 @@ class BookFactory extends Factory
 	 */
 	public function configure()
 	{
+
 		$this->bookInfoIDs = BookInfo::pluck('id');
 		$this->mediaIDs = Medium::pluck('id');
 
 		return $this->afterCreating(function (Book $book) {
+
 			$book->book_info_id = $this->faker->randomElement($this->bookInfoIDs);
+
+			if($book->pre_order) {
+
+				$book->stock = 0;
+
+			}
+
 			$book->save();
 			$book->media()->attach($this->faker->randomElements($this->mediaIDs, rand(2, 10)));
+
 		});
 	}
 }
