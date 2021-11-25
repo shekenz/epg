@@ -95,7 +95,7 @@ for(let input of variationInput) {
 		price.firstChild.nodeValue = variationData.price;
 		// Updating add to cart url
 		addToCart.href = addToCart.href.replace(/\/[0-9]+$/, '/'+variationData.id);
-		console.log(`Updated URL to ${addToCart.href}`);
+		//console.log(`Updated URL to ${addToCart.href}`);
 
 		const allLoaded = () => {
 
