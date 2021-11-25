@@ -38,6 +38,7 @@
 
 	select {
 		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 100 100' %3E%3Cpolyline stroke='black' stroke-width='3.5' fill='transparent' points='10,30 50,70 90,30' /%3E%3C/svg%3E");
+		@apply cursor-pointer;
 	}
 
 	select:hover {
@@ -360,6 +361,17 @@
 			dark:stroke-[white]
 			hover:stroke-[white]
 			dark:hover:stroke-[black];
+	}
+
+	.out {
+		@apply
+			border-dark-300
+			text-dark-300
+			hover:bg-transparent
+			hover:text-dark-300
+			hover:border-dark-300
+			cursor-default
+			pointer-events-none;
 	}
 
 	.difference {

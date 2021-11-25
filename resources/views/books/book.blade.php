@@ -77,14 +77,14 @@
 							<select class="variations-select" data-glide-index="{{ $glideIndex }}">
 							@foreach($bookInfo->books as $variation)
 								@if($variation->media->isNotEmpty())
-									{{-- TODO get those data threw API --}}
+									{{-- //TODO get those data threw API --}}
 									@php
 										$variationData = [
 											'id' => $variation->id,
 											'media' => $variation->media->map(function($item) { return 'storage/'.$item->preset('hd'); }),
 											'price' => $variation->price,
-											'pre-order' => $variation->pre_order,
-											'stock' => $variation
+											'preorder' => $variation->pre_order,
+											'stock' => $variation->stock
 										];
 									@endphp
 									<option value="{{ json_encode($variationData) }}">{{ $variation->label }}</option>
@@ -98,16 +98,19 @@
 
 				@if( !empty($bookInfo->books->first()->price) && setting('app.shop.enabled'))
 					<br><span id="price-{{ $glideIndex }}">{{ $bookInfo->books->first()->price }}</span> €<br>
-					@if( $bookInfo->books->first()->stock > 0)
+					
 						<br>
-						<a id="add-to-cart-{{ $glideIndex }}" href="{{ route('cart.api.add', $bookInfo->books->first()->id)}}" class="add-to-cart-button button-lg">{{ ___('add to cart') }}</a><br>
-					@elseif( $bookInfo->books->first()->pre_order)
-						<br>
-						<a id="add-to-cart-{{ $glideIndex }}" href="{{ route('cart.api.add', $bookInfo->books->first()->id)}}" class="add-to-cart-button button-lg">{{ ___('pre-order') }}</a><br>
-					@else
-						<br>
-						({{ __('Out of stock') }})<br>
-					@endif
+						<a id="add-to-cart-{{ $glideIndex }}" href="{{ route('cart.api.add', $bookInfo->books->first()->id)}}" class="add-to-cart-button button-lg @if($bookInfo->books->first()->stock <= 0 && !$bookInfo->books->first()->pre_order) {{ 'out' }} @endif">
+							<span data-label-add="{{ ___('add to cart') }}" data-label-pre="{{ ___('pre-order') }}" data-label-out="{{ ___('out of stock') }}">
+								@if( $bookInfo->books->first()->stock > 0)
+									{{ ___('add to cart') }}
+								@elseif( $bookInfo->books->first()->pre_order)
+									{{ ___('pre-order') }}
+								@else
+									{{ ___('out of stock') }}
+								@endif
+							</span>
+						</a><br>
 				@endif
 				<br>
 				@auth

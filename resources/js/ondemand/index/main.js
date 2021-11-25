@@ -16,8 +16,8 @@ const flashErrorCooledDown = message => {
 addToCartButtons.map(buttons => {
 	buttons.addEventListener('click', e => {
 		e.preventDefault();
-		e.target.blur();
-		fetch(e.target.href, {
+		e.currentTarget.blur();
+		fetch(e.currentTarget.href, {
 			method: 'post',
 			headers: {
 				'accept': 'application/json'
@@ -91,11 +91,25 @@ for(let input of variationInput) {
 
 		// Init
 		loader.classList.remove('hidden');
+
 		// Updating price
 		price.firstChild.nodeValue = variationData.price;
-		// Updating add to cart url
+
+		// Updating add to cart button
+		if(variationData.stock > 0) { // Normaly if we have a positive stock, preorder should be off
+			addToCart.classList.remove('out');
+			addToCart.firstElementChild.firstChild.nodeValue = addToCart.firstElementChild.dataset.labelAdd
+		} else if(variationData.preorder) { // preorder is 0 or 1
+			addToCart.classList.remove('out');
+			addToCart.firstElementChild.firstChild.nodeValue = addToCart.firstElementChild.dataset.labelPre
+		} else { // if stock <= 0 and preorder is false
+			if(!addToCart.classList.contains('out')) {
+				addToCart.classList.add('out');
+			}
+			addToCart.firstElementChild.firstChild.nodeValue = addToCart.firstElementChild.dataset.labelOut
+		}
+		// We replace the link's href no matter what, since it's always the same and it's deactivated by 'out' class
 		addToCart.href = addToCart.href.replace(/\/[0-9]+$/, '/'+variationData.id);
-		//console.log(`Updated URL to ${addToCart.href}`);
 
 		const allLoaded = () => {
 
