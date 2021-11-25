@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="{{ config('app.locale') }}">
     <head>
+		<!--
 		<script>
 			// On page load or when changing themes, best to add inline in `head` to avoid FOUC
 			// If theme = dark in storage OR (if no theme in storage AND os is in darkmode)
@@ -10,12 +11,13 @@
 				document.documentElement.classList.remove('dark')
 			}
 		</script>
-        <title>
-            {{ config('app.name') }}
-            @if(isset($title)) | {{ $title }} @endif
-        </title>
-        <meta charset=UTF-8>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		-->
+		<title>
+				{{ config('app.name') }}
+				@if(isset($title)) | {{ $title }} @endif
+		</title>
+		<meta charset=UTF-8>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 		<link rel="icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon" />
 
