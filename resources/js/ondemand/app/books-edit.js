@@ -1,16 +1,17 @@
-import { displayPanel } from '../../shared/helpers.mjs';
 import Sortable from 'sortablejs';
+import { popUpPlus } from '../../shared/popup.mjs';
 
 const saveLoader = document.getElementById('save-loader');
 const thumbs = document.getElementsByClassName('hover-thumb');
 
 for(const thumb of thumbs) {
-	const fullImg = thumb.nextElementSibling;
-	fullImg.classList.toggle('hidden');
-	const fullImgDim = fullImg.getBoundingClientRect();
-	fullImg.classList.toggle('hidden');
-
-	displayPanel(thumb, [(fullImgDim['width'] / -2), ((fullImgDim['height'] + 20) * -1)]);
+	thumb.addEventListener('click', e => {
+		popUpPlus(el => {
+			let img = document.createElement('img');
+			img.setAttribute('src', thumb.dataset.fullSrc);
+			el.append(img);
+		})
+	});
 }
 
 // Reorder variations

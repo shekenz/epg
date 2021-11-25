@@ -65,22 +65,3 @@ export const getElementsByRegexName = (regexPattern) => {
 	}
 	return elements;
 }
-
-// Displays the next element sibling on hoverElement
-
-const togglePanel = e => {
-	e.target.nextElementSibling.classList.toggle('hidden');
-}
-
-const movePanel = (e, offset) => {
-	e.target.nextElementSibling.style.left = (e.clientX + offset[0]) + 'px';
-	e.target.nextElementSibling.style.top = (e.clientY + offset[1]) + 'px';
-}
-
-export const displayPanel = (hoverElement, offset = [10, 10]) => {
-	hoverElement.addEventListener('mouseenter', togglePanel);
-	hoverElement.addEventListener('mousemove', e => {
-		movePanel(e, offset);
-	});
-	hoverElement.addEventListener('mouseleave', togglePanel);
-}

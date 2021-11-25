@@ -119,10 +119,7 @@
 							<div class="flex flex-wrap gap-1">
 							@if($book->media->isNotEmpty())
 								@foreach ($book->media as $medium)
-									<img src="{{ asset('storage/'.$medium->preset('thumb')) }}" class="inline-block h-[50px] w-[50px] hover-thumb">
-									<div class="hidden fixed border-[3px] border-gray-800">
-										<img src="{{ asset('storage/'.$medium->preset('md')) }}">
-									</div>
+									<img src="{{ asset('storage/'.$medium->preset('thumb')) }}" data-full-src="{{ asset('storage/'.$medium->preset('hd')) }}" class="inline-block h-[50px] w-[50px] hover-thumb">
 								@endforeach
 							@else
 								<div class="inline-flex h-[50px] items-center">{{ ___('no linked medium') }}</div>
