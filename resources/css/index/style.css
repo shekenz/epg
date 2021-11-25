@@ -8,7 +8,7 @@
 	}
 
 	/*--------------- Reset outlines ---------------*/
-	a, input, textarea, button {
+	a, input, textarea, button, select {
 		@apply
 			focus:outline-none
 			dark:focus:outline-none;
@@ -144,8 +144,7 @@
 	}
 
 	.variations-form select {
-		@apply 
-			border-gray-800
+		@apply
 			text-custom
 			py-1
 			pl-2
@@ -289,7 +288,7 @@
 			hover:bg-black
 
 			dark:text-inherit
-			dark:border-white
+			dark:border-dark-200
 			dark:hover:text-black
 			dark:hover:bg-white
 
@@ -366,10 +365,14 @@
 	.out {
 		@apply
 			border-dark-300
+			dark:border-dark-600
 			text-dark-300
+			dark:text-dark-600
 			hover:bg-transparent
 			hover:text-dark-300
 			hover:border-dark-300
+			dark:hover:border-dark-600
+			dark:hover:text-dark-600
 			cursor-default
 			pointer-events-none;
 	}
