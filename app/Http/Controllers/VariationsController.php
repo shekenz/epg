@@ -150,6 +150,11 @@ class VariationsController extends Controller
 			$book->media()->sync($mediaIDsWithOrder);
 		}
 
+		// Assigning pre_order value if it's not present in data (if it's not selected)
+		if(!isset($data['pre_order'])) {
+			$data['pre_order'] = 0;
+		}
+
 		// Update
 		$book->update($data);
 
