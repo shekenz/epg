@@ -85,7 +85,7 @@
 			<a href="#" id="close-img-popup" class="text-gray-500 hover:text-gray-100 transition fixed top-4 right-4"><x-tabler-x class="h-16 w-16" /></a>
 			<div class="fixed bottom-6 text-center w-full text-gray-500">
 				<div class="inline-block border border-gray-500 rounded-lg px-6 py-2 text-lg">
-				Arrow keys to navigate, X to close
+					{{ __('app.img-popup-help') }}
 				</div>
 			</div>
 		</div>
