@@ -39,7 +39,7 @@ const moveImgSlide = (inverseDirection = false) => {
 
 const closePopup = e => {
 	e.preventDefault();
-	imgPopupContent.src = '/img/loader2.gif';
+	imgPopupContent.src = loaderSrc;
 	imgPopup.classList.add('hidden');
 }
 
