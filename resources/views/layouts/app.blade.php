@@ -9,6 +9,9 @@
 		<link rel="preload" href="{{ asset('fonts/Nunito-Regular.ttf') }}" as="font" type="font/ttf" crossorigin>
 		<link rel="preload" href="{{ asset('fonts/Nunito-Bold.ttf') }}" as="font" type="font/ttf" crossorigin>
 		<link rel="preload" href="{{ asset('fonts/Roboto-Bold.ttf') }}" as="font" type="font/ttf" crossorigin>
+		<link rel="prefetch" href="{{ asset('img/loader.svg')}}" as="image">
+		<link rel="prefetch" href="{{ asset('img/loader_dark.svg')}}" as="image">
+		<link rel="prefetch" href="{{ asset('img/loader_medium.svg')}}" as="image">
 		<link rel="stylesheet" href="{{ asset('css/app.css') }}" type="text/css">
 		<!-- Scripts -->
 		<script src="{{ asset('js/app.js') }}" defer></script>
@@ -21,7 +24,7 @@
 			@include('layouts.navigation')
 
 			<div id="save-loader" class="hidden fixed m-4 py-2 pl-4 pr-3 bg-white rounded-md border border-gray-200 shadow-sm">
-				Saving&nbsp;<img src="{{ asset('img/loader2.gif') }}" class="inline-block h-6 w-6 ml-2">
+				Saving&nbsp;<img src="{{ asset('img/loader_dark.svg') }}" class="inline-block h-6 w-6 ml-2">
 			</div>
 				
 			<!-- Page Content -->
@@ -76,14 +79,14 @@
 			</div>
 		</div>
 
-		<div id="img-popup-wrapper" class="hidden bg-opacity-90 bg-black backdrop-blur-lg fixed top-0 left-0 w-full h-[100vh] z-[9002] flex justify-between items-center">
+		<div id="img-popup-wrapper" class="text-gray-500 hidden bg-opacity-90 bg-black backdrop-blur-lg fixed top-0 left-0 w-full h-[100vh] z-[9002] flex justify-between items-center">
 			<div id="img-popup-title" class="fixed top-8 text-2xl text-gray-100 font-bold text-center w-full">
 			</div>
-			<a id="previous-img-popup" class="text-gray-500 hover:text-gray-100 transition cursor-pointer"><x-tabler-chevron-left class="h-20 w-20" /></a>
-			<img id="img-popup-content" src="/img/loader2.gif">
-			<a id="next-img-popup" class="text-gray-500 hover:text-gray-100 transition cursor-pointer"><x-tabler-chevron-right class="h-20 w-20" /></a>
-			<a href="#" id="close-img-popup" class="text-gray-500 hover:text-gray-100 transition fixed top-4 right-4"><x-tabler-x class="h-16 w-16" /></a>
-			<div class="fixed bottom-6 text-center w-full text-gray-500">
+			<a id="previous-img-popup" class="hover:text-gray-100 transition cursor-pointer"><x-tabler-chevron-left class="h-20 w-20" /></a>
+			<img id="img-popup-content" src="{{ asset('img/loader.svg') }}" alt="loading animation">
+			<a id="next-img-popup" class="hover:text-gray-100 transition cursor-pointer"><x-tabler-chevron-right class="h-20 w-20" /></a>
+			<a href="#" id="close-img-popup" class="hover:text-gray-100 transition fixed top-4 right-4"><x-tabler-x class="h-16 w-16" /></a>
+			<div class="fixed bottom-6 text-center w-full">
 				<div class="inline-block border border-gray-500 rounded-lg px-6 py-2 text-lg">
 					{{ __('app.img-popup-help') }}
 				</div>
