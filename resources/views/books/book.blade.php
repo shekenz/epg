@@ -92,7 +92,7 @@
 							@endforeach
 							</select>
 						</form>
-						<img id="variations-loader-{{ $glideIndex }}" src="{{ asset('img/loading-windows98.gif') }}" class="w-10 h-10 inline-block hidden">
+						<img id="variations-loader-{{ $glideIndex }}" src="{{ asset('img/tiny_loader.svg') }}" class="hidden ml-2 w-8 h-8 inline-block">
 					</div>
 				@endif
 

@@ -29,6 +29,7 @@
 		<link rel="preload" href="{{ asset('fonts/MonumentGroteskTrial-Bold.woff') }}" as="font" type="font/woff" crossorigin>
 		<link rel="preload" href="{{ asset('fonts/MonumentGroteskTrial-MediumItalic.woff') }}" as="font" type="font/woff" crossorigin>
 		-->
+		<link rel="prefetch" href="{{ asset('img/tiny_loader.svg') }}" as="image">
 		<link rel="prefetch" href="{{ asset('img/frog_logo.svg') }}" as="image">
 		<link rel="prefetch" href="{{ asset('img/frog_logo_books.svg') }}" as="image">
 		<link rel="prefetch" href="{{ asset('img/frog_logo_heart.svg') }}" as="image">
