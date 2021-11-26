@@ -26,6 +26,11 @@
 	</div>
 
 	<div class="m-4">
+		@if($book->orders->isNotEmpty())
+			<div class="text-red-500 italic">
+				{{ __('app.variations-warning') }}
+			</div>
+		@endif
 		<form id="edit-form" action="{{ route('variations.update', $book->id) }}" method="POST" enctype="multipart/form-data" class="grid grid-cols-4 justify-between items-stretch gap-x-4 gap-y-2 lg:m-2" autocomplete="off">
 		@csrf
 		@method('patch')
@@ -35,7 +40,10 @@
 			</div>
 			<div>
 				<label for="weight" class="label-shared lg:text-lg">{{ ___('weight') }} :</label>
-				<input id="weight" name="weight" type="number" min="0" class="input-shared"  value="{{ old('weight') ?? $book->weight }}">
+				<input id="weight" name="weight" type="number" min="0" class="input-shared" value="{{ old('weight') ?? $book->weight }}" @if($book->orders->isNotEmpty()) {{ 'disabled' }} @endif>
+				@if($book->orders->isNotEmpty())
+				<input name="weight" type="hidden" value="{{ $book->weight }}">
+				@endif
 			</div>
 			<div>
 				<label for="stock" class="label-shared lg:text-lg">{{ ___('stock') }} :</label>
@@ -47,7 +55,10 @@
 			</div>
 			<div>
 				<label for="price" class="label-shared lg:text-lg">{{ ___('price') }} :</label>
-				<input id="price" name="price" type="number" min="0" step="0.01" class="input-shared" value="{{ old('price') ?? $book->price }}">
+				<input id="price" name="price" type="number" min="0" step="0.01" class="input-shared" value="{{ old('price') ?? $book->price }}" @if($book->orders->isNotEmpty()) {{ 'disabled' }} @endif>
+				@if($book->orders->isNotEmpty())
+				<input name="price" type="hidden" value="{{ $book->price }}">
+				@endif
 			</div>
 
 			{{-- Media Library --}}
