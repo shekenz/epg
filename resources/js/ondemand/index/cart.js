@@ -6,6 +6,7 @@ import { updateCartQuantity, setCartTotal } from '../../shared/update-cart.mjs';
 // Sentry
 import * as Sentry from "@sentry/browser";
 import { Integrations } from "@sentry/tracing";
+import Sortable from 'sortablejs';
 
 Sentry.init({
   dsn: "https://07f45debc8da4555b7bde057f0f2f391@o1036209.ingest.sentry.io/6003767",
@@ -80,7 +81,7 @@ const inputError = (inputName, message = '') => {
 		throw new Error(`C\'ant find element with name "${inputName}"`);
 	} else {
 		input.classList.add('error');
-		if(input.nextElementSibling.toUpperCase() === 'SPAN' && message !== '') {
+		if(input.nextElementSibling.tagName.toUpperCase() === 'SPAN' && message !== '') {
 			input.nextElementSibling.innerHTML = message;
 		}
 	}
