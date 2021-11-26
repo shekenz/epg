@@ -8,6 +8,7 @@ const closeImgPopupButton = document.getElementById('close-img-popup');
 const nextImgButton = document.getElementById('next-img-popup');
 const previousImgButton = document.getElementById('previous-img-popup');
 const imgPopupContent = document.getElementById('img-popup-content');
+const loaderSrc = imgPopupContent.src;
 let imgCollection;
 let currentIndex;
 
@@ -20,7 +21,20 @@ const moveImgSlide = (inverseDirection = false) => {
 		currentIndex = imgCollection.length - 1;
 	}
 	title.innerHTML = imgCollection[currentIndex].dataset.title;
-	imgPopupContent.src = imgCollection[currentIndex].dataset.fullSrc;
+
+	const imgPopupContentTemp = new Image();
+	imgPopupContentTemp.src = imgCollection[currentIndex].dataset.fullSrc;
+
+	// Loading image
+	if(imgPopupContentTemp.complete) {
+		imgPopupContent.src = imgPopupContentTemp.src
+	} else {
+		imgPopupContent.src = loaderSrc;
+		imgPopupContentTemp.addEventListener('load', e => {
+			imgPopupContent.src = e.currentTarget.src;
+		});
+	}
+
 }
 
 const closePopup = e => {
