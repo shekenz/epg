@@ -169,22 +169,46 @@ class VariationsController extends Controller
 	 * @return \Illuminate\Http\Response
 	 */
 	public function delete(Book $book) {
-		$book->delete();
-		return redirect()->back()->with([
-			'flash' => __('flash.variation.deleted'),
-			'flash-type' => 'success'
-		]);
+
+		if($book->orders->isEmpty()) {
+			$book->forceDelete();
+			return redirect()->back()->with([
+				'flash' => __('flash.variations.deleted'),
+				'flash-type' => 'success'
+			]);
+		} else {
+			$book->delete();
+			return redirect()->back()->with([
+				'flash' => __('flash.variations.linked-warning'),
+				'flash-type' => 'warning'
+			]);
+		}
 	}
 
 	/**
-	 * Force delete the specified resource.
+	 * Restores variation.
 	 *
-	 * @param  \App\Models\Book  $book
+	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function destroy(Book $book)
-	{
-			//
+	public function restore(int $id) {
+
+		$variation = Book::withTrashed()->findOrFail($id);
+		$variation->restore();
+
+		return redirect()->back()->with([
+			'flash' => __('flash.variations.restored'),
+			'flash-type' => 'success'
+		]);
+
+	}
+
+	// Refresh soft deleted variation
+	public function refresh(int $id) {
+
+		$variation = Book::withTrashed()->findOrFail($id);
+		return $this->delete($variation);
+
 	}
 
 	// Reorder variations
@@ -204,5 +228,7 @@ class VariationsController extends Controller
 		});
 
 		return response()->noContent();
+
 	}
+
 }

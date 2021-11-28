@@ -135,6 +135,8 @@ Route::middleware('auth')->prefix('dashboard')->group(function() {
 	Route::prefix('books/variations')->name('variations')->group(function() {
 		Route::get('/{bookInfo}/add', [VariationsController::class, 'create'])->name('.create');
 		Route::post('/{bookInfo}/add', [VariationsController::class, 'store'])->name('.store');
+		Route::get('/restore/{id}', [VariationsController::class, 'restore'])->name('.restore');
+		Route::post('/refresh/{id}', [VariationsController::class, 'refresh'])->name('.refresh');
 		Route::get('/edit/{book}', [VariationsController::class, 'edit'])->name('.edit');
 		Route::patch('/edit/{book}', [VariationsController::class, 'update'])->name('.update');
 		Route::delete('/delete/{book}', [VariationsController::class, 'delete'])->name('.delete');

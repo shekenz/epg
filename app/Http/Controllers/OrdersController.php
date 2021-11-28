@@ -57,7 +57,7 @@ class OrdersController extends Controller
 		$orders = Order::where('hidden', false)->orderBy('created_at', 'DESC')->get();
 		$coupons = Coupon::withTrashed()->get();
 		$shippingMethods = ShippingMethod::withTrashed()->orderBy('price', 'ASC')->get();
-		$books = Book::withTrashed()->orderBy('label', 'ASC')->get();
+		$books = Book::withTrashed()->orderBy('book_info_id', 'ASC')->get();
 		return view('orders.list', compact('orders', 'coupons', 'shippingMethods', 'books'));
 	}
 

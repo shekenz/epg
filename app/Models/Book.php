@@ -38,7 +38,7 @@ class Book extends Model
 
 	// Book relation with its bookInfo
 	public function bookInfo() {
-		return $this->belongsTo(BookInfo::class);
+		return $this->belongsTo(BookInfo::class)->withTrashed();
 	}
 
 }

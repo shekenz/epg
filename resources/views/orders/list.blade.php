@@ -37,8 +37,8 @@
 			{{-- Books filter option --}}
 			<select class="input-inline hidden max-w-[16rem]" id="filter-data-book">
 				<option value=""></option>
-				@foreach ($books as $book)	
-					<option value="{{ $book->id }}">{{ $book->title }}@if($book->trashed()) ({{ ___('archived') }})@endif</option>
+				@foreach ($books as $book)
+					<option value="{{ $book->id }}">{{ $book->bookInfo['title'].' | '.$book->label }}@if($book->trashed()) ({{ ___('archived') }})@endif</option>
 				@endforeach
 			</select>
 			{{-- Statut filter option --}}

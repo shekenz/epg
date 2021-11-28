@@ -19,8 +19,10 @@ return [
 		'some-still-linked' => 'Impossible de supprimer certain livres car ils sont toujours liés à une commande active. Archivez d\'abord la commande.',
 		'all-deleted' => 'Tous les livres archivés ont été supprimés.',
 	],
-	'variation' => [
-		'deleted' => 'Variation supprimée'
+	'variations' => [
+		'deleted' => 'Variation supprimée',
+		'linked-warning' =>	'La variation a été déplacée dans la liste d\'attente parce qu\'elle est toujours liée à une ou plusieurs commandes actives. Veuillez d\'abord archiver ces commandes pour pouvoir complètement supprimer la variation.',
+		'restored' => 'Variation restorée.',
 	],
 	'media' => [
 		'added' => 'Nouveau(x) média(s) ajouté(s) !',

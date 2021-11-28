@@ -28,7 +28,7 @@
 	<div class="m-4">
 		@if($book->orders->isNotEmpty())
 			<div class="text-red-500 italic">
-				{{ __('app.variations-warning') }}
+				{{ __('app.variations.warning') }}
 			</div>
 		@endif
 		<form id="edit-form" action="{{ route('variations.update', $book->id) }}" method="POST" enctype="multipart/form-data" class="grid grid-cols-4 justify-between items-stretch gap-x-4 gap-y-2 lg:m-2" autocomplete="off">

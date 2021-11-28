@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Book;
 use App\Models\BookInfo;
 use App\Models\Medium;
 use App\Traits\MediaManager;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Log;
 
 /**
@@ -16,7 +16,7 @@ class BooksController extends Controller
 {
 
 	use MediaManager;
-
+	use SoftDeletes;
 
 
 	/** @var array $validation contains the validation rules for creating or updating a book */
@@ -140,8 +140,14 @@ class BooksController extends Controller
 
 	/** Displays the book edition page. */
 	public function edit(BookInfo $bookInfo) {
+
 		$media = Medium::all();
+
+		// Lazy eager loading all variations with trashed
+		$bookInfo->load(['books' => function($q) { $q->withTrashed()->get(); } ]);
+
 		return view('books/edit', compact('bookInfo', 'media'));
+
 	}
 
 
@@ -174,6 +180,10 @@ class BooksController extends Controller
 	// Archives a book (SoftDelete)
 	public function archive(BookInfo $bookInfo) {
 		$bookInfo->delete();
+		// SoftDelete variations
+		$bookInfo->books()->each(function($book) {
+			$book->delete();
+		});
 		return redirect()->route('books')->with([
 			'flash' => __('flash.book.archived'),
 			'flash-type' => 'info'
@@ -190,6 +200,13 @@ class BooksController extends Controller
 
 		// Can't bind a deleted model, will throw a 404
 		$restoredBookInfo = BookInfo::onlyTrashed()->findOrFail($id);
+
+		// Restoring variations
+		$restoredBookInfo->load(['books' => function($q) { $q->onlyTrashed()->get(); } ]);
+		$restoredBookInfo->books->each(function($book) {
+			$book->restore();
+		});
+
 		$restoredBookInfo->position = $lastBookInfo->position + 1;
 		$restoredBookInfo->save();
 		$restoredBookInfo->restore();

@@ -19,8 +19,10 @@ return [
 		'some-still-linked' => 'Can\'t delete certain books that are linked to an order. Archive the order first.',
 		'all-deleted' => 'All archived book have been deleted.',
 	],
-	'variation' => [
-		'deleted' => 'Variation deleted'
+	'variations' => [
+		'deleted' => 'Variation deleted',
+		'linked-warning' =>	'The variation has been moved to the deletion waiting list because it is still linked to one or more active orders. Please archive those orders before proceeding to a full delete.',
+		'restored' => 'Variation restored.',
 	],
 	'media' => [
 		'added' => 'New media added!',
