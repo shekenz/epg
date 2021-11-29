@@ -10,6 +10,29 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Log;
 
 /**
+ * ----------------------------------------------- IMPORTANT NOTES -----------------------------------------------
+ * 
+ * This controller was originally build up around the Book model.
+ * The Book model was representing one book and contained all its data (title, author, price, weight, etc).
+ * 
+ * Later we had to introduce a new feature : Book variations. This is a sub-item, a variation of the original book
+ * that has the same author, but can have a different prices, different weights, and of course a different stock.
+ * It's like the different sizes or colour of one piece of cloth for example.
+ * 
+ * Since the book model was the base model for the order system to calculate everything, we kept it and now it
+ * represent a sub-item. We created a parent model, BookInfo, that holds the shared book's data, like author and
+ * description. BookInfo model now represent the book, and it hasMany sub-items that still are represented by the
+ * Book model (what we refer to "variations"). Yes, it is confusing, but it was the best approach not to have to
+ * refractor all the code.
+ * 
+ * To resume that mess :
+ * BookInfo : Parent book model with all the descriptive datas. hasMany Books (AKA variations).
+ * Book : Variation model, the sub-item that contains its own media, price, weight & stock. belongsTo 1 BookInfo.
+ * 
+ * ---------------------------------------------------------------------------------------------------------------
+*/
+
+/**
  * Controller for the Books Library
  */
 class BooksController extends Controller
@@ -18,8 +41,7 @@ class BooksController extends Controller
 	use MediaManager;
 	use SoftDeletes;
 
-
-	/** @var array $validation contains the validation rules for creating or updating a book */
+	/** @var array $bookValidation contains the validation rules for creating or updating a variation (Book model) */
 	protected $bookValidation = [
 		'label' => ['required', 'max:128'],
 		'weight' => ['required', 'min:0', 'integer'],
@@ -31,6 +53,7 @@ class BooksController extends Controller
 		'files.*' => ['nullable', 'file', 'mimes:jpg,gif,png'],
 	];
 
+	/** @var array $infoValidation contains the validation rules for creating or updating a BookInfo model */
 	protected $infoValidation = [
 		'title' => ['required', 'string', 'max:128'],
 		'author' => ['nullable', 'string', 'max:64'],
@@ -46,7 +69,12 @@ class BooksController extends Controller
 
 
 
-	/** Lists all books from the library for the frontend index. Filters out books with no linked media. */
+  /**
+   * Lists all books from the library for the frontend index
+	 * Filters out books with no linked media
+   *
+   * @return \Illuminate\Http\Response
+   */
   public function index() {
 		// We need to filter out the books without linked images because gilde.js hangs if it has no child elements.
 		// We also need a clean ordered index to link each glides to its corresponding counter.
@@ -59,7 +87,12 @@ class BooksController extends Controller
 
 
 
-	/** Lists all books from the library. Index of the books library in backend. */
+	/**
+	 * Lists all books from the library
+	 * (Index of the books library in backend)
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
 	public function list() {
 		$bookInfos = BookInfo::orderBy('position', 'ASC')->get();
 		$archived = BookInfo::onlyTrashed()->count();
@@ -68,14 +101,23 @@ class BooksController extends Controller
 
 
 	
-	/** Displays the book resume in backend. */
+	/**
+	 * Displays the book resume in backend
+	 *
+	 * @param  \App\Models\BookInfo $bookInfo
+	 * @return \Illuminate\Http\Response
+	 */
 	public function display(BookInfo $bookInfo) {
 		return view('books.display', compact('bookInfo'));
 	}
 
 
 
-	/** Displays new book creation page. */
+	/**
+	 * Displays new book creation page
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
 	public function create() {
 		$media = Medium::all();
 		return view('books/create', compact('media'));
@@ -83,7 +125,12 @@ class BooksController extends Controller
 
 
 
-	/** Create a new book in the database and links it with provided media. */
+	/**
+	 * Create a new book in the database and links it with provided media
+	 *
+	 * @param  \Illuminate\Http\Request $request
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
 	public function store(Request $request) {
 		$bookData = $request->validate($this->bookValidation);
 		$infoData = $request->validate($this->infoValidation);
@@ -138,7 +185,12 @@ class BooksController extends Controller
 
 
 
-	/** Displays the book edition page. */
+	/**
+	 * Displays the book edition page
+	 *
+	 * @param  \App\Models\BookInfo  $bookInfo
+	 * @return \Illuminate\Http\Response
+	 */
 	public function edit(BookInfo $bookInfo) {
 
 		$media = Medium::all();
@@ -152,7 +204,13 @@ class BooksController extends Controller
 
 
 
-	/** Updates the book's info and re-links media if necessary. */
+	/**
+	 * Updates the book's info and re-links media if necessary
+	 *
+	 * @param  \Illuminate\Http\Request $request
+	 * @param  \App\Models\BookInfo $bookInfo
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
 	public function update(Request $request, BookInfo $bookInfo) {
 
 		$data = $request->validate($this->infoValidation);
@@ -168,7 +226,12 @@ class BooksController extends Controller
 
 
 
-	// Lists all archived books. Index of archives in backend.
+	/**
+	 * Lists all archived books
+	 * (Index of archives in backend)
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
 	public function archived() {
 		$bookInfos = BookInfo::onlyTrashed()->get();
 		$archived = $bookInfos->count();
@@ -177,7 +240,12 @@ class BooksController extends Controller
 
 
 
-	// Archives a book (SoftDelete)
+	/**
+	 * Archives a book (SoftDelete)	
+	 *
+	 * @param  \App\Models\BookInfo $bookInfo
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
 	public function archive(BookInfo $bookInfo) {
 		$bookInfo->delete();
 		// SoftDelete variations
@@ -192,8 +260,13 @@ class BooksController extends Controller
 
 
 
-	// Restore a book from archives to library.
-	public function restore($id) {
+	/**
+	 * Restores a book from archives to library
+	 *
+	 * @param  int $id
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
+	public function restore(int $id) {
 
 		// Select 'last' position row
 		$lastBookInfo = BookInfo::orderBy('position', 'DESC')->first();
@@ -202,8 +275,7 @@ class BooksController extends Controller
 		$restoredBookInfo = BookInfo::onlyTrashed()->findOrFail($id);
 
 		// Restoring variations
-		$restoredBookInfo->load(['books' => function($q) { $q->onlyTrashed()->get(); } ]);
-		$restoredBookInfo->books->each(function($book) {
+		$restoredBookInfo->books()->onlyTrashed()->get()->each(function($book) {
 			$book->restore();
 		});
 
@@ -219,16 +291,19 @@ class BooksController extends Controller
 
 
 
-	// Permanently deletes a book from archives.
-	public function delete($id) {
+	/**
+	 * Permanently deletes a book from archives unless it is still linked to an active order
+	 *
+	 * @param  int $id
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
+	public function delete(int $id) {
 		// Can't bind a deleted model, will throw a 404
 		$bookInfo = BookInfo::onlyTrashed()->findOrFail($id);
 
-		// We need to eager load the books relationship, otherwise soft deleted books are not fetched
-		$bookInfo->load(['books' => function($q) { $q->onlyTrashed()->get(); } ]);
-
 		// Check if any variations is still attached to an order
-		foreach($bookInfo->books as $book) {
+		// Here we're using a foreach because we want to return an \Illuminate\Http\Response.
+		foreach($bookInfo->books()->withTrashed()->get() as $book) {
 			if($book->orders->isNotEmpty()) {
 				return redirect()->route('books.archives')->with([
 					'flash' => __('flash.book.still-linked'),
@@ -258,52 +333,74 @@ class BooksController extends Controller
 
 	}
 
+	
 
-
-	// Permanently deletes ALL books from archives.
+	/**
+	 * Deletes all archived books, except the ones which are still linked to an active order
+	 *
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
 	public function deleteAll() {
+
 		$bookInfos = BookInfo::onlyTrashed()->get();
 
+		// We don't want to delete books that are still linked with an active order
 		$booksForDeletion = $bookInfos->filter(function($bookInfo) {
+
 			$deleteBook = true;
 
-			// We need to eager load the books relationship, otherwise soft deleted books are not fetched
-			$bookInfo->load(['books' => function($q) { $q->onlyTrashed()->get(); } ]);
-
-			foreach($bookInfo->books as $book) {
+			$bookInfo->books()->onlyTrashed()->get()->each(function($book) use (&$deleteBook) {
 				if($book->orders->isNotEmpty()) {
 					$deleteBook = false;
+					return $deleteBook; // breaks from each loop
 				}
-			}
+			});
+
 			return $deleteBook;
+
 		});
 
 		$booksNotDeleted = $bookInfos->diff($booksForDeletion);
 
 		$booksForDeletion->each(function($bookInfo) {
+
 			$bookInfo->books()->withTrashed()->get()->each(function($book) {
+
 				$book->media()->detach();
 				$book->forceDelete();
+
 			});
+
 			$bookInfo->forceDelete();
+
 		});
 
 		if($booksNotDeleted->isEmpty()) {
+
 			return redirect()->route('books')->with([
 				'flash' => __('flash.book.all-deleted'),
 				'flash-type' => 'success'
 			]);
+
 		} else {
+
 			return redirect()->back()->with([
 				'flash' => __('flash.book.some-still-linked'),
 				'flash-type' => 'error'
 			]);
+
 		}
+		
 	}
 
 
 
-	// Reorder books
+	/**
+	 * Reorders books
+	 *
+	 * @param  \Illuminate\Http\Request $request
+	 * @return \Illuminate\Http\Response
+	 */
 	public function reorder(Request $request) {
 
 		$books = BookInfo::all();

@@ -9,12 +9,27 @@ use Illuminate\Http\Request;
 use App\Traits\MediaManager;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+
+/**
+ * Controller for the book's variation
+ * 
+ * ------------------ IMPORTANT NOTE ------------------
+ * 
+ * A book is represented by the BookInfo model.
+ * Book's variations are represented by the Book model.
+ * 
+ * For more information, checkout the notes in
+ * app/Http/Controllers/BooksController.php
+ * 
+ * ----------------------------------------------------
+ */
 class VariationsController extends Controller
 {
 
 	use MediaManager;
 	use SoftDeletes;
 
+	/** @var array $validation contains the validation rules for creating or updating a variation (Book model) */
 	protected $validation = [
 		'label' => ['required', 'max:128'],
 		'weight' => ['required', 'min:0', 'integer'],
@@ -26,9 +41,12 @@ class VariationsController extends Controller
 		'files.*' => ['nullable', 'file', 'mimes:jpg,gif,png'],
 	];
 
+
+
 	/**
-	 * Show the form for creating a new resource.
+	 * Show the form for creating a new resource
 	 *
+	 * @param \App\Models\BookInfo $bookInfo
 	 * @return \Illuminate\Http\Response
 	 */
 	public function create(BookInfo $bookInfo)
@@ -37,14 +55,18 @@ class VariationsController extends Controller
 		return view('books.variations.create', compact('bookInfo', 'media'));
 	}
 
+
+
 	/**
-	 * Store a newly created resource in storage.
+	 * Store a newly created resource in storage
 	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @return \Illuminate\Http\Response
+	 * @param \Illuminate\Http\Request $request
+	 * @param \App\Models\BookInfo $bookInfo
+	 * @return \Illuminate\Http\RedirectResponse
 	 */
 	public function store(Request $request, BookInfo $bookInfo)
 	{
+
 		$data = $request->validate($this->validation);
 
 		// Variation's position
@@ -92,10 +114,12 @@ class VariationsController extends Controller
 
 	}
 
+
+
 	/**
-	 * Show the form for editing the specified resource.
+	 * Show the form for editing the specified resource
 	 *
-	 * @param  \App\Models\Book  $book
+	 * @param \App\Models\Book $book
 	 * @return \Illuminate\Http\Response
 	 */
 	public function edit(Book $book)
@@ -104,12 +128,14 @@ class VariationsController extends Controller
 		return view('books.variations.edit', compact('book', 'media'));
 	}
 
+
+
 	/**
-	 * Update the specified resource in storage.
+	 * Update the specified resource in storage
 	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @param  \App\Models\Book  $book
-	 * @return \Illuminate\Http\Response
+	 * @param \Illuminate\Http\Request $request
+	 * @param \App\Models\Book $book
+	 * @return \Illuminate\Http\RedirectResponse
 	 */
 	public function update(Request $request, Book $book)
 	{
@@ -162,11 +188,13 @@ class VariationsController extends Controller
 
 	}
 
+
+
 	/**
-	 * Soft delete the specified resource.
+	 * Soft delete the specified resource
 	 *
-	 * @param  \App\Models\Book  $book
-	 * @return \Illuminate\Http\Response
+	 * @param \App\Models\Book $book
+	 * @return \Illuminate\Http\RedirectResponse
 	 */
 	public function delete(Book $book) {
 
@@ -185,11 +213,13 @@ class VariationsController extends Controller
 		}
 	}
 
+
+
 	/**
-	 * Restores variation.
+	 * Restores variation
 	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
+	 * @param int $id
+	 * @return \Illuminate\Http\RedirectResponse
 	 */
 	public function restore(int $id) {
 
@@ -203,7 +233,14 @@ class VariationsController extends Controller
 
 	}
 
-	// Refresh soft deleted variation
+
+
+	/**
+	 * Refresh soft deleted variation
+	 *
+	 * @param int $id
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
 	public function refresh(int $id) {
 
 		$variation = Book::withTrashed()->findOrFail($id);
@@ -211,7 +248,15 @@ class VariationsController extends Controller
 
 	}
 
-	// Reorder variations
+
+	
+	/**
+	 * Reorders variations
+	 *
+	 * @param \Illuminate\Http\Request $request
+	 * @param \App\Models\BookInfo $bookInfo
+	 * @return \Illuminate\Http\Response
+	 */
 	public function reorder(Request $request, BookInfo $bookInfo) {
 
 		$variations = $bookInfo->books;
