@@ -9,15 +9,27 @@ use PDF;
 
 class OrdersMassController extends Controller
 {
-	public $globalConditions;
 
+	public $globalConditions;
+	
+	/** @var array $validation Validation rules that checks if we received an array of IDs */
 	public $validation = [
 		'ids' => ['nullable', 'array'],
 		'ids.*' => ['numeric']
 	];
 
-    public function csv(Request $request) {
+
+	
+	/**
+	 * Generates a CSV file with all orders
+	 *
+	 * @param \Illuminate\Http\Request $request
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
+	public function csv(Request $request) {
+
 		$data = $request->validate($this->validation);
+		
 		if(!empty($data)) {
 			$orders = Order::find($data['ids']);
 
@@ -58,12 +70,22 @@ class OrdersMassController extends Controller
 
 				fclose($file);
 			};
-        	return response()->stream($callback, 200, $headers);
+
+			return response()->stream($callback, 200, $headers);
+
 		} else {
 			return back();
 		}
 	}
 
+
+	
+	/**
+	 * Hides all selected orders
+	 *
+	 * @param  \Illuminate\Http\Request $request
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
 	public function hide(Request $request) {
 		$data = $request->validate($this->validation);
 			if(!empty($data)) {
@@ -77,6 +99,14 @@ class OrdersMassController extends Controller
 		return back();
 	}
 
+
+
+	/**
+	 * Unhides all selected orders
+	 *
+	 * @param  \Illuminate\Http\Request $request
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
 	public function unhide(Request $request) {
 		$data = $request->validate($this->validation);
 		if(!empty($data)) {
@@ -91,6 +121,21 @@ class OrdersMassController extends Controller
 		return back();
 	}
 
+
+
+		
+	/**
+	 * Search for specific order records depending on the provided conditions
+	 *
+	 * @param \Illuminate\Http\Request $request
+	 * @param 'all'|'order'|'name'|'email'|'status'|'book'|'coupon'|'shipping' $method The field by wich we filter the search result
+	 * @param string $from The stringified date representing the starting date 
+	 * @param string $end The stringified date representing the ending date
+	 * @param string $visibility A stringified boolean to return or not hidden orders
+	 * @param string $preorder A stringified boolean to return only pre-ordered orders
+	 * @param optional $data The key-word to search the orders with
+	 * @return void
+	 */
 	public function get(Request $request, string $method, string $from, string $end, string $visibility, string $preorder, $data = null) {
 		if($request->wantsJson()) {
 			$this->globalConditions = [
@@ -119,10 +164,26 @@ class OrdersMassController extends Controller
 		}
 	}
 
+
+	
+	/**
+	 * Internal method that returns all orders
+	 *
+	 * @return \Illuminate\Support\Collection
+	 */
 	protected function all() {
 		return Order::with('books')->where($this->globalConditions)->orderBy('created_at', 'DESC')->get();
 	}
 
+
+
+	/**
+	 * Internal method that returns orders containing a key-word in a certain column
+	 * 
+	 * @param mixed $data The key-word (can be null)
+	 * @param string $column The column to search
+	 * @return \Illuminate\Support\Collection
+	 */
 	protected function like($data, string $column) {
 		if($data) {
 			return Order::with('books')->where(array_merge($this->globalConditions, [[$column, 'like', '%'.$data.'%']]))->orderBy('created_at', 'DESC')->get();
@@ -131,6 +192,16 @@ class OrdersMassController extends Controller
 		}
 	}
 
+
+
+	/**
+	 * Internal method that returns orders with the exact key-word in a certain column
+	 * 
+	 * @param mixed $data The key-word (can be null)
+	 * @param string $column The column to search
+	 * @param bool $filterEmpty
+	 * @return \Illuminate\Support\Collection
+	 */
 	protected function exact($data, string $column, bool $filterEmpty = false) {
 		if($data || $filterEmpty) {
 			return Order::with('books')->where(array_merge($this->globalConditions, [[$column, $data]]))->orderBy('created_at', 'DESC')->get();
@@ -139,6 +210,14 @@ class OrdersMassController extends Controller
 		}
 	}
 
+	
+
+	/**
+	 * Internal method that returns orders linked to a variation, looked up by its exact label
+	 * 
+	 * @param mixed $data The variation label (can be null)
+	 * @return \Illuminate\Support\Collection
+	 */
 	protected function book($data) {
 		if($data) {
 			return Order::with(['books' => function($query) use ($data) {
@@ -149,6 +228,15 @@ class OrdersMassController extends Controller
 		}
 	}
 
+
+	
+	/**
+	 * Generates a PDF
+	 *
+	 * @param \Illuminate\Http\Request $request
+	 * @param string $view Name of the PDF view to generate
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
 	public function pdf(Request $request, string $view) {
 		$data = $request->validate($this->validation);
 		if(!empty($data)) {
@@ -160,23 +248,38 @@ class OrdersMassController extends Controller
 			return back();
 		}
 	}
+	
 
+
+	/**
+	 * Labels preview and configuration view
+	 *
+	 * @param \Illuminate\Http\Request $request
+	 * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+	 */
 	public function labelsPreview(Request $request) {
 		$data = $request->validate($this->validation);
 		if(!empty($data)) {
 			$orders = Order::with(['books', 'coupons'])->orderBy('created_at', 'DESC')->find($data['ids']);
-			//$orders = Order::factory()->count(16)->make();
 			return view('pdf.labelsPreview', compact('orders'));
 		}  else {
 			return back();
 		}
 	}
 
+
+	
+	/**
+	 * Generates the labels PDF
+	 *
+	 * @param \Illuminate\Http\Request $request
+	 * @param int $extra Quantity of empty label to insert before
+	 * @return \Illuminate\Http\Response
+	 */
 	public function labels(Request $request, int $extra) {
 		$extra = ($extra % 12);
 		$data = $request->validate($this->validation);
 			$orders = Order::with(['books', 'coupons'])->orderBy('created_at', 'DESC')->find($data['ids']);
-			//$orders = Order::factory()->count(16)->make();
 			$pdf = PDF::loadView('pdf.labels', compact('orders', 'extra'));
 			return $pdf->download('labels_'.Carbon::now()->toDateString().'.pdf');
 	}

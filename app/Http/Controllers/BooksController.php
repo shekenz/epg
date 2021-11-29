@@ -41,7 +41,7 @@ class BooksController extends Controller
 	use MediaManager;
 	use SoftDeletes;
 
-	/** @var array $bookValidation contains the validation rules for creating or updating a variation (Book model) */
+	/** @var array $bookValidation Contains the validation rules for creating or updating a variation (Book model) */
 	protected $bookValidation = [
 		'label' => ['required', 'max:128'],
 		'weight' => ['required', 'min:0', 'integer'],
@@ -53,7 +53,7 @@ class BooksController extends Controller
 		'files.*' => ['nullable', 'file', 'mimes:jpg,gif,png'],
 	];
 
-	/** @var array $infoValidation contains the validation rules for creating or updating a BookInfo model */
+	/** @var array $infoValidation Contains the validation rules for creating or updating a BookInfo model */
 	protected $infoValidation = [
 		'title' => ['required', 'string', 'max:128'],
 		'author' => ['nullable', 'string', 'max:64'],
