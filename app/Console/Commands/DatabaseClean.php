@@ -19,7 +19,7 @@ class DatabaseClean extends Command
      *
      * @var string
      */
-    protected $description = 'Empty book_infos, orders, and related pivot tables';
+    protected $description = 'Empty book_infos, books, orders, and related pivot tables';
 
     /**
      * Create a new command instance.
@@ -38,7 +38,7 @@ class DatabaseClean extends Command
      */
     public function handle()
     {
-		if ($this->confirm('This will delete all data from book_infos, orders, and related pivot tables. Are you sure you want to proceed ?')) {
+		if ($this->confirm('This will delete all data from book_infos, books, orders, and related pivot tables. Are you sure you want to proceed ?')) {
 			DB::table('books')->truncate();
 			DB::table('book_medium')->truncate();
 			DB::table('book_order')->truncate();

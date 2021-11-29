@@ -26,7 +26,7 @@ class AddVersionToArchivedOrdersTable extends Migration
     public function down()
     {
         Schema::table('archived_orders', function (Blueprint $table) {
-            $table->dropColumn('table');
+            $table->dropColumn('version');
         });
     }
 }
