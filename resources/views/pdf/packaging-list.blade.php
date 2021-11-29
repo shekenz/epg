@@ -67,7 +67,7 @@
 				$total += $subTotal;
 			@endphp
 			<tr>
-				<td>{{ $book->bookInfo->title.' - '.$book->label }}</td>
+				<td>{{ $book->bookInfo->title }}@if($book->bookInfo->books()->withTrashed()->count() > 1){{ ' - '.$book->label }}@endif</td>
 				<td style="text-align:right;">{{ $book->pivot->quantity }}</td>
 				<td style="text-align:right;">{{ $book->price }} €</td>
 				<td style="text-align:right;">{{ $subTotal }} €</td>
