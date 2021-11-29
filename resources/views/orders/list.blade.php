@@ -1,11 +1,17 @@
 <x-app-layout>
 	<x-slot name="title">
 		@if(request()->routeIs('orders.hidden'))
-			{{ ___('orders (hidden)') }}
+			{{ ___('hidden orders') }}
 		@else
 			{{ ___('orders') }}
 		@endif
 	</x-slot>
+
+	@if(request()->routeIs('orders.hidden'))
+	<x-slot name="leftControls">
+		<a href="{{ route('orders') }}" class="mini-button"><x-tabler-chevron-left /></a>
+	</x-slot>
+	@endif
 
 	<x-slot name="scripts">
 		<script src="{{ asset('js/order-list.js') }}" type="text/javascript" defer></script>

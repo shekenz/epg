@@ -4,6 +4,10 @@
 		{{ ___('order') }}
 	</x-slot>
 
+	<x-slot name="leftControls">
+		<a href="{{ route('orders') }}" class="mini-button"><x-tabler-chevron-left /></a>
+	</x-slot>
+
 	<x-slot name="scripts">
 		<script src="{{ asset('js/order-ship.js') }}" defer></script>
 	</x-slot>

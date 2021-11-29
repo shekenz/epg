@@ -3,6 +3,10 @@
 			{{ ___('book').' : '.$bookInfo->title }}
 	</x-slot>
 
+	<x-slot name="leftControls">
+		<a href="{{ route('books') }}" class="mini-button"><x-tabler-chevron-left /></a>
+	</x-slot>
+
 	<x-slot name="controls">
 		{{-- <a href="{{ route('books.archive', $book->id ) }}" class="button-shared">{{ ___('archive') }}</a> --}}
 		<a href="{{ route('books.edit', $bookInfo->id ) }}" class="button-shared">{{ ___('edit') }}</a>
