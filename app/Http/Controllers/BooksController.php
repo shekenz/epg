@@ -224,6 +224,9 @@ class BooksController extends Controller
 		// Can't bind a deleted model, will throw a 404
 		$bookInfo = BookInfo::onlyTrashed()->findOrFail($id);
 
+		// We need to eager load the books relationship, otherwise soft deleted books are not fetched
+		$bookInfo->load(['books' => function($q) { $q->onlyTrashed()->get(); } ]);
+
 		// Check if any variations is still attached to an order
 		foreach($bookInfo->books as $book) {
 			if($book->orders->isNotEmpty()) {
@@ -250,7 +253,7 @@ class BooksController extends Controller
 
 		return redirect()->route('books.archives')->with([
 			'flash' => __('flash.book.deleted'),
-			'flash-type' => 'error'
+			'flash-type' => 'success'
 		]);
 
 	}
@@ -260,8 +263,13 @@ class BooksController extends Controller
 	// Permanently deletes ALL books from archives.
 	public function deleteAll() {
 		$bookInfos = BookInfo::onlyTrashed()->get();
+
 		$booksForDeletion = $bookInfos->filter(function($bookInfo) {
 			$deleteBook = true;
+
+			// We need to eager load the books relationship, otherwise soft deleted books are not fetched
+			$bookInfo->load(['books' => function($q) { $q->onlyTrashed()->get(); } ]);
+
 			foreach($bookInfo->books as $book) {
 				if($book->orders->isNotEmpty()) {
 					$deleteBook = false;
