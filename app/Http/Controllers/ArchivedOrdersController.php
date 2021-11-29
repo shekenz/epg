@@ -15,11 +15,16 @@ class ArchivedOrdersController extends Controller
 		// Compacting books data
 		$booksData = [];
 		$order->books->each(function($book) use(&$booksData) {
+			// Formating full title (BookInfo title + book label)
+			$bookNewTitle = $book->bookInfo->title.' - '.$book->label;
+			$bookAuthor = $book->bookInfo->author;
 			// Stripping out not needed data
-			$book->makeHidden(['description', 'user_id', 'width', 'height', 'pages', 'cover', 'weight', 'copies', 'quantity', 'year', 'created_at', 'updated_at', 'deleted_at']);
+			$book->makeHidden(['weight', 'label', 'stock', 'year', 'deleted_at', 'position']);
 			// Setting the order quantity in the book data array
 			$book = $book->toArray();
 			$book['quantity'] = $book['pivot']['quantity'];
+			$book['title'] = $bookNewTitle;
+			$book['author'] = $bookAuthor;
 			// Cleaning pivot
 			unset($book['pivot']);
 			array_push($booksData, $book);
