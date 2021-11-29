@@ -10,8 +10,7 @@
 {{ $order->tracking_url }}
 <br><br>
 @endif
-{{ __('mails.orders.shipped.reclamation') }}.
-<br><br><br>
+<br>
 {{ __('mails.general.contact') }} <a href="mailto:hello@epg.works">hello@epg.works</a>.<br><br>
 {{ __('mails.orders.confirmation.thanks') }}
 <br><br>
