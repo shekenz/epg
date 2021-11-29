@@ -43,17 +43,17 @@
 	</div>
 	
 	<div style="clear:both;">
-		<h2 style="margin-top:2cm;margin-bottom:0.7cm" >{{ __('Packaging list') }}</h2>
-		<div style="margin-bottom:0.3cm">{{ __('Order').' '}}<span style="font-weight:bold">{{ $order->order_id }}</span> {{ __('shipped on').' '.Carbon\Carbon::now()->locale(config('app.locale'))->isoFormat('L');  }}</div>
+		<h2 style="margin-top:2cm;margin-bottom:0.7cm" >{{ ___('packaging list') }}</h2>
+		<div style="margin-bottom:0.3cm">{{ ___('order').' '}}<span style="font-weight:bold">{{ $order->order_id }}</span> {{ __('shipped on').' '.Carbon\Carbon::now()->locale(config('app.locale'))->isoFormat('L');  }}</div>
 	</div>
 	<table style="border-collapse: collapse;border:3px solid black;;width:100%;">
 		@php $couponPrice = 0; @endphp
 		<thead style="background-color:#ddd">
 			<tr>
-				<td>{{ __('Articles') }}</td>
-				<td>{{ __('Quantity') }}</td>
-				<td>{{ __('Unit price') }}</td>
-				<td>{{ __('Subtotal') }}</td>
+				<td>{{ ___('articles') }}</td>
+				<td>{{ ___('quantity') }}</td>
+				<td>{{ ___('unit price') }}</td>
+				<td>{{ ___('subtotal') }}</td>
 			</tr>
 		</thead>
 		<tbody>
@@ -67,7 +67,7 @@
 				$total += $subTotal;
 			@endphp
 			<tr>
-				<td>{{ $book->title }}</td>
+				<td>{{ $book->bookInfo->title.' - '.$book->label }}</td>
 				<td style="text-align:right;">{{ $book->pivot->quantity }}</td>
 				<td style="text-align:right;">{{ $book->price }} €</td>
 				<td style="text-align:right;">{{ $subTotal }} €</td>
@@ -80,19 +80,19 @@
 					-1*$order->coupons->value : 
 					round($order->coupons->value / -100 * $total, 2);
 				@endphp
-				<td>{{ __('Coupon').' : '.$order->coupons->label.' (-'.$order->coupons->value.(boolval($order->coupons->type) ? '€': '%').')' }}</td>
+				<td>{{ ___('coupon').' : '.$order->coupons->label.' (-'.$order->coupons->value.(boolval($order->coupons->type) ? '€': '%').')' }}</td>
 				<td colspan="3" style="text-align:right;">{{ $couponPrice.' €' }}</td>
 			</tr>
 			@endif
 			<tr>
-				<td>{{ __('Shipping').' : '.$order->shipping_method }}</td>
+				<td>{{ ___('shipping').' : '.$order->shipping_method }}</td>
 
 				<td colspan="3" style="text-align:right;">{{ $shippingPrice }} €</td>
 			</tr>
 		</tbody>
 		<tfoot style="background-color:#ddd">
 			<tr>
-				<td>{{ __('Total') }}</td>
+				<td>{{ ___('total') }}</td>
 				<td colspan="3" style="text-align:right;">{{ round($total + $couponPrice + $shippingPrice, 2) }} €</td>
 			</tr>
 		</tfoot>
