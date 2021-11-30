@@ -12,9 +12,10 @@
 		<a class="nav-item" href="{{ route('users.display', Auth::user()->id) }}">
 			<x-tabler-user />&nbsp;{{ ___('my profile') }}
 		</a>
-		<a class="nav-item" href="#">
-			<x-tabler-power />&nbsp;{{ ___('logout') }}
-		</a>
+		<form id="logout" class="nav-item" method="post" action="{{ route('logout') }}">
+			@csrf
+			<button><x-tabler-power />&nbsp;{{ ___('logout') }}</button>
+		</form>
 		<div id="darkmode" class="switch darkmode off"></div>
 	</div>
 </nav>
