@@ -1,4 +1,7 @@
 <nav id="left-bar" class="side-bar">
+	<a class="side-bar-item @if(request()->routeIs('dashboard')) {{ 'active' }} @endif" href="{{ route('dashboard') }}">
+		<x-tabler-dashboard />&nbsp;{{ ___('dashboard') }}
+	</a>
 	<a class="side-bar-item @if(request()->routeIs('books')) {{ 'active' }} @endif" href="{{ route('books') }}">
 		<x-tabler-book />&nbsp;{{ ___('books') }}
 	</a>
