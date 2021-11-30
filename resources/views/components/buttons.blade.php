@@ -1,3 +1,3 @@
-<nav class="mb-4">
+<nav class="mb-4 flex gap-x-2">
 	{{ $slot }}
 </nav>
