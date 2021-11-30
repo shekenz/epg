@@ -181,7 +181,7 @@
 	/*  -----------------------------------------  ╚═════════════════╝  */
 
 	/*  ------------------------- Top menu items */
-	a.nav-item {
+	a.nav-item, form.nav-item {
 		@apply 
 			text-primary-ultra-light
 			whitespace-nowrap
@@ -196,13 +196,17 @@
 			duration-200;
 	}
 
-	a.nav-item svg.icon {
+	a.nav-item svg.icon, form.nav-item svg.icon {
 		@apply
 			text-gray-400
 			flex-none;
 	}
 
-	a.nav-item:hover svg.icon, a.nav-item.active svg.icon {
+	a.nav-item:hover svg.icon,
+	a.nav-item.active svg.icon,
+	form.nav-item:hover svg.icon,
+	form.nav-item.active svg.icon
+	{
 		@apply
 			text-white;
 	}
@@ -214,12 +218,13 @@
 			border-secondary;
 	}
 
-	a.nav-item:hover {
+	a.nav-item:hover, form.nav-item:hover {
 		@apply 
 			text-white
 			border-b-4
 			border-secondary
-			bg-primary-light;
+			bg-primary-light
+			cursor-pointer;
 	}
 
 	/*  ------------------------- Side bar items */
