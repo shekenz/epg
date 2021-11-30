@@ -301,6 +301,7 @@
 	.button {
 		@apply
 			text-white
+			dark:text-white
 			font-semibold
 			bg-primary-light
 			px-4
@@ -312,6 +313,7 @@
 			transition-colors
 			duration-200
 			hover:bg-primary-super-light
+			hover:text-white
 			shadow-md
 			no-underline;
 	}
