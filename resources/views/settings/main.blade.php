@@ -22,30 +22,37 @@
 		</div>
 	@endif
 	{{-------------------------------------- Switches --------------------------------------}}
-	<div class="border-b flex justify-between items-center">
-		<label class="label-shared lg:text-lg">{{ ___('publish site') }}</label>
-		<div class="text-[1.25rem]">
-			<form action="{{ route('settings.publish') }}" method="POST">
-				@csrf
-				<button id="publish-switch" title="{{ ___('publish site') }}" class="switch @if(!setting('app.published')) {{ 'off' }} @endif">
-				</button>
-			</form>
+
+	<x-section :title="___('general settings')">
+
+		<div class="border-b flex justify-between items-center">
+			<label class="label-shared lg:text-lg">{{ ___('publish site') }}</label>
+			<div class="text-[1.25rem]">
+				<form action="{{ route('settings.publish') }}" method="POST">
+					@csrf
+					<button id="publish-switch" title="{{ ___('publish site') }}" class="switch @if(!setting('app.published')) {{ 'off' }} @endif">
+					</button>
+				</form>
+			</div>
 		</div>
-	</div>
-	<div class="border-b flex justify-between items-center">
-		<label class="label-shared lg:text-lg">{{ ___('enable e-shop') }}</label>
-		<div class="text-[1.25rem]">
-			<form action="{{ route('settings.toggleShop') }}" method="POST">
-				@csrf
-				<button id="publish-switch" title="{{ ___('enable e-shop') }}" class="switch @if(!setting('app.shop.enabled')) {{ 'off' }} @endif">
-				</button>
-			</form>
+
+		<div class="border-b flex justify-between items-center">
+			<label class="label-shared lg:text-lg">{{ ___('enable e-shop') }}</label>
+			<div class="text-[1.25rem]">
+				<form action="{{ route('settings.toggleShop') }}" method="POST">
+					@csrf
+					<button id="publish-switch" title="{{ ___('enable e-shop') }}" class="switch @if(!setting('app.shop.enabled')) {{ 'off' }} @endif">
+					</button>
+				</form>
+			</div>
 		</div>
-	</div>
+
+	</x-section>
+
 	{{-------------------------------------- Coupons --------------------------------------}}
-	<div class="mt-10">
-		<h2 class="label-shared lg:text-lg">{{ ___('coupons') }}</h2>
-			<div id="coupons-wrapper" class="border grid grid-cols-5 gap-2 p-2">
+	<x-section :title="___('coupon settings')">
+
+		<div id="coupons-wrapper" class="grid grid-cols-5 gap-2">
 			@foreach($coupons as $coupon)
 				@php
 					if((empty($coupon->expires_at) || (!empty($coupon->expires_at) && $coupon->expires_at->gt(\Carbon\Carbon::now()))) && (($coupon->used < $coupon->quantity && $coupon->quantity > 0) || ($coupon->quantity === 0))) {
@@ -63,10 +70,11 @@
 			@endforeach
 			<a id="add-coupon" href="{{ route('coupons.add') }}" class="bg-green-300 hover:bg-green-400 transition duration-300 rounded text-white text-center font-bold uppercase py-2">{{ ___('add coupon') }}</a>
 		</div>
-	</div>
-	{{-------------------------------------- Shipping methods 2 --------------------------------------}}
-	<div class="mt-10">
-		<h2 class="label-shared lg:text-lg">{{ ___('shipping methods') }} : </h2>
+
+	</x-section>
+
+	{{-------------------------------------- Shipping methods --------------------------------------}}
+	<x-section :title="___('shipping methods')">
 		@foreach ($shippingMethods as $shippingMethod)
 		<div class="px-2 my-6 border border-gray-400 bg-gray-100">
 			<div class="flex justify-between items-center">
@@ -132,10 +140,11 @@
 				<input type="submit" value="{{ ___('add') }}" class="button-shared self-center" />
 			</form>
 		</div>
-	</div>
+	</x-section>
 
-	<div>
-		<h2 class="label-shared lg:text-lg">{{ ___('acronyms') }}</h2>
+	{{-------------------------------------- Acronyms --------------------------------------}}
+	<x-section :title="___('acronyms')">
+
 		<div class="border flex gap-2 p-2 flex-wrap">
 			@foreach($acronyms as $acronym)
 			<div class="border border-dotted py-2 px-4 border-gray-400 bg-gray-100">
@@ -144,59 +153,66 @@
 			</div>
 			@endforeach
 		</div>
+
 		<form method="POST" action="{{ route('settings.addAcronym') }}" class="m-2">
 			@csrf
 			<label for="acronym-label">{{ ___('add new acronym') }} :</label>
 			<input class="input-base inline-block" type="text" name="label" id="acronym-label" />
 			<input class="button-shared" type="submit" value="{{ ___('add') }}" />
 		</form>
-	</div>
+
+	</x-section>
 
 	{{-------------------------------------- Other settings --------------------------------------}}
-	<form method="POST" action="{{ route('settings.update') }}">
-		@csrf
-		@method('patch')
-		<div class="grid grid-cols-2 gap-x-4 gap-y-2 mt-10">
-			{{-------------------------------------- Country list --------------------------------------}}
-			<div class="col-span-2 hidden">
-				@php
-					$countryList = (setting('app.shipping.allowed-countries')) ? implode(',', setting('app.shipping.allowed-countries')) : '';
-				@endphp
-				<label for="shipping-allowed-countries" class="label-shared lg:text-lg">{{ __('Shipping to countries (Country codes separated by a coma, leave blank for international)') }} : </label>
-				<input type="text" class="input-shared" id="shipping-allowed-countries" name="shipping-allowed-countries" value="{{ old('shipping-allowed-countries') ??  $countryList }}">
-			</div>
-			{{-------------------------------------- Paypal credentials --------------------------------------}}
-			<div class="col-span-2 mt-8">
-				<label for="paypal-client-id" class="label-shared lg:text-lg">{{ ___('paypal client ID') }} : </label>
-				<input type="text" class="input-shared" id="paypal-client-id" name="paypal-client-id" value="{{ old('paypal-client-id') ?? setting('app.paypal.client-id') }}">
-			</div>
-			<div class="col-span-2">
-				<label for="paypal-secret" class="label-shared lg:text-lg">{{ ___('paypal secret') }} : </label>
-				<input type="text" class="input-shared" id="paypal-secret" name="paypal-secret" value="{{ old('paypal-secret') ?? setting('app.paypal.secret') }}">
-			</div>
-			<div class="col-span-2">
-				<label for="paypal-sandbox" class="label-shared lg:text-lg">{{ ___('sandbox') }} : </label>
-				<input type="checkbox" class="" id="paypal-sandbox" name="paypal-sandbox" value="true" {{ (old('paypal-sandbox') || setting('app.paypal.sandbox')) ? 'checked' : '' }}>
-			</div>
+	<x-section :title="___('other settings')">
+		
+		<form method="POST" action="{{ route('settings.update') }}">
+			@csrf
+			@method('patch')
+			<div class="grid grid-cols-2 gap-x-4 gap-y-2 mt-10">
+				{{-------------------------------------- Country list --------------------------------------}}
+				<div class="col-span-2 hidden">
+					@php
+						$countryList = (setting('app.shipping.allowed-countries')) ? implode(',', setting('app.shipping.allowed-countries')) : '';
+					@endphp
+					<label for="shipping-allowed-countries" class="label-shared lg:text-lg">{{ __('Shipping to countries (Country codes separated by a coma, leave blank for international)') }} : </label>
+					<input type="text" class="input-shared" id="shipping-allowed-countries" name="shipping-allowed-countries" value="{{ old('shipping-allowed-countries') ??  $countryList }}">
+				</div>
+				{{-------------------------------------- Paypal credentials --------------------------------------}}
+				<div class="col-span-2 mt-8">
+					<label for="paypal-client-id" class="label-shared lg:text-lg">{{ ___('paypal client ID') }} : </label>
+					<input type="text" class="input-shared" id="paypal-client-id" name="paypal-client-id" value="{{ old('paypal-client-id') ?? setting('app.paypal.client-id') }}">
+				</div>
+				<div class="col-span-2">
+					<label for="paypal-secret" class="label-shared lg:text-lg">{{ ___('paypal secret') }} : </label>
+					<input type="text" class="input-shared" id="paypal-secret" name="paypal-secret" value="{{ old('paypal-secret') ?? setting('app.paypal.secret') }}">
+				</div>
+				<div class="col-span-2">
+					<label for="paypal-sandbox" class="label-shared lg:text-lg">{{ ___('sandbox') }} : </label>
+					<input type="checkbox" class="" id="paypal-sandbox" name="paypal-sandbox" value="true" {{ (old('paypal-sandbox') || setting('app.paypal.sandbox')) ? 'checked' : '' }}>
+				</div>
 
-			{{-------------------------------------- About --------------------------------------}}
-			<div class="mt-8">
-				<label class="label-shared lg:text-lg" for="about-0">{{ __('About: First Column') }}</label>
-				<textarea class="input-shared h-96" id="about-0" name="about[]">{!! (Storage::disk('raw')->exists('about_0.txt')) ? Storage::disk('raw')->get('about_0.txt') : '' !!}</textarea>
-			</div>
-			<div class="mt-8">
-				<label class="label-shared lg:text-lg" for="about-1">{{ __('About: Second Column') }}</label>
-				<textarea class="input-shared h-96" id="about-1" name="about[]">{!! (Storage::disk('raw')->exists('about_1.txt')) ? Storage::disk('raw')->get('about_1.txt') : '' !!}</textarea>
-			</div>
+				{{-------------------------------------- About --------------------------------------}}
+				<div class="mt-8">
+					<label class="label-shared lg:text-lg" for="about-0">{{ __('About: First Column') }}</label>
+					<textarea class="input-shared h-96" id="about-0" name="about[]">{!! (Storage::disk('raw')->exists('about_0.txt')) ? Storage::disk('raw')->get('about_0.txt') : '' !!}</textarea>
+				</div>
+				<div class="mt-8">
+					<label class="label-shared lg:text-lg" for="about-1">{{ __('About: Second Column') }}</label>
+					<textarea class="input-shared h-96" id="about-1" name="about[]">{!! (Storage::disk('raw')->exists('about_1.txt')) ? Storage::disk('raw')->get('about_1.txt') : '' !!}</textarea>
+				</div>
 
-			{{-------------------------------------- Terms --------------------------------------}}
-			<div class="mt-8 col-span-2">
-				<label class="label-shared lg:text-lg" for="terms">{{ ___('terms & conditions') }}</label>
-				<textarea class="input-shared h-96" id="terms" name="terms">{!! (Storage::disk('raw')->exists('terms.txt')) ? Storage::disk('raw')->get('terms.txt') : '' !!}</textarea>
+				{{-------------------------------------- Terms --------------------------------------}}
+				<div class="mt-8 col-span-2">
+					<label class="label-shared lg:text-lg" for="terms">{{ ___('terms & conditions') }}</label>
+					<textarea class="input-shared h-96" id="terms" name="terms">{!! (Storage::disk('raw')->exists('terms.txt')) ? Storage::disk('raw')->get('terms.txt') : '' !!}</textarea>
+				</div>
 			</div>
-		</div>
-		<div class="text-right mt-8 col-span-2">
-			<input class="button-shared" type="submit" value="{{ ___('save') }}">
-		</div>
-	</form>
+			<div class="text-right mt-8 col-span-2">
+				<input class="button-shared" type="submit" value="{{ ___('save') }}">
+			</div>
+		</form>
+
+	</x-section>
+
 </x-layout-app>

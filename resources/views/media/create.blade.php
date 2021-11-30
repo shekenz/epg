@@ -7,7 +7,7 @@
        <a href="{{ route('media') }}" class="button-shared">{{ ___('cancel') }}</a> 
     </x-slot>
 
-    <div class="m-4">
+    <x-section :return="route('media')" :title="___('upload new file')">
         @if ($errors->any())
         <div class="mb-4" :errors="$errors">
             <div class="font-medium text-red-600">
@@ -22,14 +22,14 @@
         </div>
         @endif
 
-        <form action="{{ route('media.store') }}" method="post" enctype="multipart/form-data" class="flex flex-col lg:m-2">
+        <form action="{{ route('media.store') }}" method="post" enctype="multipart/form-data">
             @csrf
-            <label class="label-shared-first lg:text-lg" for="name">{{ ___('name') }} :</label>
-            <input class="input-shared" id="name" name="name" type="text" value="{{ old('name') }}" >
-            <label class="label-shared lg:text-lg" for="files">{{ ___('files')}} : </label>
-            <input class="input-shared mt-1" id="files" name="files[]" type="file" multiple accept="image/jpeg,image/gif,image/png">
+            <label for="name">{{ ___('name') }} :</label>
+            <input id="name" name="name" type="text" value="{{ old('name') }}" >
+            <label for="files">{{ ___('files')}} : </label>
+            <input id="files" name="files[]" type="file" multiple accept="image/jpeg,image/gif,image/png">
             <span class="text-gray-500 block italic">{{ ini_get('max_file_uploads') }} fichiers de {{ ini_get('upload_max_filesize') }} chacun max, au format JPG, GIF, ou PNG, pour un total maximum de {{ ini_get('post_max_size') }}</span>			
-            <input class="button-shared md:px-4 md:self-end" type="submit">
+            <input type="submit">
         </form>
-    </div>
+		</x-section>
 </x-app-layout>

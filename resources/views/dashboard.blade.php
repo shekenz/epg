@@ -1,8 +1,8 @@
 <x-app-layout>
     <x-slot name="title">
-        {{ __('Dashboard') }}
+        {{ ___('dashboard') }}
     </x-slot>
 
-    <div class="text-gray-500 m-4">[ Analytics goes here ]</div>
+    <x-section :title="___('dashboard')" class="full">Work in progress...</x-section>
 	
 </x-app-layout>

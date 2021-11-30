@@ -1,4 +1,5 @@
 <x-app-layout>
+
 	<x-slot name="title">
 		{{ ___('users') }}
 	</x-slot>
@@ -7,8 +8,12 @@
 		<a class="button-shared" href="{{ route('users.invitation') }}">{{ ___('invite') }}</a>
 	</x-slot>
 
+	<x-section :title="___('users')">
+		<x-buttons>
+			<x-button :href="route('users.invitation')" :label="___('invite')" class="big" />
+		</x-buttons>
 	@foreach($users as $user)
-		<div class="flex flex-row items-center py-2 px-4  border-b border-gray-200">
+		<div class="flex flex-row items-center py-2 px-4">
 			<div class="flex-none m-0">
 				<img class="rounded-full border border-gray-400 shadow-md w-12 my-0 mr-4" src="{{ asset('img/default-thumbnail.jpg') }}" alt="Test thumbnail">
 			</div>
@@ -23,4 +28,6 @@
 			@endif
 		</div>
 	@endforeach
+	</x-section>
+
 </x-app-layout>
