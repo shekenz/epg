@@ -14,6 +14,15 @@
 		<link rel="prefetch" href="{{ asset('img/loader_medium.svg')}}" as="image">
 		<link rel="stylesheet" href="{{ asset('css/app.css') }}" type="text/css">
 		<!-- Scripts -->
+		<script>
+			// On page load or when changing themes, best to add inline in `head` to avoid FOUC
+			// If theme = dark in storage OR (if no theme in storage AND os is in darkmode)
+			if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+				document.documentElement.classList.add('dark')
+			} else {
+				document.documentElement.classList.remove('dark')
+			}
+		</script>
 		<script src="{{ asset('js/app.js') }}" defer></script>
 		@if(isset($scripts))
 			{{ $scripts }}
@@ -82,6 +91,7 @@
 				</div>
 			</div>
 		</div>
+		
 		<!-- Hack to prevent transition from firing at load in Chrome -->
 		<script> </script>
 	</body>
