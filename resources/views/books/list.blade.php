@@ -6,9 +6,9 @@
 
 	<x-slot name="controls">
 		@if( !empty($archived) )
-			<a href="{{ route('books.archives') }}" class="button-shared">{{ ___('archived') }} ({{ $archived }})</a>
+			<a href="{{ route('books.archives') }}" class="button big">{{ ___('archived') }} ({{ $archived }})</a>
 		@endif
-		<a href="{{ route('books.create') }}" class="button-shared">{{ ___('new') }}</a>
+		<a href="{{ route('books.create') }}" class="button big">{{ ___('new') }}</a>
 	</x-slot>
 
 	<x-slot name="scripts">
