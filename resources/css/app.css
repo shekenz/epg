@@ -19,7 +19,7 @@
 		@apply
 			m-0
 			text-primary-dark
-			dark:text-primary-ultra-light
+			dark:text-gray-300
 			bg-background
 			dark:bg-gray-800
 			font-dashboard;
@@ -180,6 +180,18 @@
 	/*  -----------------------------------------  ║ Links & buttons ║  */
 	/*  -----------------------------------------  ╚═════════════════╝  */
 
+	/*  ------------------------- Default link */
+	a {
+		@apply
+			underline
+			text-gray-500
+			hover:text-primary-dark
+			dark:text-gray-300
+			dark:hover:text-white
+			transition-colors
+			duration-200;
+	}
+
 	/*  ------------------------- Top menu items */
 	a.nav-item, form.nav-item {
 		@apply 
@@ -242,7 +254,8 @@
 			hover:text-white
 			transition-colors
 			duration-200
-			dark:opacity-70;
+			dark:opacity-70
+			no-underline;
 	}
 
 	a.side-bar-item svg.icon {
@@ -299,7 +312,8 @@
 			transition-colors
 			duration-200
 			hover:bg-primary-super-light
-			shadow-md;
+			shadow-md
+			no-underline;
 	}
 
 	.button.disabled, .button-disabled {
@@ -693,15 +707,9 @@
 	table tr:nth-child(2n) {
 		@apply
 			bg-primary-ultra-light
-			dark:bg-gray-600;
-	}
-
-	table tbody tr, table tbody tr:nth-child(2n) {
-		@apply
-			hover:bg-primary-super-light
-			hover:text-white
-			dark:hover:bg-primary-super-light
-			cursor-pointer;
+			bg-opacity-50
+			dark:bg-gray-600
+			dark:bg-opacity-50;
 	}
 
 	table td {
