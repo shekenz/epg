@@ -29,6 +29,7 @@
 	nav#menu {
 		@apply 
 			bg-primary
+			text-primary-ultra-light
 			shadow-tight
 			flex
 			text-lg
