@@ -362,7 +362,6 @@
 
 	.button.compact {
 		@apply
-			inline
 			py-1
 			px-2
 			text-sm

@@ -4,20 +4,19 @@
 		{{ ___('archived books') }}
 	</x-slot>
 
-	<x-slot name="leftControls">
-		<a href="{{ route('books') }}" class="mini-button"><x-tabler-chevron-left /></a>
-	</x-slot>
-
 	<x-slot name="controls">
 		<form method="POST" action="{{ route('books.archives.delete.all') }}" class="inline">
 			@csrf
-			<input type="submit" class="button-shared button-warning cursor-pointer" value="{{ ___('delete all') }}" onclick="return confirm('{{ __('Are you sure you want to permanently delete all the books').' ? '.__('This action is not reversible').'.'}}');">
+			<input type="submit" class="button-shared button-warning cursor-pointer" value="{{ ___('delete all') }}" onclick="return confirm('?');">
 		</form>
 	</x-slot>
 
-	<div class="m-4">
-		<table class="border-collapse table-auto box-border w-full">
-		<thead class="font-bold">
+	<x-section class="full" :return="route('books')" :title="___('archived books')">
+		<x-buttons>
+			<x-post :href="route('books.archives.delete.all')" :confirm="__('app.confirmations.delete-all-books')" :label="___('delete all')" class="big"/>
+		</x-buttons>
+		<table class="big">
+		<thead>
 			<td>{{ ___('title') }}</td>
 			<td>{{ ___('author') }}</td>
 			<td>{{ ___('trashed') }}</td>
@@ -32,23 +31,13 @@
 				<td class="hidden md:table-cell">{{ $bookInfo->deleted_at->diffForHumans() }}</td>
 				<td class="hidden md:table-cell"><a href="{{ route('users.display', $bookInfo->user->id)}}" class="default">{{ $bookInfo->user->username }}</a></td>
 				<td class="text-right">
-					<form method="POST" action="{{ route('books.delete', $bookInfo->id) }}" class="inline">
-						@csrf
-						<a href="#" title="{{ ___('delete') }}" class="mini-button warning" onclick="
-							event.preventDefault();
-							if(confirm('{{ __('Are you sure you want to permanently delete the book').' '.$bookInfo->title.' ? '.__('All variations will also be deleted').'. '.__('This action is not reversible').'.'}}')) {
-								this.closest('form').submit();
-							}
-						">
-							<x-tabler-trash />
-						</a>
-					</form>
-					<a class="mini-button" title="{{ ___('restore') }}" href="{{ route('books.archives.restore', $bookInfo->id) }}"><x-tabler-arrow-up-circle /></a>
+					<x-post :href="route('books.delete', $bookInfo->id)" :confirm="__('app.confirmations.delete-book', ['book' => $bookInfo->title])" icon="trash" :title="___('delete')" />
+					<x-button :href="route('books.archives.restore', $bookInfo->id)" :title="___('restore')" icon="arrow-up-circle"/>
 				</td>
 			</tr>
 		@endforeach
 		</tbody>
 		</table>
-	</div>
+	</x-section>
 
 </x-app-layout>
