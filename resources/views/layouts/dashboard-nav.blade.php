@@ -4,6 +4,9 @@
 			<x-tabler-arrow-left />&nbsp;{{ config('app.name') }}
 		</a>
 	</div>
+	<div id="save-loader" class="flex items-center px-4 hidden">
+		<img class="w-6 h-6 mr-2" src="{{ asset('img/loader.svg') }}" alt="animated loader" />{{ ___('saving') }}...
+	</div>
 	<div class="flex-grow"></div>
 	<div id="menu-right">
 		<a class="nav-item" href="{{ route('dashboard') }}">
