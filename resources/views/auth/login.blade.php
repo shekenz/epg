@@ -52,9 +52,9 @@
                     </a>
                 @endif
 
-                <x-button class="ml-3">
+                <button class="button big" class="ml-3">
                     {{ ___('login') }}
-                </x-button>
+                <button>
             </div>
 			@if( config('app.allow_register'))
             <div class="flex item-center mt-4 border-top justify-center">
