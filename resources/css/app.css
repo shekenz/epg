@@ -304,10 +304,9 @@
 			dark:text-white
 			font-semibold
 			bg-primary-light
-			px-4
-			py-3
+			px-3
+			py-1.5
 			text-center
-			min-w-[12rem]
 			uppercase
 			rounded-md
 			transition-colors
@@ -315,7 +314,8 @@
 			hover:bg-primary-super-light
 			hover:text-white
 			shadow-md
-			no-underline;
+			no-underline
+			self-center;
 	}
 
 	.button.icon {
@@ -332,7 +332,8 @@
 	.button.big {
 		@apply
 			px-4
-			py-3;
+			py-3
+			min-w-[12rem] ;
 	}
 
 	.button.disabled, .button-disabled {
@@ -708,13 +709,23 @@
 		@apply
 			w-full
 			border-collapse
-			my-2;
+			my-2
+			shadow-tight-window
+			dark:shadow-md;
 	}
 
 	table thead, table tfoot {
 		@apply
-			bg-primary-light
-			text-white;
+			bg-primary
+			text-white
+			border
+			border-primary;
+	}
+
+	table tbody {
+		@apply
+			border
+			border-primary;
 	}
 
 	table tbody tr {
