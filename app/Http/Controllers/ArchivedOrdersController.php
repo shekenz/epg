@@ -7,7 +7,13 @@ use App\Models\Order;
 
 class ArchivedOrdersController extends Controller
 {
-    
+    	
+	/**
+	 * Archive an order (Version 2 : variation structure)
+	 *
+	 * @param  \App\Models\Order $order
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
 	public function archive(Order $order) {
 
 		$order->load(['books', 'shippingMethods', 'coupons']);
@@ -75,7 +81,13 @@ class ArchivedOrdersController extends Controller
 
 		return redirect()->back();
 	}
-
+	
+	/**
+	 * Display an archived order
+	 *
+	 * @param  \App\Models\ArchivedOrder $archivedOrder
+	 * @return \Illuminate\Http\Response
+	 */
 	public function display(ArchivedOrder $archivedOrder) {
 		return view('orders.archived.display', compact('archivedOrder'));
 	}
