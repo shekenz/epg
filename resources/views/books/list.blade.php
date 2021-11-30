@@ -15,8 +15,8 @@
 		<script src="{{ asset('js/books-reorder.js') }}" type="text/javascript" defer></script>
 	</x-slot>
 
-	<table class="w-full app-table">
-		<thead class="font-bold">
+	<table class="big">
+		<thead>
 			<td class="w-8"></td>
 			<td>{{ ___('title') }}</td>
 			<td>{{ ___('author') }}</td>
@@ -37,12 +37,12 @@
 					@if($warnings)
 						<a href="{{ route('books.display', $bookInfo->id) }}" class="icon warning" title="{{ implode("\n", $warnings) }}"><x-tabler-alert-triangle /></a>
 					@endif
-					<a href="{{ route('books.display', $bookInfo->id) }}" class="default">{{ $bookInfo->title }}</a></td>
+					<a href="{{ route('books.display', $bookInfo->id) }}">{{ $bookInfo->title }}</a></td>
 				<td>{{ $bookInfo->author }}</td>
 				
 				<td class="text-right">
-					<a class="mini-button" title="{{ ___('archive') }}" href="{{ route('books.archives.store', $bookInfo->id)}}"><x-tabler-archive /></a>
-					<a class="mini-button" title="{{ ___('edit') }}" href="{{ route('books.edit', $bookInfo->id) }}"><x-tabler-edit /></a>
+					<a class="button icon inline" title="{{ ___('archive') }}" href="{{ route('books.archives.store', $bookInfo->id)}}"><x-tabler-archive /></a>
+					<a class="button icon inline" title="{{ ___('edit') }}" href="{{ route('books.edit', $bookInfo->id) }}"><x-tabler-edit /></a>
 				</td>
 			</tr>
 		@endforeach

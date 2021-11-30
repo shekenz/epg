@@ -318,6 +318,23 @@
 			no-underline;
 	}
 
+	.button.icon {
+		@apply
+			py-1
+			px-1
+			min-w-0
+			w-8
+			h-8
+			inline-flex
+			mx-0.5;
+	}
+
+	.button.big {
+		@apply
+			px-4
+			py-3;
+	}
+
 	.button.disabled, .button-disabled {
 		@apply
 			bg-gray-300
