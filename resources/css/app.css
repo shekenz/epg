@@ -756,6 +756,11 @@
 			px-2;
 	}
 
+	table thead td, table.big thead td {
+		@apply
+			py-1;
+	}
+
 	table thead td:first-child {
 		@apply
 			rounded-tl-md;
@@ -780,12 +785,6 @@
 	table.big td {
 		@apply
 			p-3;
-	}
-
-	table.big thead td, table.big tfoot td {
-		@apply
-			py-2
-			px-3;
 	}
 
 	/*  -----------------------------------------  ╔════════════╗  */
