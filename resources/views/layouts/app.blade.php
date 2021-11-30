@@ -49,19 +49,7 @@
 						<x-flash.back :message="__('flash.paypal.credentials')" permanent class="error"/>
 					@endif
 
-					<section class="titled maximized">
-						@isset($title)
-							<h2>{{ $title }}</h2>
-						@endisset
-						<div>
-							@if(isset($controls))
-							<nav class="flex w-full gap-x-4 pt-2 pb-4">
-								{{ $controls }}
-							</nav>
-							@endisset
-							{{ $slot ?? ''}}
-						</div>
-					</section>
+					{{ $slot ?? ''}}
 				</main>
 
 			</div>

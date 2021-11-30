@@ -92,6 +92,7 @@
 			w-md
 			py-4
 			px-6
+			mx-auto
 			rounded-md
 			bg-white
 			dark:bg-gray-700
@@ -100,7 +101,6 @@
 
 	section.titled {
 		@apply
-			mx-auto
 			my-6
 			p-0
 			shadow-tight-window
@@ -109,13 +109,26 @@
 
 	section.titled > h2 {
 		@apply
-			px-4
-			py-2
+			h-[2.5rem]
 			bg-primary
 			rounded-t-md
 			text-white
 			text-lg
-			dark:shadow-dark;
+			dark:shadow-dark
+			flex
+			items-center;
+	}
+
+	section.titled > h2 > .button.icon {
+		@apply
+			m-0
+			rounded-tr-none
+			rounded-b-none
+			w-[2.5rem]
+			h-[2.5rem]
+			flex
+			items-center
+			justify-center;
 	}
 
 	section h3 {
@@ -125,12 +138,6 @@
 			dark:border-gray-600
 			px-0
 			py-2;
-	}
-
-	section.titled > div, section.titled > form {
-		@apply
-			p-4
-			rounded-b-md;
 	}
 
 	section.titled > p {
@@ -144,7 +151,7 @@
 			text-xl;
 	}
 
-	section.maximized {
+	section.full {
 		width: calc(100% - 3rem);
 		@apply
 			m-6;
@@ -315,7 +322,8 @@
 			hover:text-white
 			shadow-md
 			no-underline
-			self-center;
+			self-center
+			inline-block;
 	}
 
 	.button.icon {
@@ -709,7 +717,6 @@
 		@apply
 			w-full
 			border-collapse
-			my-2
 			shadow-tight-window
 			dark:shadow-md;
 	}
