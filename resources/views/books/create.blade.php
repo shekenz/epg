@@ -14,87 +14,48 @@
 	<x-slot name="scripts">
 		<script src="{{ asset('js/media-library-dragdrop.js') }}" type="text/javascript" defer></script>
 	</x-slot>
+
+	{{-- @if ($errors->any()) --}}
+	<x-section title="Errors" foldable>
+		@php dump($errors) @endphp
+	</x-section>
+	{{-- @endif --}}
 	
-	<div class="m-4">
-				@if ($errors->any())
-				<div class="mb-4" :errors="$errors">
-						<div class="font-medium text-red-600">
-								{{ __('Whoops! Something went wrong.') }}
-						</div>
+	<x-section :title="___('new book')" :return="route('books')" class="full">
 
-						<ul class="mt-3 list-disc list-inside text-sm text-red-600">
-								@foreach ($errors->all() as $error)
-										<li>{{ $error }}</li>
-								@endforeach
-						</ul>
-				</div>
-				@endif
-
-			<form action="{{ route('books.store') }}" method="post" enctype="multipart/form-data" class="flex flex-col gap-y-2 md:grid md:grid-cols-4 lg:m-2 md:gap-x-4" autocomplete="off">
+			<form action="{{ route('books.store') }}" method="post" enctype="multipart/form-data" class="flex flex-col gap-y-2 md:grid md:grid-cols-4 lg:m-2 md:gap-x-8" autocomplete="off">
 				@csrf
-				<div>
-					<label class="label-shared lg:text-lg" for="title">{{ ___('title') }} :</label>
-					<input class="input-shared" id="title" name="title" type="text" value="{{ old('title') }}" maxlength="128">
-				</div>
-				<div class="md:row-start-2">
-					<label class="label-shared lg:text-lg" for="author">{{ ___('author') }} :</label>
-					<input class="input-shared" id="author" name="author" type="text" value="{{ old('author') }}" maxlength="64">
-				</div>
-				<div class="md:row-start-3">
-					<label class="label-shared lg:text-lg" for="year">{{ ___('year') }} :</label>
-					<input class="input-shared" id="year" name="year" type="number" value="{{ old('year') }}" min="0" max="{{ now()->addYear(1)->year }}">
-				</div>
-				<div class="md:row-start-4">
-					<label class="label-shared lg:text-lg" for="copies">{{ ___('copies') }} :</label>
-					<input class="input-shared" id="copies" name="copies" type="number" value="{{ old('copies') }}">
-				</div>
-				<div class="md:col-start-2">
-					<label class="label-shared lg:text-lg" for="width">{{ ___('width') }} (mm) :</label>
-					<input class="input-shared" id="width" name="width" type="number" value="{{ old('width') }}">
-				</div>
-				<div class="md:row-start-2 md:col-start-2">
-					<label class="label-shared lg:text-lg" for="height">{{ ___('height') }} (mm) :</label>
-					<input class="input-shared" id="height" name="height" type="number" value="{{ old('height') }}">
-				</div>
-				<div class="md:row-start-3 md:col-start-2">
-					<label class="label-shared lg:text-lg" for="cover">{{ ___('cover') }} :</label>
-					<input class="input-shared" id="cover" name="cover" type="text" value="{{ old('cover') }}" maxlength="32">
-				</div>
-				
-				<div class="md:row-start-4 md:col-start-2">
-					<label class="label-shared lg:text-lg" for="pages">{{ ___('pages count') }} :</label>
-					<input class="input-shared" id="pages" name="pages" type="number" value="{{ old('pages') }}">
-				</div>
-				<div class="col-start-3 col-span-2 row-start-1 row-span-4 flex flex-col">
-					<label class="label-shared lg:text-lg" for="description">{{ ___('description') }} :</label>
-					<textarea id="description" class="input-shared flex-1" name="description">{{ old('description') }}</textarea>
-				</div>
+				<x-input name="title" type="text" :label="___('title')" value="{{ old('title') }}" maxlength="128">@error('title'){{$message}}@enderror</x-input>
+				<x-input name="author" type="text" :label="___('author')" wrapper-class="md:row-start-2" value="{{ old('author') }}" maxlength="64">@error('author'){{$message}}@enderror</x-input>
+				<x-input name="year" type="text" :label="___('year')" wrapper-class="md:row-start-3" value="{{ old('year') }}" min="0" max="{{ now()->addYear(1)->year }}" >@error('year'){{$message}}@enderror</x-input>
+				<x-input name="copies" type="number" :label="___('copies')" wrapper-class="md:row-start-4" value="{{ old('copies') }}" min="0">@error('copies'){{$message}}@enderror</x-input>
+				<x-input name="width" type="number" :label="___('width').' (mm)'" wrapper-class="md:col-start-2" value="{{ old('width') }}" min="0">@error('width'){{$message}}@enderror</x-input>
+				<x-input name="height" type="number" :label="___('height').' (mm)'" wrapper-class="md:row-start-2 md:col-start-2" value="{{ old('height') }}" min="0">@error('height'){{$message}}@enderror</x-input>
+				<x-input name="cover" type="text" :label="___('cover')" wrapper-class="md:row-start-3 md:col-start-2" value="{{ old('cover') }}" maxlength="32">@error('cover'){{$message}}@enderror</x-input>
+				<x-input name="pages" type="number" :label="___('pages')" wrapper-class="md:row-start-4 md:col-start-2" value="{{ old('pages') }}" min="0">@error('pages'){{$message}}@enderror</x-input>
+				<x-textarea name="description" :label="___('description')" wrapper-class="col-start-3 col-span-2 row-start-1 row-span-4">
+					@error('description')
+					<x-slot name="error">
+						{{ $message }}
+					</x-slot>
+					@enderror
+					{{ old('description') }}
+				</x-textarea>
 
-				<h2 class="col-span-4 text-lg font-bold border-b border-gray-500 mb-4 mt-8">{{ ___('base variation') }}</h2>
+				<h2 class="col-span-4 text-lg border-b border-gray-500 mb-4 mt-8">{{ ___('base variation') }}</h2>
 
-				<div class="md:row-start-6 md:col-start-1">
-					<label class="label-shared lg:text-lg" for="label">{{ ___('label') }} :</label>
-					<input class="input-shared" id="label" name="label" type="text" value="{{ old('label') }}" max="128">
-				</div>
-
-				<div class="md:row-start-6 md:col-start-2">
-					<label class="label-shared lg:text-lg" for="weight">{{ ___('weight') }} (g) :</label>
-					<input class="input-shared" id="weight" name="weight" type="number" value="{{ old('weight') }}" min="0">
-				</div>
+				<x-input name="label" type="text" :label="___('label')" wrapper-class="md:row-start-6 md:col-start-1" value="{{ old('label') }}" maxlength="128">@error('label'){{$message}}@enderror</x-input>
+				<x-input name="weight" type="number" :label="___('weight').' (g)'" wrapper-class="md:row-start-6 md:col-start-2" value="{{ old('weight') }}" min="0">@error('weight'){{$message}}@enderror</x-input>
 
 				<div class="md:row-start-6 md:col-start-3">
-					<label class="label-shared lg:text-lg" for="stock">{{ ___('stock') }} :</label>
-					<input class="input-shared" id="stock" name="stock" type="number" min="0" value="{{ old('stock') }}">
-					{{-- <input class="input-shared" id="quantity-hidden" name="quantity" type="hidden" disabled="true" value="0"> --}}
+					<x-input name="stock" type="number" :label="___('stock')" value="{{ old('stock') }}" min="0">@error('stock'){{$message}}@enderror</x-input>
 					<div class="mt-1">
 						<input class="" id="pre-order" name="pre_order" type="checkbox" value="1" @if(old('pre_order')) {{ 'checked' }} @endif><label for="pre-order" class="text-gray-500"> {{ ___('pre-order') }}</label>
 					</div>
 				</div>
 
-				<div class="md:row-start-6 md:col-start-4">
-					<label class="label-shared lg:text-lg" for="price">{{ ___('price') }} :</label>
-					<input class="input-shared" id="price" name="price" type="text" value="{{ old('price') }}" maxlength="10">
-				</div>
+				<x-input name="price" type="number" :label="___('price')" wrapper-class="md:row-start-6 md:col-start-4" value="{{ old('price') }}" min="0" step="0.01">@error('price'){{$message}}@enderror</x-input>
+
 				
 				<input type="hidden" name="lang" value="fr">
 				
@@ -133,10 +94,11 @@
 			</div>
 
 			<div class="col-span-4 mt-6 mb-4 lg:text-right">
-				<input class="button-shared w-full lg:w-auto" type="submit" value="{{ ___('create') }}">
+				<input class="button big" type="submit" value="{{ ___('create') }}">
 			</div>
 			
 		</form>
-	</div>
+
+	</x-section>
 
 </x-app-layout>
