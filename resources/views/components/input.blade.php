@@ -24,15 +24,15 @@
 			border
 			focus:ring-0
 			@if($slot->isEmpty())
-			border-background
-			focus:border-gray-400
+			border-gray-300
+			focus:border-primary
 			dark:focus:bg-gray-500
 			dark:focus:border-gray-500
 			@else
 			border-transparent
 			focus:border-transparent
 			@endif
-			shadow-sm
+			shadow-tight-window
 			dark:shadow-none
 			@if($attributes->has('disabled'))
 			text-gray-400
