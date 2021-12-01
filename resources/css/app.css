@@ -538,8 +538,8 @@
 	/*  -----------------------------------------  ║  Forms  ║  */
 	/*  -----------------------------------------  ╚═════════╝  */
 
+	/*
 	form {
-		/* width: calc(100% - 1rem); */
 		@apply
 			m-auto
 			max-w-xl;
@@ -581,7 +581,7 @@
 			w-full;
 	}
 
-	/* Filling chrome's inputs icon */
+	/* Filling chrome's inputs icon 
 	input[type=time]::-webkit-calendar-picker-indicator {
 		@apply
 			dark:bg-time-inverted;
@@ -595,7 +595,7 @@
 			dark:bg-date-inverted;
 	}
 
-	/* Chrome color swatch */
+	/* Chrome color swatch 
 	input[type="color" i]::-webkit-color-swatch-wrapper {
 		@apply
 			p-1
@@ -707,6 +707,8 @@
 		@apply
 			bg-red-500;
 	}
+
+	*/
 
 	/*  -----------------------------------------  ╔══════════╗  */
 	/*  -----------------------------------------  ║  Tables  ║  */
