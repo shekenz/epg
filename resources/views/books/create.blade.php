@@ -14,12 +14,6 @@
 	<x-slot name="scripts">
 		<script src="{{ asset('js/media-library-dragdrop.js') }}" type="text/javascript" defer></script>
 	</x-slot>
-
-	{{-- @if ($errors->any()) --}}
-	<x-section title="Errors" foldable>
-		@php dump($errors) @endphp
-	</x-section>
-	{{-- @endif --}}
 	
 	<x-section :title="___('new book')" :return="route('books')" class="full">
 

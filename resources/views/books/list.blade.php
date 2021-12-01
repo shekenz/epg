@@ -9,13 +9,6 @@
 		<script src="{{ asset('js/books-reorder.js') }}" type="text/javascript" defer></script>
 	</x-slot>
 
-	<x-section title="Test form">
-		<form>
-			<x-input type="text" name="test" label="Disabled" disabled value="truc"></x-input>
-			<x-input type="text" name="test2" label="Normal" value="truc"></x-input>
-			<x-input type="text" name="test2" label="Erreur" value="truc">Erreur sa mèèèèèère !!</x-input>
-	</x-section>
-
 	<x-section :title="___('books')" class="full">
 		<x-buttons>
 			<x-button :href="route('books.create')" :label="___('new')" class="big" />
