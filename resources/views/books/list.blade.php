@@ -42,8 +42,8 @@
 					<td>{{ $bookInfo->author }}</td>
 					
 					<td class="text-right">
-						<a class="button icon inline" title="{{ ___('archive') }}" href="{{ route('books.archives.store', $bookInfo->id)}}"><x-tabler-archive /></a>
-						<a class="button icon inline" title="{{ ___('edit') }}" href="{{ route('books.edit', $bookInfo->id) }}"><x-tabler-edit /></a>
+						<x-button :title="___('archive')" :href="route('books.archives.store', $bookInfo->id)" icon="archive" />
+						<x-button :title="___('edit')" :href="route('books.edit', $bookInfo->id)" icon="edit" />
 					</td>
 				</tr>
 			@endforeach
