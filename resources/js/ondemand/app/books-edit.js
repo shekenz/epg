@@ -1,15 +1,5 @@
 import Sortable from 'sortablejs';
 
-// Variations delete warnings
-const deleteButtons = document.getElementsByClassName('delete-variation');
-
-for(let button of deleteButtons) {
-	button.addEventListener('submit', e => {
-		e.preventDefault();
-		if(window.confirm(`Variation will be permanently deleted unless it is linked to an active order. Are you sure you want to delete ${e.currentTarget.dataset.label} ? `)) e.currentTarget.submit();
-	});
-}
-
 // Deleted variations refresh warning
 const refreshButtons = document.getElementsByClassName('refresh-variation');
 

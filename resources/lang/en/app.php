@@ -9,6 +9,7 @@ return [
 	'confirmations' => [
 		'delete-all-books' => 'Are you sure you want to permanently delete all the books ? This action is irreversible.',
 		'delete-book' => 'Are you sure you want to permanently delete the book ":book" ? Variations will also be deleted. This action is irreversible.',
+		'delete-variation' => 'Variation will be permanently deleted unless it is linked to an active order. Are you sure you want to delete ":variation" ?',
 	],
 	'media' => [
 		'link-placeholder' => 'Drop media from the library here',
