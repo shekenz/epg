@@ -41,7 +41,7 @@
 
 			</div>
 
-			<x-separator class="col-span-4 pt-4">{{ ___('base variation') }}</x-separator>
+			<x-separator>{{ ___('base variation') }}</x-separator>
 
 			<div class="flex flex-col md:grid md:grid-cols-4 md:gap-x-8">
 
@@ -61,7 +61,7 @@
 				
 
 			@if( $media->isNotEmpty() )
-				<x-separator class="col-span-4">{{ ___('media') }}</x-separator>
+				<x-separator>{{ ___('media') }}</x-separator>
 
 				<x-media-dropzone id="media-link" title="{{ ___('linked media') }}">
 					<x-slot name="placeholder">{{ __('app.media.link-placeholder') }}</x-slot>
