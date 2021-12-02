@@ -13,7 +13,7 @@
 			@endif
 		</h2>
 	@endif
-	<div class="rounded-b-md p-4">
+	<div class="rounded-b-md p-8">
 		{{ $slot }}
 	</div>
 </section>
