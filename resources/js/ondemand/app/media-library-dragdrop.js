@@ -14,21 +14,23 @@ let toggleVisibility = e => {
 }
 
 let disablePlaceholder = e => {
-	let libPlaceholder = document.getElementById('media-library-placeholder');
-	let linkPlaceholder = document.getElementById('media-link-placeholder');
-	if(libPlaceholder) {
-		mediaLibrary.removeChild(libPlaceholder);
-	}
-	if(linkPlaceholder) {
-		mediaLink.removeChild(linkPlaceholder);
+	for( let library of [mediaLink, mediaLibrary] )
+	{
+		if(library.firstElementChild.classList.contains('placeholder')) 
+		{
+			library.removeChild(library.firstElementChild);
+		}
 	}
 }
 
 let toggleInput = e => {
 	let firstElement = e.item.firstElementChild;
-	if(firstElement.tagName.toUpperCase() === 'INPUT') {
+	if(firstElement.tagName.toUpperCase() === 'INPUT') 
+	{
 	 	e.item.removeChild(firstElement);
-	} else {
+	} 
+	else
+	{
 		let input = document.createElement('input');
 		let thumbnail = e.item.firstElementChild;
 		input.setAttribute('name', 'media[]');
@@ -42,7 +44,6 @@ const sharedOptions = {
 	group: 'shared',
 	swapThreshold: SWAP_THRESHOLD,
 	animation: 150,
-	filter: '.drop-placeholder',
 	onChange: disablePlaceholder,
 	onStart: toggleVisibility,
 	onEnd: toggleVisibility,

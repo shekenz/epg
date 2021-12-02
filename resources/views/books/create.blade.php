@@ -1,14 +1,7 @@
 <x-app-layout>
+
 	<x-slot name="title">
 		{{ ___('new book') }}
-	</x-slot>
-
-	<x-slot name="leftControls">
-		<a href="{{ route('books') }}" class="mini-button"><x-tabler-chevron-left /></a>
-	</x-slot>
-
-	<x-slot name="controls">
-		<a href="{{ route('books') }}" class="button-shared">{{ ___('cancel') }}</a> 
 	</x-slot>
 
 	<x-slot name="scripts">
@@ -17,11 +10,17 @@
 	
 	<x-section :title="___('new book')" :return="route('books')" class="full">
 
+		@if($errors->any())
+			<x-warning>{{ __('app.errors.form') }}</x-warning>
+		@endif
 
-			<form action="{{ route('books.store') }}" method="post" enctype="multipart/form-data" class="flex flex-col gap-y-2 md:grid md:grid-cols-4 md:gap-x-8" autocomplete="off">
+		<form action="{{ route('books.store') }}" method="post" enctype="multipart/form-data" autocomplete="off">
+			@csrf
 
-				<x-separator first class="col-span-4">{{ ___('general informations') }}</x-separator>
-				@csrf
+			<x-separator first class="col-span-4">{{ ___('general informations') }}</x-separator>
+
+			<div class="flex flex-col md:grid md:grid-cols-4 md:gap-x-8">
+
 				<x-input name="title" type="text" :label="___('title')" wrapper-class="md:row-start-2" value="{{ old('title') }}" maxlength="128">@error('title'){{$message}}@enderror</x-input>
 				<x-input name="author" type="text" :label="___('author')" wrapper-class="md:row-start-3" value="{{ old('author') }}" maxlength="64">@error('author'){{$message}}@enderror</x-input>
 				<x-input name="year" type="text" :label="___('year')" wrapper-class="md:row-start-4" value="{{ old('year') }}" min="0" max="{{ now()->addYear(1)->year }}" >@error('year'){{$message}}@enderror</x-input>
@@ -30,6 +29,7 @@
 				<x-input name="height" type="number" :label="___('height').' (mm)'" wrapper-class="md:row-start-3 md:col-start-2" value="{{ old('height') }}" min="0">@error('height'){{$message}}@enderror</x-input>
 				<x-input name="cover" type="text" :label="___('cover')" wrapper-class="md:row-start-4 md:col-start-2" value="{{ old('cover') }}" maxlength="32">@error('cover'){{$message}}@enderror</x-input>
 				<x-input name="pages" type="number" :label="___('pages')" wrapper-class="md:row-start-5 md:col-start-2" value="{{ old('pages') }}" min="0">@error('pages'){{$message}}@enderror</x-input>
+
 				<x-textarea name="description" :label="___('description')" wrapper-class="col-start-3 col-span-2 row-start-2 row-span-4">
 					@error('description')
 					<x-slot name="error">
@@ -39,62 +39,54 @@
 					{{ old('description') }}
 				</x-textarea>
 
-				<x-separator class="col-span-4 pt-4">{{ ___('base variation') }}</x-separator>
+			</div>
 
-				<x-input name="label" type="text" :label="___('label')" wrapper-class="md:row-start-7 md:col-start-1" value="{{ old('label') }}" maxlength="128">@error('label'){{$message}}@enderror</x-input>
-				<x-input name="weight" type="number" :label="___('weight').' (g)'" wrapper-class="md:row-start-7 md:col-start-2" value="{{ old('weight') }}" min="0">@error('weight'){{$message}}@enderror</x-input>
+			<x-separator class="col-span-4 pt-4">{{ ___('base variation') }}</x-separator>
 
-				<div class="md:row-start-7 md:col-start-3">
+			<div class="flex flex-col md:grid md:grid-cols-4 md:gap-x-8">
+
+				<x-input name="label" type="text" :label="___('label')" value="{{ old('label') }}" maxlength="128">@error('label'){{$message}}@enderror</x-input>
+				<x-input name="weight" type="number" :label="___('weight').' (g)'" value="{{ old('weight') }}" min="0">@error('weight'){{$message}}@enderror</x-input>
+
+				<div>
 					<x-input name="stock" type="number" :label="___('stock')" value="{{ old('stock') }}" min="0">@error('stock'){{$message}}@enderror</x-input>
 					<div class="mt-1">
-						<input class="" id="pre-order" name="pre_order" type="checkbox" value="1" @if(old('pre_order')) {{ 'checked' }} @endif><label for="pre-order" class="text-gray-500"> {{ ___('pre-order') }}</label>
+						<input class="" id="pre-order" name="pre_order" type="checkbox" value="1" @if(old('pre_order')) {{ 'checked' }} @endif><label for="pre-order"> {{ ___('pre-order') }}</label>
 					</div>
 				</div>
 
-				<x-input name="price" type="number" :label="___('price')" wrapper-class="md:row-start-7 md:col-start-4" value="{{ old('price') }}" min="0" step="0.01">@error('price'){{$message}}@enderror</x-input>
+				<x-input name="price" type="number" :label="___('price')" value="{{ old('price') }}" min="0" step="0.01">@error('price'){{$message}}@enderror</x-input>
 
-				
-				<input type="hidden" name="lang" value="fr">
+			</div>
 				
 
 			@if( $media->isNotEmpty() )
 				<x-separator class="col-span-4">{{ ___('media') }}</x-separator>
-				<div class="col-span-4">
-					<label class="label-shared lg:text-lg">{{ ___('linked media') }} :</label>
-					<div id="media-link" class="dropzone input-mimic">
-						<div id="media-link-placeholder" class="placeholder flex m-3 justify-center items-center">
-							<span class="text-3xl text-gray-300 font-bold">{{ __('Drop media from the library here')}}.</span>
-						</div>
-					</div>
-				</div>
-				
-				<div class="col-span-4">
-					<label class="label-shared lg:text-lg">{{ ___('media library') }} :</label>
-					<div id="media-library" class="dropzone input-mimic">
-						@php $input = false; @endphp
-						@if($media->isEmpty())
-							<div id="media-library-placeholder" class="placeholder flex m-3 justify-center items-center">
-								<span class="text-3xl text-gray-300 font-bold">{{ __('Move media here to unlink from book')}}.</span>
-							</div>
-						@endif
-						@foreach($media as $medium)
-							@include('books.form-image')
-						@endforeach
-					</div>
-				</div>
+
+				<x-media-dropzone id="media-link" title="{{ ___('linked media') }}">
+					<x-slot name="placeholder">{{ __('app.media.link-placeholder') }}</x-slot>
+				</x-media-dropzone>
+
+				<x-media-dropzone id="media-library" title="{{ ___('media library') }}">
+					<x-slot name="placeholder">{{ __('app.media.library-placeholder') }}</x-slot>
+					@foreach($media as $medium)
+						<x-media-item :src="asset('storage/'.$medium->preset('thumb'))" :src2x="asset('storage/'.$medium->preset('thumb2x'))" :medium-id="$medium->id" />
+					@endforeach
+				</x-media-dropzone>
 			@endif
 
-			<div class="col-span-4">
-				<label class="label-shared lg:text-lg">{{ __('Upload and link new media') }} :</label>
-				<div class="input-mimic">
-					<input type="file" name="files[]" accept=".jpg,.jpeg,.png,.gif" multiple>
-				</div>
-			</div>
+			<x-upload :label="__('Upload and link new media')">{{ __('app.upload.limits', [
+				'max_files' => ini_get('max_file_uploads'),
+				'max_file_size' => ini_get('upload_max_filesize'),
+				'max_post_size' => ini_get('post_max_size'),
+			]) }}</x-upload>
 
-			<div class="col-span-4 mt-6 mb-4 lg:text-right">
-				<input class="button big" type="submit" value="{{ ___('create') }}">
-			</div>
+			<x-buttons bottom align="right">
+				<input class="button big cursor-pointer" type="submit" value="{{ ___('create') }}">
+			</x-buttons>
 			
+			<input type="hidden" name="lang" value="fr">
+
 		</form>
 
 	</x-section>

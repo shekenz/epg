@@ -9,5 +9,16 @@ return [
 	'confirmations' => [
 		'delete-all-books' => 'Etes-vous sûr de vouloir définitivement supprimer tout les livres ? Cette action est irreversible.',
 		'delete-book' => 'Etes-vous sûr de vouloir définitivement supprimer le livre ":book" ? Les variations seront également supprimées. Cette action est irreversible.',
-	]
+	],
+	'media' => [
+		'link-placeholder' => 'Déposez les média de la bibliothèque ici',
+		'library-placeholder' => 'Déplacez les média ici pour les détacher du livre',
+	],
+	'upload' => [
+		'info' => 'Cliquez ici pour ajouter des fichiers',
+		'limits' => ':max_files fichiers de :max_file_size chacun max, au format JPG, GIF, ou PNG, pour un total maximum de :max_post_size',
+	],
+	'errors' => [
+		'form' => 'Votre formulaire contient des erreurs. Veuillez vérifier les champs avant de pouvoir continuer.',
+	],
 ];
