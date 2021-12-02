@@ -1,14 +1,15 @@
 <x-app-layout>
 
+	@php $escapedTitle = ___('edit book').' "'.$bookInfo->title.'"'; @endphp
 	<x-slot name="title">
-		{{ ___('edit book').' "'.$bookInfo->title.'"' }}
+		{{ $escapedTitle }}
 	</x-slot>
 
 	<x-slot name="scripts">
 		<script src="{{ asset('js/books-edit.js') }}" type="text/javascript" defer></script>
 	</x-slot>
 	
-	@php $escapedTitle = ___('edit book').' "'.$bookInfo->title.'"'; @endphp
+	
 	<x-section :title="$escapedTitle" :return="route('books')" class="full">
 
 		@if($errors->any())
