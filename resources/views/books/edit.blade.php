@@ -178,20 +178,14 @@
 						<td>
 							@if($book->orders->count() > 1)
 								{{ $book->orders->count().' '.___('orders') }}
-							@else
-								<a href="{{ route('orders.display', $book->orders->first()->id) }}">{{ $book->orders->first() }}</a>
+							@elseif($book->orders->count() > 0)
+								<a href="{{ route('orders.display', $book->orders->first()->id) }}">{{ $book->orders->first()->order_id }}</a>
 							@endif
 						</td>
 						<td class="text-right whitespace-nowrap">
-							<a class="mini-button" href="{{ route('variations.restore', $book->id) }}"><x-tabler-arrow-up-circle /></a>
+							<x-button :href="route('variations.restore', $book->id)" icon="arrow-up-circle" :title="___('restore')"/>
 							@if($book->orders->isEmpty())
-								<form class="inline-block refresh-variation" data-label="{{ $book->label }}" method="POST" action="{{ route('variations.refresh', $book->id) }}">
-									@csrf
-									@method('post')
-									<button class="mini-button">
-										<x-tabler-recycle class="inline-block" />
-									</button>
-								</form>
+								<x-post :href="route('variations.refresh', $book->id)" icon="recycle" :confirm="__('app.confirmations.refresh-variation', ['variation' => $book->label])" :title="___('refresh')" />
 							@endif
 						</td>
 					</tr>

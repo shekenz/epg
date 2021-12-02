@@ -10,6 +10,7 @@ return [
 		'delete-all-books' => 'Etes-vous sûr de vouloir définitivement supprimer tout les livres ? Cette action est irreversible.',
 		'delete-book' => 'Etes-vous sûr de vouloir définitivement supprimer le livre ":book" ? Les variations seront également supprimées. Cette action est irreversible.',
 		'delete-variation' => 'La variation sera supprimée de façon permanente à moins qu\'elle ne soit liée à une commande active. Etes-vous sûr de vouloir supprimer ":variation" ?',
+		'refresh-variation' => 'Cette action est irreversible. Etes-vous spur de vouloir supprimer définitivement ":variation" ?',
 	],
 	'media' => [
 		'link-placeholder' => 'Déposez les média de la bibliothèque ici',
