@@ -17,7 +17,7 @@
 		<form action="{{ route('books.store') }}" method="post" enctype="multipart/form-data" autocomplete="off">
 			@csrf
 
-			<x-separator first class="col-span-4">{{ ___('general informations') }}</x-separator>
+			<x-separator first>{{ ___('general informations') }}</x-separator>
 
 			<div class="flex flex-col md:grid md:grid-cols-4 md:gap-x-8">
 
