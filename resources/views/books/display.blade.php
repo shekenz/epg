@@ -76,7 +76,7 @@
 
 		<div class="col-span-4">
 			<x-separator>{{ ___('variations') }}</x-separator>
-			<table>
+			<table class="big">
 				<thead>
 					<tr>
 						@if( config('app.env') == 'local')
