@@ -647,6 +647,7 @@
 			bg-gray-400
 			dark:bg-gray-500;
 	}
+	*/
 
 	input:disabled {
 		@apply
@@ -654,11 +655,13 @@
 			bg-gray-100
 			border-background
 			dark:bg-gray-600
-			dark:bg-opacity-30
+			dark:bg-opacity-40
 			dark:border-transparent
+			dark:text-gray-400
 			text-gray-400;	
 	}
 
+	/*
 	input[type=checkbox] {
 		@apply
 			bg-red-500;

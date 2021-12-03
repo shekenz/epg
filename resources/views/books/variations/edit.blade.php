@@ -1,6 +1,7 @@
 <x-app-layout>
+	@php $escapedTitle = ___('edit variation').' "'.$book->label.'" '.__('from').' '.__('book').' "'.$book->bookInfo->title.'"'; @endphp
 	<x-slot name='title'>
-		{{ ___('edit variation').' "'.$book->label.'" '.__('from').' '.__('book').' "'.$book->bookInfo->title.'"' }}
+		{{ $escapedTitle }}
 	</x-slot>
 
 	<x-slot name="scripts">
@@ -9,104 +10,103 @@
 		<script src="{{ asset('js/variations-edit.js') }}" type="text/javascript" defer></script>
 	</x-slot>
 
-	<div class="m-4">
+
+	{{-- //TODO return to book with $bookInfo->id --}}
+	<x-section :title="$escapedTitle" :return="route('books')" class="full">
+
 		@if ($errors->any())
-		<div class="mb-4" :errors="$errors">
-				<div class="font-medium text-red-600">
-						{{ __('Whoops! Something went wrong.') }}
-				</div>
-
-				<ul class="mt-3 list-disc list-inside text-sm text-red-600">
-						@foreach ($errors->all() as $error)
-								<li>{{ $error }}</li>
-						@endforeach
-				</ul>
-		</div>
+			<x-warning>{{ __('app.errors.form') }}</x-warning>
 		@endif
-	</div>
 
-	<div class="m-4">
 		@if($book->orders->isNotEmpty())
-			<div class="text-red-500 italic">
-				{{ __('app.variations.warning') }}
-			</div>
+			<x-warning>{{ __('app.variations.warning') }}</x-warning>
 		@endif
-		<form id="edit-form" action="{{ route('variations.update', $book->id) }}" method="POST" enctype="multipart/form-data" class="grid grid-cols-4 justify-between items-stretch gap-x-4 gap-y-2 lg:m-2" autocomplete="off">
+
+		<form id="edit-form" action="{{ route('variations.update', $book->id) }}" method="POST" enctype="multipart/form-data" autocomplete="off">
 		@csrf
 		@method('patch')
-			<div>
-				<label for="label" class="label-shared lg:text-lg">{{ ___('label') }} :</label>
-				<input id="label" name="label" type="text" maxlength="128" class="input-shared" value="{{ old('label') ?? $book->label }}">
-			</div>
-			<div>
-				<label for="weight" class="label-shared lg:text-lg">{{ ___('weight') }} :</label>
-				<input id="weight" name="weight" type="number" min="0" class="input-shared" value="{{ old('weight') ?? $book->weight }}" @if($book->orders->isNotEmpty()) {{ 'disabled' }} @endif>
+
+			<x-separator first>{{ ___('variation data') }}</x-separator>	
+
+			<div class="flex flex-col md:grid md:grid-cols-4 md:gap-x-8">
+
+				<x-input name="label" type="text" :label="___('label')" value="{{ old('label') ?? $book->label }}" maxlength="128">@error('label'){{$message}}@enderror</x-input>
+
+				<x-input name="weight" type="number" :label="___('weight').' (g)'" value="{{ old('weight') ?? $book->weight }}" min="0" :disabled="($book->orders->isNotEmpty())">
+					@error('weight'){{$message}}@enderror
+				</x-input>
+
 				@if($book->orders->isNotEmpty())
-				<input name="weight" type="hidden" value="{{ $book->weight }}">
+					<input name="weight" type="hidden" value="{{ $book->weight }}">
 				@endif
-			</div>
+
 			<div>
-				<label for="stock" class="label-shared lg:text-lg">{{ ___('stock') }} :</label>
-				<input id="stock" name="stock" type="number" class="input-shared"  value="{{ old('stock') ?? $book->stock }}">
+				<x-input name="stock" type="number" :label="___('stock')" value="{{ old('stock') ?? $book->stock }}" />
 				<input id="stock-hidden" name="stock" type="hidden" disabled="true" value="{{ old('stock') ?? $book->stock }}">
 				<div class="mt-1">
-					<input class="" id="pre-order" name="pre_order" type="checkbox" value="1" @if(old('pre_order') ?? $book->pre_order) {{ 'checked' }} @endif><label for="pre-order" class="text-gray-500"> {{ ___('pre-order') }}</label>
+					<input class="" id="pre-order" name="pre_order" type="checkbox" value="1" @if(old('pre_order') ?? $book->pre_order) {{ 'checked' }} @endif><label for="pre-order"> {{ ___('pre-order') }}<label>
 				</div>
-			</div>
-			<div>
-				<label for="price" class="label-shared lg:text-lg">{{ ___('price') }} :</label>
-				<input id="price" name="price" type="number" min="0" step="0.01" class="input-shared" value="{{ old('price') ?? $book->price }}" @if($book->orders->isNotEmpty()) {{ 'disabled' }} @endif>
-				@if($book->orders->isNotEmpty())
-				<input name="price" type="hidden" value="{{ $book->price }}">
-				@endif
 			</div>
 
+			<div>
+				<x-input name="price" type="number" :label="___('price')" value="{{ old('price') ?? $book->price }}" min="0" step="0.01" :disabled="($book->orders->isNotEmpty())">
+					@error('price'){{$message}}@enderror
+				</x-input>
+
+				@if($book->orders->isNotEmpty())
+					<input name="price" type="hidden" value="{{ $book->price }}">
+				@endif
+			</div>
+			</div>
+			
 			{{-- Media Library --}}
-			@if($media->isNotEmpty())
-				<div class="col-span-4">
-					<label class="label-shared lg:text-lg">{{ ___('linked media') }} :</label>
-					<div id="media-link" class="dropzone input-mimic">
+			@if( $media->isNotEmpty() )
+				<x-separator>{{ ___('media') }}</x-separator>
+
+				<div class="flex gap-x-4">
+
+					<x-media-dropzone id="media-link" label="{{ ___('linked media') }}">
 						@if($book->media->isEmpty())
-						<div id="media-link-placeholder" class="placeholder flex m-3 justify-center items-center">
-							<span class="text-3xl text-gray-300 font-bold">{{ __('Drop media from the library here')}}.</span>
-						</div>
+							<x-slot name="placeholder">{{ __('app.media.link-placeholder') }}</x-slot>
 						@endif
-						@php $input = true; @endphp
 						@foreach( $book->media as $medium )
-							@include('books.form-image')
+							<x-media-item :src="asset('storage/'.$medium->preset('thumb'))" :src2x="asset('storage/'.$medium->preset('thumb2x'))" :medium-id="$medium->id" input/>
 						@endforeach
+					</x-media-dropzone>
+
+					<div class="flex flex-col justify-center items-center">
+						<x-icon-left-arrow class="w-12 h-12 text-gray-600"/>
+						<div class="h-6"></div>
+						<x-icon-right-arrow class="w-12 h-12 text-gray-600"/>
 					</div>
-				</div>
-				
-				<div class="col-span-4">
-					<label class="label-shared lg:text-lg">{{ ___('media library') }} :</label>
-					<div id="media-library" class="dropzone input-mimic">
+
+					<x-media-dropzone id="media-library" label="{{ ___('media library') }}">
 						@if($media->isNotEmpty() && $media->diff($book->media)->isEmpty())
-						<div id="media-library-placeholder" class="placeholder flex m-3 justify-center items-center">
-							<span class="text-3xl text-gray-300 font-bold">{{ ___('move media here to unlink from book')}}.</span>
-						</div>
+							<x-slot name="placeholder">{{ __('app.media.library-placeholder') }}</x-slot>
 						@endif
-						@php $input = false; @endphp
 						@foreach($media->diff($book->media) as $medium)
-							@include('books.form-image')
+							<x-media-item :src="asset('storage/'.$medium->preset('thumb'))" :src2x="asset('storage/'.$medium->preset('thumb2x'))" :medium-id="$medium->id" />
 						@endforeach
-					</div>
+					</x-media-dropzone>
+
 				</div>
 			@endif
 
 			{{-- Upload Media --}}
-			<div class="col-span-4">
-				<label class="label-shared lg:text-lg">{{ __('Upload and link new media') }} :</label>
-				<div class="input-mimic">
-					<input type="file" name="files[]" accept=".jpg,.jpeg,.png,.gif" multiple>
-				</div>
-			</div>
+			<x-upload :label="__('Upload and link new media')" label-class="mt-3">
+				{{ __('app.upload.limits', [
+					'max_files' => ini_get('max_file_uploads'),
+					'max_file_size' => ini_get('upload_max_filesize'),
+					'max_post_size' => ini_get('post_max_size'),
+				]) }}
+			</x-upload>
 
-			<div class="col-span-4 mt-2 lg:text-right">
-				<input class="button-shared" type="submit" value="{{ ___('save') }}">
-			</div>
+			<x-buttons bottom align="right">
+				<input class="button big" type="submit" value="{{ ___('save') }}">
+			</x-buttons>
 	
 		</form>
-	</div>
+
+	</x-section>
 	
 </x-app-layout>

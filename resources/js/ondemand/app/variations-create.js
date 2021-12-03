@@ -13,6 +13,14 @@ let stockHiddenInput = document.getElementById('stock-hidden');
 let togglePreOrder = test => {
 	stockInput.disabled = test;
 	stockHiddenInput.disabled = !test;
+	if(test)
+	{
+		stockInput.parentElement.previousElementSibling.classList.add('disabled');
+	}
+	else
+	{
+		stockInput.parentElement.previousElementSibling.classList.remove('disabled');
+	}
 }
 
 console.log(preOrderInitValue);
