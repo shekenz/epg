@@ -46,11 +46,7 @@
 						<x-slot name="placeholder">{{ __('app.media.link-placeholder') }}</x-slot>
 					</x-media-dropzone>
 
-					<div class="flex flex-col justify-center items-center">
-						<x-icon-left-arrow class="w-12 h-12 text-gray-600"/>
-						<div class="h-6"></div>
-						<x-icon-right-arrow class="w-12 h-12 text-gray-600"/>
-					</div>
+					<x-arrows-helper />
 
 					<x-media-dropzone id="media-library" label="{{ ___('media library') }}">
 						<x-slot name="placeholder">{{ __('app.media.library-placeholder') }}</x-slot>
