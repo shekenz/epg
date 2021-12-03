@@ -8,7 +8,7 @@
 		<a class="button-shared" href="{{ route('clients.export') }}">{{ ___('CSV export') }}</a>
 	</x-slot>
 
-	<x-section class="full" :title="___('client list')">
+	<x-section :title="___('client list')">
 		<x-buttons>
 			<x-button :href="route('clients.export')" :label="___('CSV export')" class="big" />
 		</x-buttons>

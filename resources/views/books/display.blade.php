@@ -5,7 +5,7 @@
 
 	
 
-	<x-section :title="___('book').' : '.$bookInfo->title" :return="route('books')" class="full">
+	<x-section :title="___('book').' : '.$bookInfo->title" :return="route('books')">
 
 		<x-buttons>
 			<x-button :href="route('books.edit', $bookInfo->id )" :label="___('edit')" class="big" />
