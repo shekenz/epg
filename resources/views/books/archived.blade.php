@@ -12,7 +12,7 @@
 	</x-slot>
 
 	<x-section class="full" :return="route('books')" :title="___('archived books')">
-		<x-buttons>
+		<x-buttons align="right">
 			<x-post warning :href="route('books.archives.delete.all')" :confirm="__('app.confirmations.delete-all-books')" :label="___('delete all')" class="big"/>
 		</x-buttons>
 		<table class="big">
