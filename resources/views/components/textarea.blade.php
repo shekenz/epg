@@ -1,9 +1,9 @@
-@props(['wrapper-class', 'name', 'label' => 'no-label'])
+@props(['wrapper-class', 'name', 'label' => 'no-label', 'disabled' => false])
 
 <div class="{{ $wrapperClass }}">
-	<label for="name" class="block p-1">{{ $label }} : </label>
+	<label for="name" class="block p-1 @if($disabled) disabled @endif">{{ $label }} : </label>
 	<div class="{{ (empty($error) || $attributes->has('disabled')) ?: 'border bg-red-400 border-red-400' }}">
-		<textarea id="{{ $name }}" name="{{ $name }}" {{ $attributes }} class="
+		<textarea id="{{ $name }}" name="{{ $name }}" {{ $attributes }} @if($disabled) disabled @endif class="
 			dark:bg-gray-600
 			w-full
 			h-72

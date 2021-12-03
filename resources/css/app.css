@@ -649,7 +649,8 @@
 	}
 	*/
 
-	input:disabled {
+	input:disabled,
+	textarea:disabled {
 		@apply
 			border
 			bg-gray-100
@@ -657,7 +658,7 @@
 			dark:bg-gray-600
 			dark:bg-opacity-40
 			dark:border-transparent
-			dark:text-gray-400
+			dark:text-gray-500
 			text-gray-400;	
 	}
 
