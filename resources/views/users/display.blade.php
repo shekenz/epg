@@ -3,8 +3,7 @@
 		{{ ___('user') }}
 	</x-slot>
 
-	<section class="titled">
-		<h2>{{ ___('user') }}</h2>
+	<x-section :title="___('user\'s profile')">
 		<div class="flex flex-col gap-8 sm:flex-row items-center p-8">
 			<div class="flex-none m-auto sm:m-0">
 				<img class="rounded-full shadow-md border border-gray-400 w-32 sm:w-48 my-2" src="{{ asset('img/default-thumbnail.jpg') }}" alt="Test thumbnail">
@@ -22,7 +21,7 @@
 				@endif
 			</div>
 		</div>
-	</section>
+	</x-section>
 	
 
 </x-app-layout>
