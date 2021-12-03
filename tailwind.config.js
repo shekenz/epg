@@ -78,6 +78,8 @@ module.exports = {
 					'dark': '0px 1px 5px -1px rgba(0,0,0,0.4)',
 					'tight': '0px 1px 3px -1px rgba(0,0,0,0.7)',
 					'tight-window': '0px 4px 10px -10px rgba(0,0,0,0.7)',
+					'blue': '0px 0px 5px 1px rgba(37, 99, 235)',
+					'green': '0px 0px 5px 1px rgba(5, 150, 105)',
 				},
 				backgroundImage:
 				{

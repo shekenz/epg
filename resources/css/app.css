@@ -662,6 +662,68 @@
 			text-gray-400;	
 	}
 
+	input[type=checkbox] {
+		@apply hidden;
+	}
+
+	input[type=checkbox] + label:before {
+		content: '';
+		@apply
+			h-5
+			w-5
+			mr-2
+			mb-1
+			align-middle
+			inline-block 
+			cursor-pointer
+
+			border
+			border-gray-300
+			shadow-sm
+
+			dark:border-4 
+			dark:border-gray-600
+			dark:shadow-none;
+	}
+
+	input[type=checkbox]:checked.blue + label:before {
+		@apply 
+			ring-inset
+			ring-white
+			ring-2
+			bg-blue-400
+			border-blue-500
+
+			dark:ring-0
+			dark:shadow-blue
+			dark:bg-blue-600
+			dark:border-blue-400;
+	}
+
+	input[type=checkbox]:checked.green + label:before {
+		@apply
+			ring-inset
+			ring-white
+			ring-2
+			bg-green-400
+			border-green-500
+
+			dark:ring-0
+			dark:shadow-green
+			dark:bg-green-600
+			dark:border-green-400;
+	}
+
+	input[type=checkbox]:disabled + label:before {
+		@apply 
+			bg-gray-100
+			border-gray-100
+
+			dark:bg-gray-600
+			dark:border-gray-600
+			dark:opacity-40;
+	}
+
 	/*
 	input[type=checkbox] {
 		@apply

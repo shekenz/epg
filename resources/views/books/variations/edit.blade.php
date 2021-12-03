@@ -40,23 +40,22 @@
 					<input name="weight" type="hidden" value="{{ $book->weight }}">
 				@endif
 
-			<div>
-				<x-input name="stock" type="number" :label="___('stock')" value="{{ old('stock') ?? $book->stock }}" />
-				<input id="stock-hidden" name="stock" type="hidden" disabled="true" value="{{ old('stock') ?? $book->stock }}">
-				<div class="mt-1">
-					<input class="" id="pre-order" name="pre_order" type="checkbox" value="1" @if(old('pre_order') ?? $book->pre_order) {{ 'checked' }} @endif><label for="pre-order"> {{ ___('pre-order') }}<label>
+				<div>
+					<x-input name="stock" type="number" :label="___('stock')" value="{{ old('stock') ?? $book->stock }}" />
+					<input id="stock-hidden" name="stock" type="hidden" disabled="true" value="{{ old('stock') ?? $book->stock }}">
+					<x-checkbox name="pre-order" :checked="(old('pre_order') ?? $book->pre_order)" :label="___('pre-order')"/>
 				</div>
-			</div>
 
-			<div>
-				<x-input name="price" type="number" :label="___('price')" value="{{ old('price') ?? $book->price }}" min="0" step="0.01" :disabled="($book->orders->isNotEmpty())">
-					@error('price'){{$message}}@enderror
-				</x-input>
+				<div>
+					<x-input name="price" type="number" :label="___('price')" value="{{ old('price') ?? $book->price }}" min="0" step="0.01" :disabled="($book->orders->isNotEmpty())">
+						@error('price'){{$message}}@enderror
+					</x-input>
 
-				@if($book->orders->isNotEmpty())
-					<input name="price" type="hidden" value="{{ $book->price }}">
-				@endif
-			</div>
+					@if($book->orders->isNotEmpty())
+						<input name="price" type="hidden" value="{{ $book->price }}">
+					@endif
+				</div>
+
 			</div>
 			
 			{{-- Media Library --}}
