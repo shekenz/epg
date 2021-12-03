@@ -1,7 +1,6 @@
-@props(['disabled', 'label', 'name' => 'files'])
+@props(['disabled', 'name' => 'files'])
 
-{{-- Check input.label.php for more info --}}
-<x-label>@if($attributes->has('disabled')) <x-slot name="disabled"></x-slot> @endif {{ $label }} : </x-label>
+{{ $label }}
 
 <label for="upload" class="
 	border 
