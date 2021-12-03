@@ -269,7 +269,7 @@
 	a.side-bar-item svg.icon {
 		@apply
 			text-gray-500
-			dark:text-primary-super-light
+			dark:text-primary-ultra-light
 			dark:opacity-70
 			transition-colors
 			duration-200;
