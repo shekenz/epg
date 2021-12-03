@@ -12,7 +12,7 @@
 
 
 	{{-- //TODO return to book with $bookInfo->id --}}
-	<x-section :title="$escapedTitle" :return="route('books')" class="full">
+	<x-section :title="$escapedTitle" :return="url()->previous()" class="full">
 
 		@if ($errors->any())
 			<x-warning>{{ __('app.errors.form') }}</x-warning>

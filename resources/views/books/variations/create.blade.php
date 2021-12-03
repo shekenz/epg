@@ -10,7 +10,7 @@
 		<script src="{{ asset('js/variations-create.js') }}" type="text/javascript" defer></script>
 	</x-slot>
 
-	<x-section :title="$escapedTitle" :return="route('books.edit', $bookInfo->id)" class="full">
+	<x-section :title="$escapedTitle" :return="url()->previous()" class="full">
 
 		@if ($errors->any())
 			<x-warning>{{ __('app.errors.form') }}</x-warning>
