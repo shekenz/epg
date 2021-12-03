@@ -200,6 +200,12 @@
 			duration-200;
 	}
 
+	#img-popup-wrapper a {
+		@apply
+			text-gray-500
+			hover:text-gray-100;
+	}
+
 	/*  ------------------------- Top menu items */
 	a.nav-item, form.nav-item {
 		@apply 
