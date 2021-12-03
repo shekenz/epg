@@ -354,7 +354,7 @@
 			hover:cursor-not-allowed;
 	}
 
-	.button.danger {
+	.button.warning {
 		@apply
 			bg-red-400
 			hover:bg-red-500;

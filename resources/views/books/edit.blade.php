@@ -111,7 +111,7 @@
 						</td>
 						<td class="text-right whitespace-nowrap">
 							<x-button icon=edit :href="route('variations.edit', $book->id)" :title="__('edit')"/>
-							<x-post icon=trash :href="route('variations.delete', $book->id)" :title="__('edit')" :confirm="__('app.confirmations.delete-variation', ['variation' => $book->label])" method="delete"/>
+							<x-post warning icon=trash :href="route('variations.delete', $book->id)" :title="__('edit')" :confirm="__('app.confirmations.delete-variation', ['variation' => $book->label])" method="delete"/>
 						</td>
 					</tr>
 				@else

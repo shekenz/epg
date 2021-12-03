@@ -13,7 +13,7 @@
 
 	<x-section class="full" :return="route('books')" :title="___('archived books')">
 		<x-buttons>
-			<x-post :href="route('books.archives.delete.all')" :confirm="__('app.confirmations.delete-all-books')" :label="___('delete all')" class="big"/>
+			<x-post warning :href="route('books.archives.delete.all')" :confirm="__('app.confirmations.delete-all-books')" :label="___('delete all')" class="big"/>
 		</x-buttons>
 		<table class="big">
 		<thead>
@@ -31,7 +31,7 @@
 				<td class="hidden md:table-cell">{{ $bookInfo->deleted_at->diffForHumans() }}</td>
 				<td class="hidden md:table-cell"><a href="{{ route('users.display', $bookInfo->user->id)}}" class="default">{{ $bookInfo->user->username }}</a></td>
 				<td class="text-right">
-					<x-post :href="route('books.delete', $bookInfo->id)" :confirm="__('app.confirmations.delete-book', ['book' => $bookInfo->title])" icon="trash" :title="___('delete')" />
+					<x-post warning :href="route('books.delete', $bookInfo->id)" :confirm="__('app.confirmations.delete-book', ['book' => $bookInfo->title])" icon="trash" :title="___('delete')" />
 					<x-button :href="route('books.archives.restore', $bookInfo->id)" :title="___('restore')" icon="arrow-up-circle"/>
 				</td>
 			</tr>

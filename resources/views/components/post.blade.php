@@ -1,4 +1,4 @@
-@props(['href', 'confirm', 'label', 'icon', 'title', 'method'])
+@props(['href', 'confirm', 'label', 'icon', 'title', 'method', 'warning'])
 
 <form
 	action="{{ $href }}"
@@ -13,8 +13,8 @@
 	@endif
 
 	@isset($icon)
-		<button class="button icon" title="{{ $title }}"><x-dynamic-component :component="'tabler-'.$icon" /></button>
+		<button {{ $attributes->class(['warning' => isset($warning)])->merge(['class' => 'button icon']) }} title="{{ $title }}"><x-dynamic-component :component="'tabler-'.$icon" /></button>
 	@else
-		<button {{ $attributes->merge(['class' => 'button']) }}>{{ $label }}</button>
+		<button {{ $attributes->class(['warning' => isset($warning)])->merge(['class' => 'button']) }}>{{ $label }}</button>
 	@endif
 </form>
