@@ -1,7 +1,19 @@
-@props(['title' => 'no-title', 'wrapper-class'])
+@props(['label' => 'no-label', 'wrapper-class'])
 
 <div class="mb-2 flex flex-col flex-50-50 @isset($wrapperClass){{$wrapperClass}}@endif">
-	<x-label>{{ $title }} :</x-label>
+
+	<label class="
+		p-1
+		block
+		@if($attributes->has('disabled'))
+		text-gray-400
+		dark:text-gray-500
+		@endif
+		@if($attributes->has('label-class'))
+		{{ $labelClass }}
+		@endif
+	">{{ $label }} : </label>
+
 	<div {{ $attributes->class(['
 		border
 		border-gray-300

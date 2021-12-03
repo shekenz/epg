@@ -1,6 +1,16 @@
-@props(['disabled', 'name' => 'files'])
+@props(['label' => 'no-label', 'name' => 'files'])
 
-{{ $label }}
+<label class="
+		p-1
+		block
+		@if($attributes->has('disabled'))
+		text-gray-400
+		dark:text-gray-500
+		@endif
+		@if($attributes->has('label-class'))
+		{{ $labelClass }}
+		@endif
+	">{{ $label }} : </label>
 
 <label for="upload" class="
 	border 

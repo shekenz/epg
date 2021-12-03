@@ -42,7 +42,7 @@
 
 				<div class="flex gap-x-4">
 
-					<x-media-dropzone id="media-link" title="{{ ___('linked media') }}">
+					<x-media-dropzone id="media-link" label="{{ ___('linked media') }}">
 						<x-slot name="placeholder">{{ __('app.media.link-placeholder') }}</x-slot>
 					</x-media-dropzone>
 
@@ -52,7 +52,7 @@
 						<x-icon-right-arrow class="w-12 h-12 text-gray-600"/>
 					</div>
 
-					<x-media-dropzone id="media-library" title="{{ ___('media library') }}">
+					<x-media-dropzone id="media-library" label="{{ ___('media library') }}">
 						<x-slot name="placeholder">{{ __('app.media.library-placeholder') }}</x-slot>
 						@foreach($media as $medium)
 							<x-media-item :src="asset('storage/'.$medium->preset('thumb'))" :src2x="asset('storage/'.$medium->preset('thumb2x'))" :medium-id="$medium->id" />
@@ -62,10 +62,7 @@
 				</div>
 			@endif
 
-			<x-upload>
-				<x-slot name="label">
-					<x-label class="mt-3">{{ __('Upload and link new media') }}</x-label>
-				</x-slot>
+			<x-upload :label="__('Upload and link new media')" label-class="mt-3">
 				{{ __('app.upload.limits', [
 					'max_files' => ini_get('max_file_uploads'),
 					'max_file_size' => ini_get('upload_max_filesize'),
