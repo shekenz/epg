@@ -7,8 +7,6 @@
 	@endif
 ">
 
-@php dump($disabled) @endphp
-
 	<label for="{{ $name }}" class="
 		p-1
 		block
