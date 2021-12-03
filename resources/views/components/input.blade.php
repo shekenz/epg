@@ -19,7 +19,7 @@
 		@endif
 	">{{ $label }} : </label>
 
-	<div class="{{ ($slot->isEmpty() || $disbabled) ?: 'border bg-red-400 border-red-400' }}">
+	<div class="{{ ($slot->isEmpty() || $disabled) ?: 'border bg-red-400 border-red-400' }}">
 	<input
 		class="
 			px-4
