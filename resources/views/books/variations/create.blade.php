@@ -40,23 +40,38 @@
 			@if( $media->isNotEmpty() )
 				<x-separator>{{ ___('media') }}</x-separator>
 
-				<x-media-dropzone id="media-link" title="{{ ___('linked media') }}">
-					<x-slot name="placeholder">{{ __('app.media.link-placeholder') }}</x-slot>
-				</x-media-dropzone>
+				<div class="flex gap-x-4">
 
-				<x-media-dropzone id="media-library" title="{{ ___('media library') }}">
-					<x-slot name="placeholder">{{ __('app.media.library-placeholder') }}</x-slot>
-					@foreach($media as $medium)
-						<x-media-item :src="asset('storage/'.$medium->preset('thumb'))" :src2x="asset('storage/'.$medium->preset('thumb2x'))" :medium-id="$medium->id" />
-					@endforeach
-				</x-media-dropzone>
+					<x-media-dropzone id="media-link" title="{{ ___('linked media') }}">
+						<x-slot name="placeholder">{{ __('app.media.link-placeholder') }}</x-slot>
+					</x-media-dropzone>
+
+					<div class="flex flex-col justify-center items-center">
+						<x-icon-left-arrow class="w-12 h-12 text-gray-600"/>
+						<div class="h-6"></div>
+						<x-icon-right-arrow class="w-12 h-12 text-gray-600"/>
+					</div>
+
+					<x-media-dropzone id="media-library" title="{{ ___('media library') }}">
+						<x-slot name="placeholder">{{ __('app.media.library-placeholder') }}</x-slot>
+						@foreach($media as $medium)
+							<x-media-item :src="asset('storage/'.$medium->preset('thumb'))" :src2x="asset('storage/'.$medium->preset('thumb2x'))" :medium-id="$medium->id" />
+						@endforeach
+					</x-media-dropzone>
+
+				</div>
 			@endif
 
-			<x-upload :label="__('Upload and link new media')">{{ __('app.upload.limits', [
-				'max_files' => ini_get('max_file_uploads'),
-				'max_file_size' => ini_get('upload_max_filesize'),
-				'max_post_size' => ini_get('post_max_size'),
-			]) }}</x-upload>
+			<x-upload>
+				<x-slot name="label">
+					<x-label class="mt-3">{{ __('Upload and link new media') }}</x-label>
+				</x-slot>
+				{{ __('app.upload.limits', [
+					'max_files' => ini_get('max_file_uploads'),
+					'max_file_size' => ini_get('upload_max_filesize'),
+					'max_post_size' => ini_get('post_max_size'),
+				]) }}
+			</x-upload>
 
 			<x-buttons bottom align="right">
 				<input class="button big cursor-pointer" type="submit" value="{{ ___('add') }}">

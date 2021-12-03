@@ -1,8 +1,8 @@
-@props(['title' => 'no-title'])
+@props(['title' => 'no-title', 'wrapper-class'])
 
-<div class="mb-2">
+<div class="mb-2 flex flex-col flex-50-50 @isset($wrapperClass){{$wrapperClass}}@endif">
 	<x-label>{{ $title }} :</x-label>
-	<div {{ $attributes }} {{ $attributes->class(['
+	<div {{ $attributes->class(['
 		border
 		border-gray-300
 		shadow-tight-window
@@ -13,6 +13,7 @@
 		gap-4
 		p-4
 		flex-wrap
+		flex-grow
 	'])->merge(['class' => 'dropzone']) }}
 	style="min-height : calc(102px + 2rem);"
 	>
