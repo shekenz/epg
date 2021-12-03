@@ -6,7 +6,7 @@
 		<textarea id="{{ $name }}" name="{{ $name }}" {{ $attributes }} class="
 			dark:bg-gray-600
 			w-full
-			h-64
+			h-72
 			@isset($error)
 			border-none
 			focus:border-none
