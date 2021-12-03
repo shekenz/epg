@@ -1,11 +1,11 @@
-@props(['label' => 'no-label', 'wrapper-class'])
+@props(['label' => 'no-label', 'wrapper-class', 'disabled' => false])
 
 <div class="mb-2 flex flex-col flex-50-50 @isset($wrapperClass){{$wrapperClass}}@endif">
 
 	<label class="
 		p-1
 		block
-		@if($attributes->has('disabled'))
+		@if($disabled)
 		text-gray-400
 		dark:text-gray-500
 		@endif

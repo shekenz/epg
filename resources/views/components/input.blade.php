@@ -1,4 +1,4 @@
-@props(['label' => 'no-label', 'name', 'inline', 'wrapper-class'])
+@props(['label' => 'no-label', 'name', 'inline', 'wrapper-class', 'disabled' => false])
 
 <div class="
 	mb-2
@@ -7,10 +7,12 @@
 	@endif
 ">
 
+@php dump($disabled) @endphp
+
 	<label for="{{ $name }}" class="
 		p-1
 		block
-		@if($attributes->has('disabled'))
+		@if($disabled)
 		text-gray-400
 		dark:text-gray-500
 		@endif
@@ -19,7 +21,7 @@
 		@endif
 	">{{ $label }} : </label>
 
-	<div class="{{ ($slot->isEmpty() || $attributes->has('disabled')) ?: 'border bg-red-400 border-red-400' }}">
+	<div class="{{ ($slot->isEmpty() || $disbabled) ?: 'border bg-red-400 border-red-400' }}">
 	<input
 		class="
 			px-4
@@ -39,7 +41,7 @@
 			@endif
 			shadow-tight-window
 			dark:shadow-none
-			@if($attributes->has('disabled'))
+			@if($disabled)
 			text-gray-400
 			dark:text-gray-500
 			bg-gray-100
@@ -55,7 +57,7 @@
 		name="{{ $name }}"
 		{{ $attributes }}
 	/>
-	@if($slot->isNotEmpty() && !$attributes->has('disabled'))
+	@if($slot->isNotEmpty() && !$disabled)
 		<span class="text-white px-1 italic text-sm">{{ $slot }}</span>
 	@endif
 	</div>

@@ -1,9 +1,9 @@
-@props(['label' => 'no-label', 'name' => 'files'])
+@props(['label' => 'no-label', 'name' => 'files', 'disabled' => false])
 
 <label class="
 		p-1
 		block
-		@if($attributes->has('disabled'))
+		@if($disabled)
 		text-gray-400
 		dark:text-gray-500
 		@endif
