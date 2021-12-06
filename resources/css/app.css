@@ -20,7 +20,7 @@
 			m-0
 			text-primary-dark
 			dark:text-gray-300
-			bg-background
+			bg-background-warm
 			dark:bg-gray-800
 			font-dashboard;
 	}

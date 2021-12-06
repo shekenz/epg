@@ -14,6 +14,7 @@ const blueGray = {
 	},
 	background: {
 		DEFAULT: 'rgb(221, 221, 227)',
+		warm: 'rgb(227, 221, 221)',
 	},
 }
 
