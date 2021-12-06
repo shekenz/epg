@@ -1,4 +1,4 @@
-@props(['label' => 'no-label', 'name', 'inline', 'wrapper-class', 'disabled' => false])
+@props(['label' => 'no-label', 'name', 'type' => 'text', 'inline', 'wrapper-class', 'disabled' => false])
 
 <div class="
 	mb-2
@@ -45,6 +45,7 @@
 		"
 		id="{{ $name }}"
 		name="{{ $name }}"
+		type="{{ $type }}"
 		{{ $attributes }}
 		@if($disabled) disabled @endif
 	/>
