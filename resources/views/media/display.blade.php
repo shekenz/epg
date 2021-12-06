@@ -14,6 +14,8 @@
 		</form>
 	</x-slot>
 
+	<x-section :title="$medium->name.'.'.$medium->extension" class="full" :return="route('media')">
+
 	@if ($errors->any())
         <div class="mb-4" :errors="$errors">
             <div class="font-medium text-red-600">
@@ -27,13 +29,18 @@
             </ul>
         </div>
         @endif
-	<form action="{{ route('media.update', $medium->id) }}" method="POST" class="flex flex-row gap-x-4 mb-4 items-center">
-		@csrf
-		@method('patch')
-		<label for="name" class="label-shared whitespace-nowrap">{{ ___('new name') }} : </label>
-		<input class="input-shared" id="name" name="name" type="text" value="{{ old('name') ?? $medium->name }}" maxlength="64">
-		<input class="button-shared" type="submit" value="{{ ___('rename') }}">
-	</form>
+
+	<x-buttons class="items-center">
+		<x-button :label="___('previous')" href="#" class="big" />
+		<form action="{{ route('media.update', $medium->id) }}" method="POST" class="flex items-center gap-x-4">
+			@csrf
+			@method('patch')
+			<x-input inline name="name" value="{{ old('name') ?? $medium->name }}" maxlength="64" />
+			<input class="button big cursor-pointer" type="submit" value="{{ ___('rename') }}">
+		</form>
+		<x-post :label="___('delete')" :href="route('media.delete', $medium->id)" method="delete" :confirm="__('app.confirmations.delete-media', ['media' => $medium->name.'.'.$medium->extension])" class="big" warning/>
+		<x-button :label="___('next')" href="#" class="big" />
+	</x-buttons>
 
 	@if(Storage::disk('public')->exists('uploads/'.$medium->filename))
 		<img id="frame" class="m-auto" src="{{ asset('storage/uploads/'.$medium->filename) }}" data-hash="{{ $medium->filehash }}" data-ext="{{ $medium->extension }}">
@@ -44,42 +51,24 @@
 			@if(Storage::disk('public')->exists('uploads/'.$medium->filehash.'_'.$key.'.'.$medium->extension))
 				<?php $imagesize = getimagesize('storage/uploads/'.$medium->filehash.'_'.$key.'.'.$medium->extension); ?>
 				@if($imagesize[0] < intval($item['width']) || $imagesize[1] < intval($item['height']))
-				<a href="#" class="inline-block bg-yellow-200 rounded m-1 px-2 py-0.5 font-bold opti-button" data-opti="{{ $key }}">
-					<x-tabler-alert-triangle class="text-yellow-500 inline-block" />
-					{{ ucfirst($item['caption']) }}
-					({{ round(Storage::disk('public')->size('uploads/'.$medium->filehash.'_'.$key.'.'.$medium->extension)/1024) }} KB)
-				</a>
+					<x-media-info-item type="warning" :optimisation="$key" :label="$item['caption']" :medium="$medium" />
 				@else
-				<a href="#" class="inline-block bg-green-200 rounded m-1 px-2 py-0.5 font-bold opti-button" data-opti="{{ $key }}">
-					<x-tabler-circle-check class="text-green-500 inline-block" />
-					{{ ucfirst($item['caption']) }}
-					({{ round(Storage::disk('public')->size('uploads/'.$medium->filehash.'_'.$key.'.'.$medium->extension)/1024) }} KB)
-				</a>
+					<x-media-info-item type="success" :optimisation="$key" :label="$item['caption']" :medium="$medium" />
 				@endif
 			@else
-			<span class="inline-block bg-red-200 rounded m-1 px-2 py-0.5 font-bold">
-				<x-tabler-circle-x class="text-red-500 inline-block" />
-				{{ ucfirst($item['caption']) }}
-			</span>
+				<x-media-info-item type="error" :optimisation="$key" :label="$item['caption']" :medium="$medium" />
 			@endif
 		@endforeach
 		@if(Storage::disk('public')->exists('uploads/'.$medium->filename))
-			<a id="original" href="#" class="inline-block bg-gray-300 rounded m-1 px-2 py-0.5 font-bold" data-opti="{{ $key }}">
-				<x-tabler-photo class="text-gray-600 inline-block" />
-				Original
-				({{ round(Storage::disk('public')->size('uploads/'.$medium->filehash.'.'.$medium->extension)/1024) }} KB)
-			</a>
+			<x-media-info-item :optimisation="$key" :label="___('original')" :medium="$medium" original />
 		@else
-		<span class="inline-block bg-red-200 rounded m-1 px-2 py-0.5 font-bold" data-opti="{{ $key }}">
-			<x-tabler-circle-x class="text-red-500 inline-block" />
-			Original
-		</span>
+			<x-media-info-item type="error" :optimisation="$key" :label="___('original')" :medium="$medium" original />
 		@endif
 	</div>
 
 	@env('local')
 	<div>
-		<h4>{{ ___('file info') }}</h4>
+		<x-separator>{{ ___('file info') }}</x-separator>
 		ID : {{ $medium->id }}<br>
 		Hash : {{ $medium->filehash }}<br>
 		Format : <span class="bg-gray-400 rounded px-2 py-0.5 font-bold uppercase text-white text-sm">{{ $medium->extension }}</span><br>
@@ -87,31 +76,35 @@
 	@endenv
 
 	<div>
-		@if( $medium->books->isEmpty() )
-			<h4>{{ __('No linked variation') }}.</h4>
-		@else
-			<h4>{{ ___('linked to') }} :</h4>
+		@if( $medium->books->isNotEmpty() )
+			<x-separator>{{ ___('linked to following variations') }} :</x-separator>
 			<table>
 				<thead>
-				</thead>
-				<tbody>
 					<tr>
 						<td>{{ ___('book') }}</td>
 						<td>{{ ___('author') }}</td>
 						<td>{{ ___('variation') }}</td>
 						<td>{{ ___('published by') }}</td>
 						<td>{{ ___('actions') }}</td>
+					</tr>
+				</thead>
+				<tbody>
 				@foreach ($medium->books as $book)
 					<tr>
 						<td><a class="default" href="{{ route('books.display', $book->bookInfo->id) }}">{{ $book->bookInfo->title }}</a></td>
 						<td>{{ $book->bookInfo->author }}</td>
 						<td><a class="default" href="{{ route('variations.edit', $book->id) }}">{{ $book->label }}</a></td>
 						<td><a class="default" href="{{ route('users.display', $book->bookInfo->user->id) }}">{{ $book->bookInfo->user->username }}</a></td>
-						<td class="text-right w-8"><a class="mini-button" title="Break link" href="{{ route('media.break', [$medium, $book]) }}"><x-tabler-unlink /></a></td>
+						<td class="text-right w-8">
+							<x-button icon="unlink" :href="route('media.break', [$medium, $book])" :title="___('break link')" />
+						</td>
 					</tr>
 				@endforeach
 				</tbody>
 			</table>
 		@endif
 	</div>
+
+	</x-section>
+
 </x-app-layout>

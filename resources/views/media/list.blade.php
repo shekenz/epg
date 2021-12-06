@@ -8,19 +8,17 @@
 			<x-button :href="route('media.create')" class="big" :label="___('upload')" />
 		</x-buttons>
 		<div class="
-			grid 
-			tems-center
-			grid-cols-2
-			md:grid-cols-6
-			lg:grid-cols:8
+			grid
+			grid-cols-3
+			md:grid-cols-4
+			lg:grid-cols-6
+			xl:grid-cols-8
+			gap-1
+			md:gap-2
+			lg:gap-4
 		">
 		@foreach($media as $medium)
-			<a class="rounded-lg hover:bg-gray-200" href="{{ route('media.display', $medium->id) }}">
-				<div class="text-center truncate p-3 md:p-3 lg:p-4">
-					<img class="m-auto" src="{{ asset('storage/'.$medium->preset('thumb')) }}" srcset="{{ asset('storage/'.$medium->preset('thumb')) }} 1x, {{ asset('storage/'.$medium->preset('thumb2x')) }} 2x">
-					<span class="text-sm">{{ $medium->name }}.{{ $medium->extension }}</span>
-				</div>
-			</a>
+			<x-media-lib-item :src="asset('storage/'.$medium->preset('thumb'))" :src2x="asset('storage/'.$medium->preset('thumb2x'))" :medium="$medium"/>
 		@endforeach
 		</div>
 	</x-section>
