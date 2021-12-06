@@ -17,9 +17,9 @@
 
 				<x-separator first>{{ ___('general informations') }}</x-separator>
 
-				@if( config('app.env') == 'local')
+				@env('local')
 				<span class="font-bold">{{ __('ID') }} : </span>{{ $bookInfo->id }}<br>
-				@endif
+				@endenv
 				<span class="font-bold">{{ ___('title') }} : </span>{{ $bookInfo->title }}<br>
 				<span class="font-bold">{{ ___('author') }} : </span>{{ $bookInfo->author }}<br>
 				<span class="font-bold">{{ ___('width') }} : </span>
@@ -92,9 +92,9 @@
 				<tbody>
 				@foreach ($bookInfo->books as $book)
 					<tr>
-						@if( config('app.env') == 'local')
+						@env('local')
 						<td>{{ $book->id }}</td>
-						@endif
+						@endenv
 						<td>{{ $book->label }}</td>
 						<td>{{ $book->weight }} g</td>
 						<td>{{ $book->stock }}</td>
