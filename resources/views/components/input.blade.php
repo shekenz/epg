@@ -1,7 +1,13 @@
 @props(['label', 'name', 'type' => 'text', 'inline', 'wrapper-class', 'disabled' => false])
 
 <div class="
+	@isset($inline)
+	flex
+	items-center
+	w-full
+	@else
 	mb-2
+	@endif
 	@isset($wrapperClass)
 	{{ $wrapperClass }}
 	@endif
@@ -10,6 +16,7 @@
 	@isset($label)
 		<label for="{{ $name }}" class="
 			p-1
+			mr-2
 			block
 			@if($disabled)
 			text-gray-400
@@ -21,7 +28,7 @@
 		">{{ $label }} : </label>
 	@endif
 
-	<div class="{{ ($slot->isEmpty() || $disabled) ?: 'border bg-red-400 border-red-400' }}">
+	<div class="@if($slot->isNotEmpty() && !$disabled) border bg-red-400 border-red-400 @endif @isset($inline) w-full @endif">
 	<input
 		class="
 			px-4
