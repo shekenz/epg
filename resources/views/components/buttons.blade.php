@@ -21,6 +21,6 @@
 	}
 @endphp
 
-<nav class="@isset($bottom) mt-8 @else mb-6 @endif flex gap-x-6 justify-{{ $align }}">
+<nav class="@isset($bottom) mt-8 @else mb-6 @endif flex gap-x-6 justify-{{ $align }} {{ $attributes->get('class') }}">
 	{{ $slot }}
 </nav>
