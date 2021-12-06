@@ -1,4 +1,4 @@
-@props(['label' => 'no-label', 'name', 'type' => 'text', 'inline', 'wrapper-class', 'disabled' => false])
+@props(['label', 'name', 'type' => 'text', 'inline', 'wrapper-class', 'disabled' => false])
 
 <div class="
 	mb-2
@@ -7,17 +7,19 @@
 	@endif
 ">
 
-	<label for="{{ $name }}" class="
-		p-1
-		block
-		@if($disabled)
-		text-gray-400
-		dark:text-gray-500
-		@endif
-		@if($attributes->has('label-class'))
-		{{ $labelClass }}
-		@endif
-	">{{ $label }} : </label>
+	@isset($label)
+		<label for="{{ $name }}" class="
+			p-1
+			block
+			@if($disabled)
+			text-gray-400
+			dark:text-gray-500
+			@endif
+			@if($attributes->has('label-class'))
+			{{ $labelClass }}
+			@endif
+		">{{ $label }} : </label>
+	@endif
 
 	<div class="{{ ($slot->isEmpty() || $disabled) ?: 'border bg-red-400 border-red-400' }}">
 	<input
