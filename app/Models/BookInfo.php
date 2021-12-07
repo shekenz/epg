@@ -28,7 +28,7 @@ class BookInfo extends Model
 	];
 
 	public function books() {
-		return $this->hasMany(Book::class)->has('media')->orderBy('position', 'ASC');
+		return $this->hasMany(Book::class)->orderBy('position', 'ASC');
 	}
 
 	public function user() {

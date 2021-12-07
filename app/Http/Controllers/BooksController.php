@@ -76,11 +76,18 @@ class BooksController extends Controller
    * @return \Illuminate\Http\Response
    */
   public function index() {
-		// We need to filter out the books without linked images because gilde.js hangs if it has no child elements.
-		// We also need a clean ordered index to link each glides to its corresponding counter.
-		$bookInfos = BookInfo::has('books')
+
+		$bookInfos = BookInfo::with('books.media')
 		->orderBy('position', 'ASC')
 		->get();
+
+		// We need to filter out the books without linked images because gilde.js hangs if it has no child elements.
+		// The has() method was a mess. Can't have the expected results with it
+		$bookInfos->each(function($bookInfo) {
+			$bookInfo->books = $bookInfo->books->filter(function($book) {
+				return $book->media->isNotEmpty();
+			});
+		});
 		
 		return view('books/index', compact('bookInfos'));
 	}
@@ -193,12 +200,12 @@ class BooksController extends Controller
 	 */
 	public function edit(BookInfo $bookInfo) {
 
-		$media = Medium::all();
+		// Eager loading all variations with trashed & media, and then partitioning it in 2 collection, trashed and regualr books
+		[$bookInfo->trashedBooks, $bookInfo->books] = $bookInfo->books()->withTrashed()->with('media')->get()->partition(function($book) {
+			return $book->trashed();
+		});
 
-		// Lazy eager loading all variations with trashed
-		$bookInfo->load(['books' => function($q) { $q->withTrashed()->get(); } ]);
-
-		return view('books/edit', compact('bookInfo', 'media'));
+		return view('books/edit', compact('bookInfo'));
 
 	}
 

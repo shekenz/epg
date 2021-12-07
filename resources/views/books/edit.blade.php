@@ -89,66 +89,64 @@
 					</tr>
 				</thead>
 				<tbody id="variation-table-body" data-book-info-id="{{ $bookInfo->id }}">
-				@php $trashedBooks = collect([]); @endphp
 				@foreach ($bookInfo->books as $key => $book)
-					@if(!$book->trashed())
-						<tr data-id="{{ $book->id }}">
-							<td><x-tabler-grip-vertical class="h-8 w-8 cursor-grab"/></td>
-							<td class="whitespace-nowrap">
-								{{ $book->label }}
-							</td>
-							<td class="whitespace-nowrap">
-								{{ $book->weight }} g
-							</td>
-							<td>
-								@isset($book->stock)
-									{{ $book->stock }}
-								@else
-									0
-								@endif
-							</td>
-							<td>
-								{{ ___b($book->pre_order) }}
-							</td>
-							<td class="whitespace-nowrap">
-								@isset($book->price)
-									{{ $book->price }} €
-								@else
-									{{ $book->price.' € ('.___('base price').')' }}
-								@endisset
-							</td>
-							<td>
-								<div class="flex flex-wrap gap-1">
-								@if($book->media->isNotEmpty())
-									@foreach ($book->media as $medium)
-										<img src="{{ asset('storage/'.$medium->preset('thumb')) }}" data-full-src="{{ asset('storage/'.$medium->preset('hd')) }}" data-index={{ $loop->index }} data-title="{{ $medium->name.'.'.$medium->extension }}" class="inline-block h-[50px] w-[50px] hover-thumb cursor-pointer">
-									@endforeach
-								@else
-									<div class="inline-flex h-[50px] items-center">{{ ___('no linked medium') }}</div>
-								@endif
+					<tr data-id="{{ $book->id }}">
+						<td><x-tabler-grip-vertical class="h-8 w-8 cursor-grab"/></td>
+						<td class="whitespace-nowrap">
+							{{ $book->label }}
+						</td>
+						<td class="whitespace-nowrap">
+							{{ $book->weight }} g
+						</td>
+						<td>
+							@isset($book->stock)
+								{{ $book->stock }}
+							@else
+								0
+							@endif
+						</td>
+						<td>
+							{{ ___b($book->pre_order) }}
+						</td>
+						<td class="whitespace-nowrap">
+							@isset($book->price)
+								{{ $book->price }} €
+							@else
+								{{ $book->price.' € ('.___('base price').')' }}
+							@endisset
+						</td>
+						<td>
+							<div class="flex flex-wrap gap-1">
+							@if($book->media->isNotEmpty())
+								@foreach ($book->media as $medium)
+									<img src="{{ asset('storage/'.$medium->preset('thumb')) }}" data-full-src="{{ asset('storage/'.$medium->preset('hd')) }}" data-index={{ $loop->index }} data-title="{{ $medium->name.'.'.$medium->extension }}" class="inline-block h-[50px] w-[50px] hover-thumb cursor-pointer">
+								@endforeach
+							@else
+								<div class="text-red-500">
+									<h4 class="font-bold p-0"><x-tabler-alert-triangle class="inline" /> {{ ___('no linked medium') }}</h4>
+									<span class="text-sm italic">{{ __('app.warnings.missing-media') }}</span>
 								</div>
-							</td>
-							<td class="text-right whitespace-nowrap">
-								<a class="mini-button" href="{{ route('variations.edit', $book->id) }}">
-										<x-tabler-edit class="inline-block" />
-								</a>
-								<form class="inline-block delete-variation" data-label="{{ $book->label }}" method="POST" action="{{ route('variations.delete', $book->id) }}">
-									@csrf
-									@method('delete')
-									<button class="mini-button">
-										<x-tabler-trash class="inline-block" />
-									</button>
-								</form>
-							</td>
-						</tr>
-					@else
-						@php $trashedBooks->push($book) @endphp
-					@endif
+							@endif
+							</div>
+						</td>
+						<td class="text-right whitespace-nowrap">
+							<a class="mini-button" href="{{ route('variations.edit', $book->id) }}">
+									<x-tabler-edit class="inline-block" />
+							</a>
+							<form class="inline-block delete-variation" data-label="{{ $book->label }}" method="POST" action="{{ route('variations.delete', $book->id) }}">
+								@csrf
+								@method('delete')
+								<button class="mini-button">
+									<x-tabler-trash class="inline-block" />
+								</button>
+							</form>
+						</td>
+					</tr>
 				@endforeach
 				</tbody>
 			</table>
 
-			@if($trashedBooks->isNotEmpty())
+			@if($bookInfo->trashedBooks->isNotEmpty())
 				<h2 class="col-span-4 text-lg font-bold border-b border-gray-500 my-4">{{ ___('app.variations.deleted-waiting-list') }}</h2>
 				<table>
 					<thead class="font-bold">
@@ -164,7 +162,7 @@
 						</tr>
 					</thead>
 					<tbody>
-					@foreach ($trashedBooks as $key => $book)
+					@foreach ($bookInfo->trashedBooks as $key => $book)
 						<tr data-id="{{ $book->id }}">
 							<td class="whitespace-nowrap">
 								{{ $book->label }}
@@ -196,7 +194,9 @@
 										<img src="{{ asset('storage/'.$medium->preset('thumb')) }}" data-full-src="{{ asset('storage/'.$medium->preset('hd')) }}" data-index={{ $loop->index }} data-title="{{ $medium->name.'.'.$medium->extension }}" class="inline-block h-[50px] w-[50px] hover-thumb cursor-pointer">
 									@endforeach
 								@else
-									<div class="inline-flex h-[50px] items-center">{{ ___('no linked medium') }}</div>
+								<div class="text-red-500">
+									<h4 class="font-bold p-0"><x-tabler-alert-triangle class="inline" /> {{ ___('no linked medium') }}</h4>
+								</div>
 								@endif
 								</div>
 							</td>
