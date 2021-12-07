@@ -28,4 +28,7 @@ return [
 	'errors' => [
 		'form' => 'Your form contains errors. Please check for missing fields before continuing.',
 	],
+	'warnings' => [
+		'missing-media' => 'Variation will not be displayed without media',
+	],
 ];

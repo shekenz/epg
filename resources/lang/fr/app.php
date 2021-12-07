@@ -28,4 +28,7 @@ return [
 	'errors' => [
 		'form' => 'Votre formulaire contient des erreurs. Veuillez vérifier les champs avant de pouvoir continuer.',
 	],
+	'warnings' => [
+		'missing-media' => 'La variation ne sera pas affiché si il n\'y a pas de média',
+	],
 ];
