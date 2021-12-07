@@ -70,9 +70,7 @@
 			</thead>
 
 			<tbody id="variation-table-body" data-book-info-id="{{ $bookInfo->id }}">
-			@php $trashedBooks = collect([]); @endphp
 			@foreach ($bookInfo->books as $key => $book)
-				@if(!$book->trashed())
 					<tr data-id="{{ $book->id }}">
 						<td><x-tabler-grip-vertical class="h-8 w-8 cursor-grab"/></td>
 						<td>
@@ -114,15 +112,12 @@
 							<x-post warning icon=trash :href="route('variations.delete', $book->id)" :title="__('edit')" :confirm="__('app.confirmations.delete-variation', ['variation' => $book->label])" method="delete"/>
 						</td>
 					</tr>
-				@else
-					@php $trashedBooks->push($book) @endphp
-				@endif
 			@endforeach
 			</tbody>
 
 		</table>
 
-		@if($trashedBooks->isNotEmpty())
+		@if($bookInfo->trashedBooks->isNotEmpty())
 
 			<x-separator>{{ ___('app.variations.deleted-waiting-list') }}</x-separator>
 
@@ -140,7 +135,7 @@
 					</tr>
 				</thead>
 				<tbody>
-				@foreach ($trashedBooks as $key => $book)
+				@foreach ($bookInfo->trashedBooks as $key => $book)
 					<tr data-id="{{ $book->id }}">
 						<td>
 							{{ $book->label }}
