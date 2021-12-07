@@ -154,7 +154,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function() {
 		Route::get('/refresh/{medium}', [MediaController::class, 'refresh'])->name('.optimize.refresh');
 		Route::get('/rebuild/{medium}', [MediaController::class, 'rebuild'])->name('.optimize.rebuild');
 		Route::get('/{medium}/break/{book}', [MediaController::class, 'breakLink'])->name('.break');
-		Route::post('/delete/{id}', [MediaController::class, 'delete'])->name('.delete');
+		Route::delete('/delete/{id}', [MediaController::class, 'delete'])->name('.delete');
 	});
 
 	// Settings
