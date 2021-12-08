@@ -23,7 +23,7 @@
                         <x-tabler-photo class="mr-1"/>{{ ___('media') }}
                     </x-nav-link>
                     <x-nav-link :href="route('orders')" :active="request()->routeIs('orders')">
-                        <x-tabler-receipt class="mr-1"/>{{ ___('orders') }}<span id="orderUnread" class="notification hidden"></span>
+                        <x-tabler-receipt class="mr-1"/>{{ ___('orders') }}<span id="orderUnread" class="notification @if(empty(cache('newOrders'))) hidden @endif">{{ cache('newOrders')}}</span>
                     </x-nav-link>
                     <x-nav-link :href="route('clients')" :active="request()->routeIs('clients')">
                         <x-tabler-mood-smile class="mr-1"/>{{ ___('clients') }}

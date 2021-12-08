@@ -51,7 +51,6 @@ Route::middleware('shop')->group(function() {
 });
 
 // Backend API
-Route::post('/orders/unread/count', [OrdersController::class, 'countUnread']);
 Route::get('/orders/get/{method}/{from}/{to}/{visibility}/{preorder}/{data?}', [OrdersMassController::class, 'get']);
 
 Route::post('/books/reorder', [BooksController::class, 'reorder']);

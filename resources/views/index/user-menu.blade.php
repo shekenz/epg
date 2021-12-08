@@ -5,7 +5,7 @@
 		<a href="{{ url('/dashboard') }}"><x-tabler-gauge class="pb-1 ml-2 mr-1 inline w-5 h-5" />{{ ___('dashboard') }}</a>
 		<a href="{{ url('/dashboard/books') }}"><x-tabler-book class="pb-1 ml-2 mr-1 inline w-5 h-5" />{{ ___('books') }}</a>
 		<a href="{{ url('/dashboard/media') }}"><x-tabler-photo class="pb-1 ml-2 mr-1 inline w-5 h-5" />{{ ___('media') }}</a>
-		<a href="{{ url('/dashboard/orders') }}"><x-tabler-receipt class="pb-1 ml-2 mr-1 inline w-5 h-5" />{{ ___('orders') }}<span id="orderUnread" class="notification hidden"></span></a>
+		<a href="{{ url('/dashboard/orders') }}"><x-tabler-receipt class="pb-1 ml-2 mr-1 inline w-5 h-5" />{{ ___('orders') }}<span id="orderUnread" class="notification @if(empty(cache('newOrders'))) hidden @endif">{{ cache('newOrders')}}</span></a>
 		<a href="{{ url('/dashboard/settings') }}"><x-tabler-settings class="pb-1 ml-2 mr-1 inline w-5 h-5" />{{ ___('settings') }}</a>
 	</div>
 	<div class="flex-grow hideable"></div>

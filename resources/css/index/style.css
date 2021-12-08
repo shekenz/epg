@@ -432,11 +432,18 @@
 			mr-2;
 	}
 
-	.notification::before {
-		content: ' (';
-	}
-	
-	.notification::after {
-		content: ')';
+	.notification {
+		@apply
+			bg-red-500
+			text-white
+			font-bold
+			rounded-full
+			min-w-[1.25rem]
+			h-5
+			w-5
+			px-1
+			ml-1
+			text-center
+			inline-block;
 	}
 }
