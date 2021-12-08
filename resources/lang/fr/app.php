@@ -3,7 +3,7 @@
 return [
 	'img-popup-help' => 'Naviguez avec les touches fléchées, touche X pour fermer',
 	'variations' => [
-		'deleted-waiting-list' => 'Variations supprimées en attente de confirmation',
+		'deleted-waiting-list' => 'Variations supprimées en attente de vérification',
 		'warning' => 'Cette variation est liée à une ou plusieurs commandes actives. Veuillez d\'abord archiver ces commandes avant de pouvoir éditer les données vérouillées.',
 	],
 	'confirmations' => [
@@ -27,6 +27,7 @@ return [
 	],
 	'errors' => [
 		'form' => 'Votre formulaire contient des erreurs. Veuillez vérifier les champs avant de pouvoir continuer.',
+		'no-variation' => 'Ce livre n\'a aucune variation. Vous devez créer au moins 1 variation pour que le livre soit valide.',
 	],
 	'warnings' => [
 		'missing-media' => 'La variation ne sera pas affiché si il n\'y a pas de média',

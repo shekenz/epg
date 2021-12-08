@@ -7,13 +7,6 @@
 		<script src="{{ asset('js/media-optimized.js') }}" defer></script>
 	</x-slot>
 
-	<x-slot name="controls">
-		<form method="POST" action="{{ route('media.delete', $medium->id) }}" class="inline">
-			@csrf
-			<input type="submit" class="button-shared button-warning cursor-pointer" value="{{ ___('delete') }}" onclick="return confirm('{{__('Are you sure you want to permanently delete').' '.$medium->name.'.'.$medium->extension.' ? '.__('This action is not reversible').'.'}}');">
-		</form>
-	</x-slot>
-
 	<x-section :title="$medium->name.'.'.$medium->extension" class="full" :return="route('media')">
 
 	@if ($errors->any())
@@ -31,7 +24,7 @@
         @endif
 
 	<x-buttons class="items-center">
-		<x-button :label="___('previous')" href="#" class="big" />
+		<x-button disabled :label="___('previous')" href="#" class="big" />
 		<form action="{{ route('media.update', $medium->id) }}" method="POST" class="flex items-center gap-x-4">
 			@csrf
 			@method('patch')
@@ -39,7 +32,7 @@
 			<input class="button big cursor-pointer" type="submit" value="{{ ___('rename') }}">
 		</form>
 		<x-post :label="___('delete')" :href="route('media.delete', $medium->id)" method="delete" :confirm="__('app.confirmations.delete-media', ['media' => $medium->name.'.'.$medium->extension])" class="big" warning/>
-		<x-button :label="___('next')" href="#" class="big" />
+		<x-button disabled :label="___('next')" href="#" class="big" />
 	</x-buttons>
 
 	@if(Storage::disk('public')->exists('uploads/'.$medium->filename))

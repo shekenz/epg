@@ -54,68 +54,76 @@
 
 		<x-separator>{{ ___('variations') }}</x-separator>
 
-		<table>
+		@if($bookInfo->books->isNotEmpty())
+			<table>
 
-			<thead>
-				<tr>
-					<td></td>
-					<td>{{ ___('label') }}</td>
-					<td>{{ ___('weight') }}</td>
-					<td>{{ ___('stock') }}</td>
-					<td>{{ ___('pre order') }}</td>
-					<td>{{ ___('price') }}</td>
-					<td>{{ ___('media') }}</td>
-					<td class="text-right">{{ ___('actions') }}</td>
-				</tr>
-			</thead>
-
-			<tbody id="variation-table-body" data-book-info-id="{{ $bookInfo->id }}">
-			@foreach ($bookInfo->books as $key => $book)
-					<tr data-id="{{ $book->id }}">
-						<td><x-tabler-grip-vertical class="h-8 w-8 cursor-grab"/></td>
-						<td>
-							{{ $book->label }}
-						</td>
-						<td>
-							{{ $book->weight }} g
-						</td>
-						<td>
-							@isset($book->stock)
-								{{ $book->stock }}
-							@else
-								0
-							@endif
-						</td>
-						<td>
-							{{ ___b($book->pre_order) }}
-						</td>
-						<td>
-							@isset($book->price)
-								{{ $book->price }} €
-							@else
-								{{ $book->price.' € ('.___('base price').')' }}
-							@endisset
-						</td>
-						<td>
-							<div class="flex flex-wrap gap-1">
-							@if($book->media->isNotEmpty())
-								@foreach ($book->media as $medium)
-									<img src="{{ asset('storage/'.$medium->preset('thumb')) }}" data-full-src="{{ asset('storage/'.$medium->preset('hd')) }}" data-index={{ $loop->index }} data-title="{{ $medium->name.'.'.$medium->extension }}" class="hover-thumb inline-block h-[50px] w-[50px] cursor-pointer">
-								@endforeach
-							@else
-								<x-captions.missing-media>{{ ___('app.warnings.missing-media') }}</x-captions.missing-media>
-							@endif
-							</div>
-						</td>
-						<td class="text-right whitespace-nowrap">
-							<x-button icon=edit :href="route('variations.edit', $book->id)" :title="__('edit')"/>
-							<x-post warning icon=trash :href="route('variations.delete', $book->id)" :title="__('edit')" :confirm="__('app.confirmations.delete-variation', ['variation' => $book->label])" method="delete"/>
-						</td>
+				<thead>
+					<tr>
+						<td></td>
+						<td>{{ ___('label') }}</td>
+						<td>{{ ___('weight') }}</td>
+						<td>{{ ___('stock') }}</td>
+						<td>{{ ___('pre order') }}</td>
+						<td>{{ ___('price') }}</td>
+						<td>{{ ___('media') }}</td>
+						<td class="text-right">{{ ___('actions') }}</td>
 					</tr>
-			@endforeach
-			</tbody>
+				</thead>
 
-		</table>
+				<tbody id="variation-table-body" data-book-info-id="{{ $bookInfo->id }}">
+				@foreach ($bookInfo->books as $key => $book)
+						<tr data-id="{{ $book->id }}">
+							<td><x-tabler-grip-vertical class="h-8 w-8 cursor-grab"/></td>
+							<td>
+								{{ $book->label }}
+							</td>
+							<td>
+								{{ $book->weight }} g
+							</td>
+							<td>
+								@isset($book->stock)
+									{{ $book->stock }}
+								@else
+									0
+								@endif
+							</td>
+							<td>
+								{{ ___b($book->pre_order) }}
+							</td>
+							<td>
+								@isset($book->price)
+									{{ $book->price }} €
+								@else
+									{{ $book->price.' € ('.___('base price').')' }}
+								@endisset
+							</td>
+							<td>
+								<div class="flex flex-wrap gap-1">
+								@if($book->media->isNotEmpty())
+									@foreach ($book->media as $medium)
+										<img src="{{ asset('storage/'.$medium->preset('thumb')) }}" data-full-src="{{ asset('storage/'.$medium->preset('hd')) }}" data-index={{ $loop->index }} data-title="{{ $medium->name.'.'.$medium->extension }}" class="hover-thumb inline-block h-[50px] w-[50px] cursor-pointer">
+									@endforeach
+								@else
+									<x-captions.missing-media>{{ ___('app.warnings.missing-media') }}</x-captions.missing-media>
+								@endif
+								</div>
+							</td>
+							<td class="text-right whitespace-nowrap">
+								<x-button icon=edit :href="route('variations.edit', $book->id)" :title="__('edit')"/>
+								<x-post warning icon=trash :href="route('variations.delete', $book->id)" :title="__('edit')" :confirm="__('app.confirmations.delete-variation', ['variation' => $book->label])" method="delete"/>
+							</td>
+						</tr>
+				@endforeach
+				</tbody>
+
+			</table>
+		@else
+			<x-warning>{{ __('app.errors.no-variation') }}</x-warning>
+		@endif
+
+		<x-buttons bottom align="right">
+			<x-button :href="route('variations.create', $bookInfo->id)" :label="___('add variation')" class="big" />
+		</x-buttons>
 
 		@if($bookInfo->trashedBooks->isNotEmpty())
 
@@ -189,10 +197,6 @@
 				</tbody>
 			</table>
 		@endif
-
-		<x-buttons bottom align="right">
-			<x-button :href="route('variations.create', $bookInfo->id)" :label="___('add variation')" class="big" />
-		</x-buttons>
 
 	</x-section>
 

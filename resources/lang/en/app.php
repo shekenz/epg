@@ -3,7 +3,7 @@
 return [
 	'img-popup-help' => 'Arrow keys to navigate, X key to close',
 	'variations' => [
-		'deleted-waiting-list' => 'Deleted variations waiting for confirmation',
+		'deleted-waiting-list' => 'Deleted variations waiting for review',
 		'warning' => 'This variation is linked to one or more active orders. Please archive those orders before you can edit locked data.',
 	],
 	'confirmations' => [
@@ -27,6 +27,7 @@ return [
 	],
 	'errors' => [
 		'form' => 'Your form contains errors. Please check for missing fields before continuing.',
+		'no-variation' => 'This book has no variation. You must add at least 1 variation for the book to be valid.',
 	],
 	'warnings' => [
 		'missing-media' => 'Variation will not be displayed without media',
