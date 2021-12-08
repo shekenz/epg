@@ -18,6 +18,7 @@ use App\Mail\OrderConfirmation;
 use App\Mail\OrderShipped;
 use App\Mail\NewOrder;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 
 class OrdersController extends Controller
 {
@@ -84,16 +85,25 @@ class OrdersController extends Controller
 		$order = Order::with(['books', 'coupons', 'shippingMethods'])->where('id', $id)->firstOrFail();
 		$order->read = 1;
 		$order->save();
+
+		// Decrementing newOrders cache
+		if(Cache::has('newOrders')) {
+			Cache::decrement('newOrders');
+		} else {
+			$this->refreshNewOrders();
+		}
+
 		return view('orders.display', compact('order'));
 	}
 	
 	/**
-	 * countUnread
+	 * refreshNewOrders
 	 *
-	 * @return array
+	 * @return void
 	 */
-	public function countUnread() {
-		return ['count' => Order::where('read', 0)->count() ];
+	public function refreshNewOrders() {
+		$count = Order::where('read', 0)->count();
+		Cache::put('newOrders', $count);
 	}
 		
 	/**
@@ -442,6 +452,13 @@ class OrdersController extends Controller
 				} finally {
 					// Saving order in database
 					$order->save();
+
+					// Incrementing newOrders cache
+					if(Cache::has('newOrders')) {
+						Cache::increment('newOrders');
+					} else {
+						$this->refreshNewOrders();
+					}
 				}
 			} else {
 				Throw new Exception($paypalOrder['error']['name']);

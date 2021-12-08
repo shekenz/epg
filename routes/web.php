@@ -62,6 +62,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function() {
 		Route::get('/order/recycle/{orderID}', [OrdersController::class, 'recycle'])->name('.recycle');
 		Route::post('/order/shipped/{orderID}', [OrdersController::class, 'shipped'])->name('.shipped');
 		Route::get('/orders/hidden', [OrdersController::class, 'hidden'])->name('.hidden');
+		Route::get('/orders/refreshneworders', [OrdersController::class, 'refreshNewOrders'])->name('.refreshNewOrders');
 	});
 	
 	Route::prefix('orders')->group(function() {

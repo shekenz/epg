@@ -5,7 +5,6 @@ require('alpinejs');
 // App
 //require('./shared/flash');
 require('./app/publication');
-require('./shared/new-orders');
 require('./app/dark-mode');
 require('./app/logout');
 

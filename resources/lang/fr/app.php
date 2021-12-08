@@ -33,4 +33,7 @@ return [
 		'missing-media' => 'La variation ne sera pas affiché si il n\'y a pas de média',
 		'missing-books' => 'Aucune variation trouvé ! Le livre ne sera pas affiché sur la page principale',
 	],
+	'warnings' => [
+		'missing-media' => 'La variation ne sera pas affiché si il n\'y a pas de média',
+	],
 ];
