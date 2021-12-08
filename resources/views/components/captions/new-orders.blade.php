@@ -1,0 +1,1 @@
+<span class="rounded-full min-w-[1.5rem] h-6 bg-red-500 text-white inline-flex justify-center items-center text-base ml-2 px-1 font-sans font-bold">{{ $slot }}</span>
