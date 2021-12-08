@@ -5,10 +5,11 @@
 
 	
 
-	<x-section :title="___('book').' : '.$bookInfo->title" :return="route('books')">
+	<x-section :title="___('book').' : '.$bookInfo->title" :return="route('books')" class="full">
 
 		<x-buttons>
 			<x-button :href="route('books.edit', $bookInfo->id )" :label="___('edit')" class="big" />
+			<x-button :href="route('books.archives.store', $bookInfo->id )" :label="___('archive')" class="big" />
 		</x-buttons>
 
 		<div class="flex gap-x-8">
