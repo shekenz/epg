@@ -28,15 +28,8 @@
 				<tr data-id="{{ $bookInfo->id }}">
 					<td><x-tabler-grip-vertical class="h-8 w-8 cursor-grab"/></td>
 					<td>
-						@php 
-							$warnings = false;
-							if($bookInfo->books->isEmpty()) {
-								$warnings[] = __('No variation found ! Book will not be displayed on front page').'.';
-							}
-						@endphp
-
-						@if($warnings)
-							<a href="{{ route('books.display', $bookInfo->id) }}" class="icon warning" title="{{ implode("\n", $warnings) }}"><x-tabler-alert-triangle /></a>
+						@if($bookInfo->books->isEmpty())
+							<x-captions.info>{{ __('app.warnings.missing-books') }}</x-captions.info>
 						@endif
 						<a href="{{ route('books.display', $bookInfo->id) }}">{{ $bookInfo->title }}</a></td>
 					<td>{{ $bookInfo->author }}</td>
