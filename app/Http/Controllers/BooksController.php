@@ -81,12 +81,15 @@ class BooksController extends Controller
 		->orderBy('position', 'ASC')
 		->get();
 
-		// We need to filter out the books without linked images because gilde.js hangs if it has no child elements.
-		// The has() method was a mess. Can't have the expected results with it
-		$bookInfos->each(function($bookInfo) {
+		// We need to filter out the books without linked media because gilde.js hangs if it has no child elements.
+		// If books is empty after filter, we remove it from the collection because we don't want to display it on front page.
+		$bookInfos->each(function($bookInfo, $key) use (&$bookInfos) {
 			$bookInfo->books = $bookInfo->books->filter(function($book) {
 				return $book->media->isNotEmpty();
 			});
+			if($bookInfo->books->isEmpty()) {
+				$bookInfos->forget($key);
+			}
 		});
 		
 		return view('books/index', compact('bookInfos'));
@@ -102,6 +105,15 @@ class BooksController extends Controller
 	 */
 	public function list() {
 		$bookInfos = BookInfo::orderBy('position', 'ASC')->get();
+
+		// We need to filter out the books without linked media.
+		// If all books are empty, that will trigger a 'No variaiton found' warning.
+		$bookInfos->each(function($bookInfo, $key) use (&$bookInfos) {
+			$bookInfo->books = $bookInfo->books->filter(function($book) {
+				return $book->media->isNotEmpty();
+			});
+		});
+
 		$archived = BookInfo::onlyTrashed()->count();
     return view('books/list', compact('bookInfos', 'archived'));
 	}
