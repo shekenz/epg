@@ -351,10 +351,10 @@
 			min-w-[12rem] ;
 	}
 
-	.button.disabled, .button-disabled {
+	.button.disabled {
 		@apply
 			bg-gray-300
-			hover:bg-gray-200
+			hover:bg-gray-300
 			dark:text-gray-500
 			dark:bg-gray-600
 			hover:cursor-not-allowed;
