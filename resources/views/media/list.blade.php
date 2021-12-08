@@ -18,7 +18,7 @@
 			lg:gap-4
 		">
 		@foreach($media as $medium)
-			<x-media-lib-item :src="asset('storage/'.$medium->preset('thumb'))" :src2x="asset('storage/'.$medium->preset('thumb2x'))" :medium="$medium"/>
+			<x-media-item :src="asset('storage/'.$medium->preset('thumb'))" :src2x="asset('storage/'.$medium->preset('thumb2x'))" :medium="$medium"/>
 		@endforeach
 		</div>
 	</x-section>

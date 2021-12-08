@@ -51,18 +51,18 @@
 			@if(Storage::disk('public')->exists('uploads/'.$medium->filehash.'_'.$key.'.'.$medium->extension))
 				<?php $imagesize = getimagesize('storage/uploads/'.$medium->filehash.'_'.$key.'.'.$medium->extension); ?>
 				@if($imagesize[0] < intval($item['width']) || $imagesize[1] < intval($item['height']))
-					<x-media-info-item type="warning" :optimisation="$key" :label="$item['caption']" :medium="$medium" />
+					<x-captions.media-info type="warning" :optimisation="$key" :label="$item['caption']" :medium="$medium" />
 				@else
-					<x-media-info-item type="success" :optimisation="$key" :label="$item['caption']" :medium="$medium" />
+					<x-captions.media-info type="success" :optimisation="$key" :label="$item['caption']" :medium="$medium" />
 				@endif
 			@else
-				<x-media-info-item type="error" :optimisation="$key" :label="$item['caption']" :medium="$medium" />
+				<x-captions.media-info type="error" :optimisation="$key" :label="$item['caption']" :medium="$medium" />
 			@endif
 		@endforeach
 		@if(Storage::disk('public')->exists('uploads/'.$medium->filename))
-			<x-media-info-item :optimisation="$key" :label="___('original')" :medium="$medium" original />
+			<x-captions.media-info :optimisation="$key" :label="___('original')" :medium="$medium" original />
 		@else
-			<x-media-info-item type="error" :optimisation="$key" :label="___('original')" :medium="$medium" original />
+			<x-captions.media-info type="error" :optimisation="$key" :label="___('original')" :medium="$medium" original />
 		@endif
 	</div>
 

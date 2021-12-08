@@ -40,18 +40,18 @@
 
 				<div class="flex gap-x-4">
 
-					<x-media-dropzone id="media-link" label="{{ ___('linked media') }}">
+					<x-drop-zone id="media-link" label="{{ ___('linked media') }}">
 						<x-slot name="placeholder">{{ __('app.media.link-placeholder') }}</x-slot>
-					</x-media-dropzone>
+					</x-drop-zone>
 
 					<x-arrows-helper />
 
-					<x-media-dropzone id="media-library" label="{{ ___('media library') }}">
+					<x-drop-zone id="media-library" label="{{ ___('media library') }}">
 						<x-slot name="placeholder">{{ __('app.media.library-placeholder') }}</x-slot>
 						@foreach($media as $medium)
-							<x-media-item :src="asset('storage/'.$medium->preset('thumb'))" :src2x="asset('storage/'.$medium->preset('thumb2x'))" :medium-id="$medium->id" />
+							<x-drop-item :src="asset('storage/'.$medium->preset('thumb'))" :src2x="asset('storage/'.$medium->preset('thumb2x'))" :medium-id="$medium->id" />
 						@endforeach
-					</x-media-dropzone>
+					</x-drop-zone>
 
 				</div>
 			@endif

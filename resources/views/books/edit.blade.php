@@ -103,10 +103,7 @@
 									<img src="{{ asset('storage/'.$medium->preset('thumb')) }}" data-full-src="{{ asset('storage/'.$medium->preset('hd')) }}" data-index={{ $loop->index }} data-title="{{ $medium->name.'.'.$medium->extension }}" class="hover-thumb inline-block h-[50px] w-[50px] cursor-pointer">
 								@endforeach
 							@else
-								<div class="h-[50px] flex flex-col justify-center bg-red-400 text-white px-3 rounded-sm">
-									<h4 class="flex items-center font-bold m-0 p-0 gap-x-1"><x-tabler-alert-triangle />{{ ___('no linked medium') }}</h4>
-									<span class="text-sm italic">{{ ___('app.warnings.missing-media') }}</span>
-								</div>
+								<x-captions.missing-media>{{ ___('app.warnings.missing-media') }}</x-captions.missing-media>
 							@endif
 							</div>
 						</td>
@@ -170,9 +167,7 @@
 									<img src="{{ asset('storage/'.$medium->preset('thumb')) }}" data-full-src="{{ asset('storage/'.$medium->preset('hd')) }}" data-index={{ $loop->index }} data-title="{{ $medium->name.'.'.$medium->extension }}" class="inline-block h-[50px] w-[50px] hover-thumb cursor-pointer">
 								@endforeach
 							@else
-								<div class="h-[50px] flex flex-col justify-center bg-red-400 text-white px-3 rounded-sm">
-									<h4 class="flex items-center font-bold m-0 p-0 gap-x-1"><x-tabler-alert-triangle />{{ ___('no linked medium') }}</h4>
-								</div>
+								<x-captions.missing-media />
 							@endif
 							</div>
 						</td>

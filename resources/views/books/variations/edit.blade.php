@@ -64,25 +64,25 @@
 
 				<div class="flex gap-x-4">
 
-					<x-media-dropzone id="media-link" label="{{ ___('linked media') }}">
+					<x-drop-zone id="media-link" label="{{ ___('linked media') }}">
 						@if($book->media->isEmpty())
 							<x-slot name="placeholder">{{ __('app.media.link-placeholder') }}</x-slot>
 						@endif
 						@foreach( $book->media as $medium )
-							<x-media-item :src="asset('storage/'.$medium->preset('thumb'))" :src2x="asset('storage/'.$medium->preset('thumb2x'))" :medium-id="$medium->id" input/>
+							<x-drop-item :src="asset('storage/'.$medium->preset('thumb'))" :src2x="asset('storage/'.$medium->preset('thumb2x'))" :medium-id="$medium->id" input/>
 						@endforeach
-					</x-media-dropzone>
+					</x-drop-zone>
 
 					<x-arrows-helper />
 
-					<x-media-dropzone id="media-library" label="{{ ___('media library') }}">
+					<x-drop-zone id="media-library" label="{{ ___('media library') }}">
 						@if($media->isNotEmpty() && $media->diff($book->media)->isEmpty())
 							<x-slot name="placeholder">{{ __('app.media.library-placeholder') }}</x-slot>
 						@endif
 						@foreach($media->diff($book->media) as $medium)
-							<x-media-item :src="asset('storage/'.$medium->preset('thumb'))" :src2x="asset('storage/'.$medium->preset('thumb2x'))" :medium-id="$medium->id" />
+							<x-drop-item :src="asset('storage/'.$medium->preset('thumb'))" :src2x="asset('storage/'.$medium->preset('thumb2x'))" :medium-id="$medium->id" />
 						@endforeach
-					</x-media-dropzone>
+					</x-drop-zone>
 
 				</div>
 			@endif

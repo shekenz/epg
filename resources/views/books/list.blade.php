@@ -29,7 +29,7 @@
 					<td><x-tabler-grip-vertical class="h-8 w-8 cursor-grab"/></td>
 					<td>
 						@if($bookInfo->books->isEmpty())
-							<x-captions.info>{{ __('app.warnings.missing-books') }}</x-captions.info>
+							<x-captions.warning>{{ __('app.warnings.missing-books') }}</x-captions.warning>
 						@endif
 						<a href="{{ route('books.display', $bookInfo->id) }}">{{ $bookInfo->title }}</a></td>
 					<td>{{ $bookInfo->author }}</td>
