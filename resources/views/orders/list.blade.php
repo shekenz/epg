@@ -108,7 +108,7 @@
 				</thead>
 				<tbody id="order-rows">
 					<tr>
-						<td colspan="8"><img class="m-auto my-8" src="{{ asset('img/loader_medium.svg') }}" alt="loader animation"></td>
+						<td colspan="8"><x-loader class="m-auto w-24 h-24 my-8" full /></td>
 					</tr>
 				</tbody>
 			</table>
