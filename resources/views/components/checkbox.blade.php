@@ -7,6 +7,6 @@
 		dark:focus:ring-0
 		dark:focus:outline-none
 		{{ $color }}
-	">
+	" {{ $attributes() }}>
 	<label for="{{ $name }}" class="cursor-pointer @if($disabled) disabled @endif">{{ $label }}</label>
 </div>
