@@ -14,9 +14,7 @@
         "@sentry/browser": "^6.13.3",
         "@sentry/tracing": "^6.13.3",
         "@tailwindcss/forms": "^0.2.1",
-        "alpinejs": "^2.8.2",
         "autoprefixer": "^10.2.6",
-        "axios": "^0.21",
         "browser-sync": "^2.27.5",
         "browser-sync-webpack-plugin": "^2.3.0",
         "date-fns": "^2.22.1",
@@ -25,7 +23,10 @@
         "postcss": "^8.3.5",
         "postcss-import": "^12.0.1",
         "sortablejs": "^1.13.0",
-        "tailwindcss": "^2.2.2"
+        "tailwindcss": "^2.2.2",
+        "vue": "^2.6.14",
+        "vue-loader": "^15.9.8",
+        "vue-template-compiler": "^2.6.14"
     },
     "browserslist": [
         "last 2 version",
