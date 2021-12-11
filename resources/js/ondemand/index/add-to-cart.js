@@ -6,7 +6,7 @@ import { popFlash } from '../../shared/popup.mjs';
 const addToCartButtons = arrayByClass('add-to-cart-button');
 const translationHelper = document.getElementById('translation-helper');
 
-const flashSuccessCooledDown = popFlash('<img src="/img/frog_logo_heart.svg" alt="Frog that loves you"><span class="mx-4">'+translationHelper.dataset.addedMessage+'</span><a class="button-lg" href="/cart">'+translationHelper.dataset.checkoutButton+'</a>');
+const flashSuccessCooledDown = popFlash('<img src="/img/frog_logo_heart.svg" alt="Frog that loves you"><span class="mx-4">'+translationHelper.dataset.addedMessage+'</span><a class="button-lg" href="/cart" target="_blank">'+translationHelper.dataset.checkoutButton+'</a>');
 
 const flashErrorCooledDown = message => {
 	popFlash('<img src="/img/frog_logo_warning.svg" alt="Frog that warns you"><span class="mx-4">'+message+'</span>')();

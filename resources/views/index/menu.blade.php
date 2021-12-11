@@ -6,7 +6,7 @@
 		<div><a href="{{ route('index') }}" class="{{ (request()->routeIs('index')) ? 'active ' : '' }}menu-item">{{ __('books') }}</a></div>
 		{{-- <div><a href="{{ route('messages') }}" class="{{ (request()->routeIs('messages')) ? 'active ' : '' }}menu-item">{{ __('contact') }}</a></div> --}}
 		@if(setting('app.shop.enabled'))
-		<div><a id="cart-menu-item" href="{{ route('cart') }}" class="{{ (request()->routeIs('cart') || request()->routeIs('cart.success')) ? 'active ' : '' }}menu-item">{{ __('cart') }}<span id="cart-menu-count">{{ (boolval($cartCount)) ? ' ('.$cartCount.')' : ''}}</span></a></div>
+		<div><a id="cart-menu-item" target="_blank" href="{{ route('cart') }}" class="{{ (request()->routeIs('cart') || request()->routeIs('cart.success')) ? 'active ' : '' }}menu-item">{{ __('cart') }}<span id="cart-menu-count">{{ (boolval($cartCount)) ? ' ('.$cartCount.')' : ''}}</span></a></div>
 		@endif
 		<div class="md:col-start-8"><a href="{{ route('contact') }}" class="{{ (request()->routeIs('contact')) ? 'active ' : '' }}menu-item">{{ __('contact') }}</a></div>
 		@if(request()->user() || config('app.env') === 'local')
