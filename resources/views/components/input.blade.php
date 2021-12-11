@@ -20,7 +20,9 @@
 ">
 
 	@isset($label)
-		<label for="{{ $name }}" class="
+		<label @if($attributes->has(':disabled')) :class="{ 'disabled' : {{ $attributes->get(':disabled') }} }" @endif
+			for="{{ $name }}"
+			class="
 			p-1
 			mr-2
 			block
