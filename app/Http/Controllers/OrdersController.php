@@ -59,7 +59,7 @@ class OrdersController extends Controller
 		$coupons = Coupon::withTrashed()->get();
 		$shippingMethods = ShippingMethod::withTrashed()->orderBy('price', 'ASC')->get();
 		$books = Book::withTrashed()->orderBy('book_info_id', 'ASC')->get();
-		return view('orders.list', compact('orders', 'coupons', 'shippingMethods', 'books'));
+		return view('orders.list-vue', compact('orders', 'coupons', 'shippingMethods', 'books'));
 	}
 
 	/**
@@ -83,14 +83,16 @@ class OrdersController extends Controller
 	 */
 	public function display($id) {
 		$order = Order::with(['books', 'coupons', 'shippingMethods'])->where('id', $id)->firstOrFail();
-		$order->read = 1;
-		$order->save();
 
 		// Decrementing newOrders cache
-		if(Cache::has('newOrders')) {
+		if(!$order->read) {
+			if(!Cache::has('newOrders'))
+			{
+				$this->refreshNewOrders();
+			}
 			Cache::decrement('newOrders');
-		} else {
-			$this->refreshNewOrders();
+			$order->read = 1;
+			$order->save();
 		}
 
 		return view('orders.display', compact('order'));

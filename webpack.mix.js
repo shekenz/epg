@@ -27,6 +27,7 @@ mix.js('resources/js/ondemand/app/variations-create.js', 'public/js'); // Loaded
 mix.js('resources/js/ondemand/app/variations-edit.js', 'public/js'); // Loaded on edit variation view
 mix.js('resources/js/ondemand/app/order-ship.js', 'public/js'); // Loaded on display order view
 mix.js('resources/js/ondemand/app/order-list.js', 'public/js'); // Loaded on list order view
+mix.js('resources/js/ondemand/app/order-vue.js', 'public/js').vue(); // Loaded on list-vue order view
 mix.js('resources/js/ondemand/app/labels.js', 'public/js'); // Loaded on labels preview view
 
 //  Index JS (Frontend)

@@ -84,6 +84,8 @@ return [
 
     'lang' => env('APP_LANG', 'en_US'),
 
+		'langHTML' => str_replace('_', '-', env('APP_LANG', 'en_US')),
+
     /*
     |--------------------------------------------------------------------------
     | Application Fallback Locale
