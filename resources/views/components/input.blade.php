@@ -1,6 +1,12 @@
 @props(['label', 'name', 'type' => 'text', 'inline', 'wrapper-class', 'disabled' => false])
 
-<div class="
+
+
+
+
+
+<div {{ $attributes->filter(function($value, $attr) { return ($attr == 'v-show'); }) }}
+	class="
 	@isset($inline)
 	flex
 	items-center
@@ -55,7 +61,7 @@
 		id="{{ $name }}"
 		name="{{ $name }}"
 		type="{{ $type }}"
-		{{ $attributes }}
+		{{ $attributes->filter(function($value, $attr) { return ($attr != 'v-show'); }) }}
 		@if($disabled) disabled @endif
 	/>
 	@if($slot->isNotEmpty() && !$disabled)
