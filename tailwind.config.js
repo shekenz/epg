@@ -6,7 +6,7 @@ const blueGray = {
 		dark: colors.coolGray[800],
 		DEFAULT: 'rgb(80, 93, 123)',
 		light: 'rgb(114, 134, 179)',
-		'super-light': 'rgb(144, 168, 220)',
+		'super-light': 'rgb(194, 212, 251)',
 		'ultra-light': colors.coolGray[200],
 	},
 	secondary: {

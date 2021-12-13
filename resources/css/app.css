@@ -283,7 +283,7 @@
 
 	a.side-bar-item:hover, a.side-bar-item:hover svg.icon {
 		@apply
-			bg-background
+			bg-primary-super-light
 			dark:bg-transparent
 			text-gray-900
 			dark:text-white
@@ -863,7 +863,8 @@
 	/* -------------------------- Unread row */
 	table tr.unread, table tr.unread:nth-child(2n) {
 		@apply
-			bg-primary-light;
+			bg-primary-super-light
+			dark:bg-primary-light;
 	}
 
 	/*  -----------------------------------------  ╔════════════╗  */
