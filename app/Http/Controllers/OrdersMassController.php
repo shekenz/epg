@@ -210,59 +210,6 @@ class OrdersMassController extends Controller
 	}
 
 
-
-	/**
-	 * Internal method that returns orders containing a key-word in a certain column
-	 * 
-	 * @param mixed $data The key-word (can be null)
-	 * @param string $column The column to search
-	 * @return \Illuminate\Support\Collection
-	 */
-	protected function like($data, string $column) {
-		if($data) {
-			return Order::with('books')->where(array_merge($this->globalConditions, [[$column, 'like', '%'.$data.'%']]))->orderBy('created_at', 'DESC')->get();
-		} else {
-			return $this->all();
-		}
-	}
-
-
-
-	/**
-	 * Internal method that returns orders with the exact key-word in a certain column
-	 * 
-	 * @param mixed $data The key-word (can be null)
-	 * @param string $column The column to search
-	 * @param bool $filterEmpty
-	 * @return \Illuminate\Support\Collection
-	 */
-	protected function exact($data, string $column, bool $filterEmpty = false) {
-		if($data || $filterEmpty) {
-			return Order::with('books')->where(array_merge($this->globalConditions, [[$column, $data]]))->orderBy('created_at', 'DESC')->get();
-		} else {
-			return $this->all();
-		}
-	}
-
-	
-
-	/**
-	 * Internal method that returns orders linked to a variation, looked up by its exact label
-	 * 
-	 * @param mixed $data The variation label (can be null)
-	 * @return \Illuminate\Support\Collection
-	 */
-	protected function book($data) {
-		if($data) {
-			return Order::with(['books' => function($query) use ($data) {
-				$query->where('books.id', $data);
-			}])->where($this->globalConditions)->orderBy('created_at', 'DESC')->get();
-		} else {
-			return $this->all();
-		}
-	}
-
-
 	
 	/**
 	 * Generates a PDF

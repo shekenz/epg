@@ -88,7 +88,7 @@
 					<td>{{ ___('order') }}</td>
 					<td>{{ ___('client') }}</td>
 					<td>{{ ___('email') }}</td>
-					<td>{{ ___('pre') }}</td>
+					<td>{{ ___('paypal.status.preorder') }}</td>
 					<td>{{ ___('status') }}</td>
 					<td>{{ ___('created at') }}</td>
 					<td>{{ ___('actions') }}</td>

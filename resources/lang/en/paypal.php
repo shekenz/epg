@@ -3,7 +3,7 @@
 return [
 	"status" => [
 		"FAILED" => "Failed",
-		"CREATED" => "Created",
+		"CREATED" => "Pending",
 		"COMPLETED" => "Paid",
 		"SHIPPED" => "Shipped",
 		"preorder" => "Pre",

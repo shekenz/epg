@@ -2,8 +2,8 @@
 
 return [
 	"status" => [
-		"FAILED" => "Échec",
-		"CREATED" => "Créé",
+		"FAILED" => "Echec",
+		"CREATED" => "En cours",
 		"COMPLETED" => "Payé",
 		"SHIPPED" => "Envoyé",
 		"preorder" => "Pré",

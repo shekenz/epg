@@ -16,9 +16,8 @@ class FilterOrderController extends Controller
 
 
 	/**
-	 * filter()
 	 * Returns a filtered list of orders
-	 * Applyed filter is a JSON object
+	 * Filter is a JSON object
 	 *
 	 * @param  Illuminate\Http\Request $request
 	 * @return Illuminate\Http\Response
@@ -30,7 +29,7 @@ class FilterOrderController extends Controller
 
 			$request->input('method', 'all');
 
-			$data = $request->validate([
+			$filter = $request->validate([
 				'method' => 'nullable',
 				'from' => 'nullable|date',
 				'to' => 'nullable|date',
@@ -40,23 +39,23 @@ class FilterOrderController extends Controller
 			]);
 
 			// Defining global filters (From, To, Read, Preorders)
-			if(isset($data['from'])) { array_push($this->globalConditions, ['created_at', '>=', $data['from']]); }
-			if(isset($data['to'])) { array_push($this->globalConditions, ['created_at', '<=', $data['to']]); }
+			if(isset($filter['from'])) { array_push($this->globalConditions, ['created_at', '>=', $filter['from']]); }
+			if(isset($filter['to'])) { array_push($this->globalConditions, ['created_at', '<=', $filter['to']]); }
 
-			if(isset($data['read'])) { array_push($this->globalConditions, ['read', (bool) $data['read'] ]); }
-			if(isset($data['preorder'])) { array_push($this->globalConditions, ['pre_order', (bool) $data['preorder'] ]); }
+			if(isset($filter['read'])) { array_push($this->globalConditions, ['read', (bool) $filter['read'] ]); }
+			if(isset($filter['preorder'])) { array_push($this->globalConditions, ['pre_order', (bool) $filter['preorder'] ]); }
 
-			switch($data['method'])
+			switch($filter['method'])
 			{
 				case null :
 				case 'all' : return new OrderCollection($this->all()); break;
-				//case 'order' : return $this->like($data, 'order_id'); break;
-				//case 'name' : return $this->like($data, 'full_name'); break;
-				//case 'email' : return $this->like($data, 'email_address'); break;
-				//case 'status' : return $this->exact($data, 'status'); break;
-				//case 'book' : return $this->book(intval($data)); break;
-				//case 'coupon' : return $this->exact($data, 'coupon_id', true); break;
-				//case 'shipping' : return $this->exact($data, 'shipping_method_id'); break;
+				case 'order' : return new OrderCollection($this->like($filter['data'], 'order_id')); break;
+				case 'name' : return new OrderCollection($this->like($filter['data'], 'full_name')); break;
+				case 'email' : return new OrderCollection($this->like($filter['data'], 'contact_email')); break;
+				case 'status' : return new OrderCollection($this->exact($filter['data'], 'status')); break;
+				case 'book' : return new OrderCollection($this->book(intval($filter['data']))); break;
+				case 'coupon' : return new OrderCollection($this->exact($filter['data'], 'coupon_id', true)); break;
+				case 'shipping' : return new OrderCollection($this->exact($filter['data'], 'shipping_method_id')); break;
 				default : return response()->noContent()->setStatusCode(422, 'Unknown method');
 			}
 		}
@@ -75,5 +74,61 @@ class FilterOrderController extends Controller
 	 */
 	protected function all() {
 		return Order::where($this->globalConditions)->orderBy('created_at', 'DESC')->get();
+	}
+
+
+
+	/**
+	 * Internal method that returns orders containing a key-word in a certain column
+	 * 
+	 * @param mixed $data The key-word (can be null)
+	 * @param string $column The column to search
+	 * @return \Illuminate\Support\Collection
+	 */
+	protected function like($data, string $column) {
+		if($data) {
+			return Order::where(array_merge($this->globalConditions, [[$column, 'like', '%'.$data.'%']]))->orderBy('created_at', 'DESC')->get();
+		} else {
+			return $this->all();
+		}
+	}
+
+
+
+	/**
+	 * Internal method that returns orders with the exact key-word in a certain column
+	 * 
+	 * @param mixed $data The key-word (can be null)
+	 * @param string $column The column to search
+	 * @param bool $filterEmpty
+	 * @return \Illuminate\Support\Collection
+	 */
+	protected function exact($data, string $column, bool $filterEmpty = false) {
+		if($data || $filterEmpty) {
+			return Order::where(array_merge($this->globalConditions, [[$column, $data]]))->orderBy('created_at', 'DESC')->get();
+		} else {
+			return $this->all();
+		}
+	}
+
+	
+
+	/**
+	 * Internal method that returns orders linked to a variation, looked up by its exact label
+	 * 
+	 * @param mixed $data The variation label (can be null)
+	 * @return \Illuminate\Support\Collection
+	 */
+	protected function book($data) {
+		if($data) {
+			// return Order::with(['books' => function($query) use ($data) {
+			// 	$query->where('books.id', $data);
+			// }])->where($this->globalConditions)->orderBy('created_at', 'DESC')->get();
+			return Order::whereHas('books', function($q) use ($data) {
+				$q->where('books.id', $data);
+			})->where($this->globalConditions)->orderBy('created_at', 'DESC')->get();
+		} else {
+			return $this->all();
+		}
 	}
 }
