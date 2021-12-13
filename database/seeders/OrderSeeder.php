@@ -19,6 +19,6 @@ class OrderSeeder extends Seeder
 		ArchivedOrder::truncate();
 		Order::truncate();
 		DB::table('book_order')->truncate();
-		Order::factory()->count(15)->create();
+		Order::factory()->count(100)->create();
     }
 }
