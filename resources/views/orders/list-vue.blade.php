@@ -94,12 +94,12 @@
 					<td>{{ ___('actions') }}</td>
 			</thead>
 			<tbody>
-				<tr v-for="order in orders" :class="{ 'unread' : !order.read }">
+				<tr v-for="(order, key) in orders" :class="{ 'unread' : !order.read }">
 					<td><a :href="route(order.id)">@{{ order.order_id }}</a></td>
 					<td>@{{ order.name }}</td>
 					<td>@{{ order.email }}</td>
-					<td>@{{ order.pre_order }}</td>
-					<td>@{{ order.status }}</td>
+					<td><x-tabler-clipboard-check v-if="order.pre_order" class="text-green-500"/></td>
+					<td><x-captions.order-status /></td>
 					<td>@{{ localDate(order.created_at) }}</td>
 					<td>{{ ___('actions') }}</td>
 				</tr>

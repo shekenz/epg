@@ -21,7 +21,13 @@ const messages = {
 			book: 'Book',
 			coupon: 'Coupon',
 			shipping: 'Shipping method',
-    }
+    },
+		status: {
+			'FAILED': 'Failed',
+			'CREATED': 'Pending',
+			'COMPLETED': 'Paid',
+			'SHIPPED': 'Shipped',
+		}
   },
   fr: {
     methods:
@@ -34,7 +40,13 @@ const messages = {
 			book: 'Livre',
 			coupon: 'Coupon',
 			shipping: 'Méthode d\'envoi',
-    }
+    },
+		status: {
+			'FAILED': 'Echec',
+			'CREATED': 'En cours',
+			'COMPLETED': 'Payé',
+			'SHIPPED': 'Envoyé',
+		}
   }
 }
 
@@ -97,6 +109,11 @@ window.vue = new Vue(
 		},
 		methods:
 		{
+			log(msg)
+			{
+				console.log(msg);
+			},
+			
 			route(id) {
 				return window.location.protocol + '//' + window.location.host + '/dashboard/order/' + id;
 			},
