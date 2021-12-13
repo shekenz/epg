@@ -33,7 +33,4 @@ return [
 		'missing-media' => 'Variation will not be displayed without media',
 		'missing-books' => 'No variation found ! Book will not be displayed on front page',
 	],
-	'warnings' => [
-		'missing-media' => 'Variation will not be displayed without media',
-	],
 ];
