@@ -82,7 +82,7 @@
 			</x-select>
 		</form>
 
-		<table class="big">
+		<table class="big mt-4">
 			<thead>
 				<tr>
 					<td>{{ ___('order') }}</td>
