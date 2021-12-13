@@ -43,7 +43,7 @@ module.exports = {
 				fontFamily:
 				{
 					sans: ['Monument Grotesk', 'Nunito', ...defaultTheme.fontFamily.sans],
-					dashboard: ['"IBM Plex Sans"', 'Nunito', ...defaultTheme.fontFamily.sans],
+					dashboard: ['Roboto', ...defaultTheme.fontFamily.sans],
 				},
 				flex:
 				{

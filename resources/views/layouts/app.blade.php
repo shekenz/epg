@@ -6,12 +6,8 @@
 		<meta name="csrf-token" content="{{ csrf_token() }}">
 		<title>Dashboard | {{ $title }}</title>
 		<!-- Styles -->
-		<link rel="preload" href="{{ asset('fonts/Nunito-Regular.ttf') }}" as="font" type="font/ttf" crossorigin>
-		<link rel="preload" href="{{ asset('fonts/Nunito-Bold.ttf') }}" as="font" type="font/ttf" crossorigin>
+		<link rel="preload" href="{{ asset('fonts/Roboto-Regular.ttf') }}" as="font" type="font/ttf" crossorigin>
 		<link rel="preload" href="{{ asset('fonts/Roboto-Bold.ttf') }}" as="font" type="font/ttf" crossorigin>
-		<link rel="prefetch" href="{{ asset('img/loader.svg')}}" as="image">
-		<link rel="prefetch" href="{{ asset('img/loader_dark.svg')}}" as="image">
-		<link rel="prefetch" href="{{ asset('img/loader_medium.svg')}}" as="image">
 		<link rel="stylesheet" href="{{ asset('css/app.css') }}" type="text/css">
 		<!-- Scripts -->
 		<script>
