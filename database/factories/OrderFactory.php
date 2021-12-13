@@ -104,7 +104,7 @@ class OrderFactory extends Factory
 			$preOrder = 0;
 			$totalWeight = 0;
 
-			$this->booksIDs = Book::all()->random(rand(1, $this->booksCount));
+			$this->booksIDs = Book::all()->random(rand(1, 5));
 
 			$this->booksIDs->each(function($book) use (&$preOrder, &$totalWeight) {
 				if($book->pre_order) {

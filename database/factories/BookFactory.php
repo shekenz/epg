@@ -42,7 +42,7 @@ class BookFactory extends Factory
 			'label' => ucfirst($this->faker->word()),
 			'weight' => $this->faker->randomElement([50, 80, 120, 150, 175, 230, 255]),
 			'stock' => rand(10, 300),
-			'pre_order' => $this->faker->numberBetween(0, 1),
+			'pre_order' => $this->faker->randomElement([0, 0, 1, 0, 0]),
 			'price' => round(rand(1000,10000)/100, 2),
 		];
 	}
