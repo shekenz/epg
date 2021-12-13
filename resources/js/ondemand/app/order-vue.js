@@ -1,12 +1,11 @@
 import Vue from 'vue';
 import debounce from 'lodash.debounce';
 import { format } from 'date-fns';
+import { enUS, fr } from 'date-fns/locale';
 import VueI18n from 'vue-i18n';
 Vue.use(VueI18n);
 
-// Dynamically importing date-fns local
-let locale = document.documentElement.lang.slice(0,2) || 'en';
-import('date-fns/locale').then(locales => { locale = locales[locale] });
+const locale = document.documentElement.lang.slice(0,2) || 'en';
 
 // i18n data
 const messages = {
@@ -52,7 +51,7 @@ const messages = {
 
 // VueI18n instance
 const i18n = new VueI18n({
-  locale: (locale.code || locale),
+  locale: locale,
   messages,
 })
 
@@ -119,7 +118,14 @@ window.vue = new Vue(
 			},
 
 			localDate(date) {
-				return format( new Date(date), 'PPP', {locale: locale})
+				if(locale === 'fr')
+				{
+					return format( new Date(date), 'PPP', {locale: fr})
+				}
+				else
+				{
+					return format( new Date(date), 'PPP', {locale: enUS})
+				}
 			},
 
 			debounceInput: debounce( e =>
