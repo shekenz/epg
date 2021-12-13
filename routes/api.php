@@ -51,7 +51,8 @@ Route::middleware('shop')->group(function() {
 });
 
 // Backend API
-Route::get('/orders/get/{method}/{from}/{to}/{visibility}/{preorder}/{data?}', [OrdersMassController::class, 'get']);
+Route::post('/orders/get', [OrdersMassController::class, 'getJSON']);
+//Route::get('/orders/get/{method}/{from}/{to}/{visibility}/{preorder}/{data?}', [OrdersMassController::class, 'get']);
 
 Route::post('/books/reorder', [BooksController::class, 'reorder']);
 Route::post('/variations/{bookInfo}/reorder', [VariationsController::class, 'reorder']);

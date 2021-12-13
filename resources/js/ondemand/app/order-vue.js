@@ -67,12 +67,12 @@ window.vue = new Vue(
 		data: {
 			filters:
 			{
-				method: 'all',
+				method: null,
 				from: format(new Date().setFullYear(new Date().getFullYear() - 1), 'y-MM-dd'),
 				to: format(new Date(), 'y-MM-dd'),
 				hidden: false,
 				preorder: false,
-				data: ''
+				data: null
 			},
 			methods: [
 				'all',
@@ -114,35 +114,32 @@ window.vue = new Vue(
 
 			getOrders()
 			{
-				const url = `/api/orders/get/${vue.filters.method}/${vue.filters.from}/${vue.filters.to}/${vue.filters.hidden}/${vue.filters.preorder}/${vue.filters.data}`;
-				fetch(url,
+				fetch('/api/orders/get',
 					{
-						method: 'get',
-						headers:
+						method: 'POST',
+						headers: {
+							'Accept': 'application/json',
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify( this.filters )
+					}
+				).then(r =>
+					{
+						if(r.ok)
 						{
-							'accept': 'application/json',
+							return r.json()
 						}
 					}
-				)
-				.then(r => {
-					if(r.ok === true) {
-						return r.json();
-					} else {
-						throw new Error('Cannot query server');
+				).then(rJson =>
+					{
+						this.orders = rJson;
 					}
-				})
-				.catch(error => {
-					console.error(error);
-				})
-				.then(rJson => {
-					console.log(rJson);
-					vue.orders = rJson;
-				})
+				);
 			}
 		},
 		mounted()
 		{
-			
+			this.getOrders();
 		},
 		created()
 		{

@@ -29,12 +29,12 @@
 		<form class="flex flex-col md:flex-row md:gap-x-8 md:items-center">
 
 			{{-- Method input --}}
-			<x-select :label="___('filter by')" type="text" name="method" v-model="filters.method" @input="filters.data = ''">
+			<x-select :label="___('filter by')" type="text" name="method" v-model="filters.method" @input="filters.data = ''; getOrders()">
 				<option v-for="method in methods" :value="method">@{{ $t('methods.'+method) }}</option>
 			</x-select>
 
 			{{-- Data (Keyword) input if method == [ all, order, name, email ] --}}
-			<x-input ::disabled="filters.method == 'all'" v-show="methodsTextDataType.indexOf(filters.method) >= 0" :label="___('keyword')" type="text" name="data" v-model="filters.data" @input="debounceInput"/>
+			<x-input ::disabled="filters.method === null || filters.method === 'all'" v-show="methodsTextDataType.indexOf(filters.method) >= 0 || filters.method === null" :label="___('keyword')" type="text" name="data" v-model="filters.data" @input="debounceInput"/>
 
 			{{-- Data input if method == status --}}
 			<x-select v-show="filters.method == 'status'" :label="___('status')" type="text" name="data" v-model="filters.data" @input="getOrders">
@@ -68,8 +68,8 @@
 			</x-select>
 
 			{{-- Global filters inputs --}}
-			<x-input :label="___('from')" type="date" name="from" v-model="filters.from" @input="getOrders"/>
-			<x-input :label="___('to')" type="date" name="to" v-model="filters.to" @input="getOrders"/>
+			<x-input :label="___('start')" type="date" name="from" v-model="filters.from" @input="getOrders"/>
+			<x-input :label="___('end')" type="date" name="to" v-model="filters.to" @input="getOrders"/>
 			<x-checkbox :label="___('hidden')" name="hidden" v-model="filters.hidden" @input="getOrders"/>
 			<x-checkbox :label="___('preorder')" name="preorder" v-model="filters.preorder" @input="getOrders"/>
 		</form>

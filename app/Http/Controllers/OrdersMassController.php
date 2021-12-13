@@ -10,7 +10,7 @@ use PDF;
 class OrdersMassController extends Controller
 {
 
-	public $globalConditions;
+	public $globalConditions = [];
 	
 	/** @var array $validation Validation rules that checks if we received an array of IDs */
 	public $validation = [
@@ -161,6 +161,40 @@ class OrdersMassController extends Controller
 			}
 		} else {
 			return abort(404);
+		}
+	}
+
+	public function getJSON(Request $request) {
+		if($request->wantsJson()) {
+
+			$request->input('method', 'all');
+
+			$data = $request->validate([
+				'method' => 'nullable',
+				'from' => 'nullable|date',
+				'to' => 'nullable|date',
+				'hidden' => 'nullable|boolean',
+				'preorder' => 'nullable|boolean',
+				'data' => 'nullable|string',
+			]);
+
+			if(isset($data['from'])) { array_push($this->globalConditions, ['created_at', '>=', $data['from']]); }
+			if(isset($data['to'])) { array_push($this->globalConditions, ['created_at', '<=', $data['to']]); }
+
+			array_push($this->globalConditions, ['hidden', boolval($data['hidden']) ]);
+
+			switch($data['method']) {
+				case null : return $this->all(); break;
+				case 'all' : return $this->all(); break;
+				case 'order' : return $this->like($data, 'order_id'); break;
+				case 'name' : return $this->like($data, 'full_name'); break;
+				case 'email' : return $this->like($data, 'email_address'); break;
+				case 'status' : return $this->exact($data, 'status'); break;
+				case 'book' : return $this->book(intval($data)); break;
+				case 'coupon' : return $this->exact($data, 'coupon_id', true); break;
+				case 'shipping' : return $this->exact($data, 'shipping_method_id'); break;
+				default : return response()->json()->setStatusCode(422, 'Unknown method');
+			}
 		}
 	}
 
