@@ -3,11 +3,12 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrdersController;
-use App\Http\Controllers\OrdersMassController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CouponsController;
 use App\Http\Controllers\BooksController;
 use App\Http\Controllers\VariationsController;
+use App\Http\Controllers\API\OrderController;
+use App\Http\Controllers\API\FilterOrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,8 +52,8 @@ Route::middleware('shop')->group(function() {
 });
 
 // Backend API
-Route::post('/orders/get', [OrdersMassController::class, 'getJSON']);
-//Route::get('/orders/get/{method}/{from}/{to}/{visibility}/{preorder}/{data?}', [OrdersMassController::class, 'get']);
+Route::post('orders/filter', [FilterOrderController::class, 'filter']);
+Route::apiResource('orders', OrderController::class)->only(['index', 'show']);
 
 Route::post('/books/reorder', [BooksController::class, 'reorder']);
 Route::post('/variations/{bookInfo}/reorder', [VariationsController::class, 'reorder']);

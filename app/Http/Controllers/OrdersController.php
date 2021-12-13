@@ -19,6 +19,8 @@ use App\Mail\OrderShipped;
 use App\Mail\NewOrder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
+use App\Http\Resources\OrderResource;
+use App\Http\Resources\OrderCollection;
 
 class OrdersController extends Controller
 {

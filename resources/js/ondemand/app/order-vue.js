@@ -68,10 +68,10 @@ window.vue = new Vue(
 			filters:
 			{
 				method: null,
-				from: format(new Date().setFullYear(new Date().getFullYear() - 1), 'y-MM-dd'),
-				to: format(new Date(), 'y-MM-dd'),
-				hidden: false,
-				preorder: false,
+				from: null,
+				to: null,
+				read: null,
+				preorder: null,
 				data: null
 			},
 			methods: [
@@ -107,14 +107,13 @@ window.vue = new Vue(
 
 			debounceInput: debounce( e =>
 				{
-					console.log(`Sending : ${ vue.filters.data }`);
 					vue.getOrders();
 				}
 			, 300),
 
 			getOrders()
 			{
-				fetch('/api/orders/get',
+				fetch('/api/orders/filter',
 					{
 						method: 'POST',
 						headers: {
@@ -132,7 +131,7 @@ window.vue = new Vue(
 					}
 				).then(rJson =>
 					{
-						this.orders = rJson;
+						this.orders = rJson.data;
 					}
 				);
 			}
