@@ -6,8 +6,8 @@
 		<meta name="csrf-token" content="{{ csrf_token() }}">
 		<title>Dashboard | {{ $title }}</title>
 		<!-- Styles -->
-		<link rel="preload" href="{{ asset('fonts/Roboto-Regular.ttf') }}" as="font" type="font/ttf" crossorigin>
-		<link rel="preload" href="{{ asset('fonts/Roboto-Bold.ttf') }}" as="font" type="font/ttf" crossorigin>
+		<link rel="prefetch" href="{{ asset('fonts/Roboto-Regular.ttf') }}" as="font" type="font/ttf" crossorigin>
+		<link rel="prefetch" href="{{ asset('fonts/Roboto-Bold.ttf') }}" as="font" type="font/ttf" crossorigin>
 		<link rel="stylesheet" href="{{ asset('css/app.css') }}" type="text/css">
 		<!-- Scripts -->
 		<script>

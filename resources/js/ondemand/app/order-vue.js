@@ -26,7 +26,7 @@ const messages = {
 			'CREATED': 'Pending',
 			'COMPLETED': 'Paid',
 			'SHIPPED': 'Shipped',
-		}
+		},
   },
   fr: {
     methods:
@@ -45,7 +45,7 @@ const messages = {
 			'CREATED': 'En cours',
 			'COMPLETED': 'Payé',
 			'SHIPPED': 'Envoyé',
-		}
+		},
   }
 }
 
@@ -100,11 +100,12 @@ window.vue = new Vue(
 			elements:
 			{
 				loader: document.getElementById('save-loader')
-			}
+			},
+			currentOrder: null,
 		},
 		computed:
 		{
-
+			
 		},
 		methods:
 		{
@@ -157,15 +158,59 @@ window.vue = new Vue(
 						this.orders = rJson.data;
 					}
 				);
+			},
+
+			getOrder(id)
+			{
+				fetch('/api/orders/'+id, 
+					{
+						method: 'GET',
+						headers: {
+							'Accept': 'application/json',
+						}
+					}
+				).then(r =>
+					{
+						if(r.ok)
+						{
+							return r.json()
+						}
+					}
+				).then(rJson =>
+					{
+						this.currentOrder = rJson.data;
+						history.pushState({currentOrder: this.currentOrder}, null, window.location.origin+'/dashboard/order/'+id);
+					}
+				);
+			},
+
+			returnToList()
+			{
+				this.currentOrder = null
+				history.pushState({currentOrder: null}, null, window.location.origin+'/dashboard/orders');
+			},
+
+			getCurrentOrder(prop) {
+				if(this.currentOrder)
+				{
+					return this.currentOrder[prop];
+				} 
+				else 
+				{
+					return null
+				}
 			}
 		},
 		mounted()
 		{
 			this.getOrders();
+			history.pushState({currentOrder: null}, null);
 		},
 		created()
 		{
-
+			window.addEventListener('popstate', e => {
+				window.vue.currentOrder = e.state.currentOrder;
+		 });
 		}
 	}
 );
