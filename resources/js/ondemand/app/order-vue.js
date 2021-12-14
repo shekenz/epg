@@ -1,7 +1,5 @@
 import Vue from 'vue';
 import debounce from 'lodash.debounce';
-import { format } from 'date-fns';
-import { enUS, fr } from 'date-fns/locale';
 import VueI18n from 'vue-i18n';
 Vue.use(VueI18n);
 
@@ -118,17 +116,6 @@ window.vue = new Vue(
 				return window.location.protocol + '//' + window.location.host + '/dashboard/order/' + id;
 			},
 
-			localDate(date) {
-				if(locale === 'fr')
-				{
-					return format( new Date(date), 'PPP', {locale: fr})
-				}
-				else
-				{
-					return format( new Date(date), 'PPP', {locale: enUS})
-				}
-			},
-
 			debounceInput: debounce( e =>
 				{
 					vue.getOrders();
@@ -191,9 +178,10 @@ window.vue = new Vue(
 			},
 
 			getCurrentOrder(prop) {
+
 				if(this.currentOrder)
 				{
-					return this.currentOrder[prop];
+					return eval('this.currentOrder.'+prop);
 				} 
 				else 
 				{

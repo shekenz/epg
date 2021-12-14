@@ -23,6 +23,10 @@ class OrderCollectionRessource extends JsonResource
 					'status' => $this->status,
 					'read' => (bool) $this->read,
 					'created_at' => $this->created_at,
+					'locale' => [
+						'created_date' => $this->created_at_fdate,
+						'created_time' => $this->created_at_ftime,
+					],
 				];
     }
 }

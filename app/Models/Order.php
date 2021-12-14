@@ -9,7 +9,7 @@ class Order extends Model
 {
     use HasFactory;
 
-	protected $appends = ['created_at_formated'];
+	protected $appends = ['created_at_fdate', 'created_at_ftime'];
 
 	protected $fillable = [
 		'order_id',
@@ -38,8 +38,12 @@ class Order extends Model
 		'hidden',
 	];
 
-	public function getCreatedAtFormatedAttribute() {
-		return ucfirst($this->created_at->locale(config('app.locale'))->isoFormat('LLLL'));
+	public function getCreatedAtFDateAttribute() {
+		return ucfirst($this->created_at->locale(config('app.locale'))->isoFormat('LL'));
+	}
+
+	public function getCreatedAtFTimeAttribute() {
+		return ucfirst($this->created_at->locale(config('app.locale'))->isoFormat('LT'));
 	}
 
 	public function books() {
