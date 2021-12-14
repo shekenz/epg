@@ -114,51 +114,110 @@
 			<div class="flex gap-x-8 w-full">
 
 				<div class="w-full">
-					<x-separator first>{{ ___('order informations') }}</x-separator>
+					<table class="big">
+						
+						<thead>
+							<tr>
+								<td colspan="2">{{ ___('order informations') }}</td>
+							<tr>
+						</thead>
 
-					<div class="flex items-center gap-x-2 mb-2">
-						<span class="text-gray-600 dark:text-gray-400">{{ ___('status') }} :</span>
-						<div class="w-32 inline">
-							<x-captions.order-status status="getCurrentOrder('order.status')"/>
-						</div>
-					</div>
+						<tbody>
+							<tr>
+								<td class="text-gray-600 dark:text-gray-400">{{ ___('status') }} :</td>
+								<td><x-captions.order-status status="getCurrentOrder('order.status')"/></td>
+							</tr>
+							<tr>
+								<td><span class="text-gray-600 dark:text-gray-400">{{ ___('transaction ID') }} :</span></td>
+								<td><a class="text-inherit" target="_blank" :href="
+								@if(setting('app.paypal.sandbox'))
+								'https://www.sandbox.paypal.com/activity/payment/'+getCurrentOrder('order.transaction_id')
+								@else
+								'https://www.sandbox.paypal.com/activity/payment/'+getCurrentOrder('order.transaction_id')
+								@endif
+							">@{{ getCurrentOrder('order.transaction_id') }}</a>&nbsp;<x-tabler-brand-paypal class="inline w-5 h-5"/></td>
+							</tr>
+							<tr>
+								<td><span class="text-gray-600 dark:text-gray-400">{{ ___('order ID') }} :</span></td>
+								<td>@{{ getCurrentOrder('order.id') }}</td>
+							</tr>
+							<tr>
+								<td><span class="text-gray-600 dark:text-gray-400">{{ ___('ordered at') }} :</span></td>
+								<td>@{{ getCurrentOrder('meta.locale.created_date') }}</td>
+							</tr>
+							<tr>
+								<td><span class="text-gray-600 dark:text-gray-400">{{ ___('shipping method') }} :</span></td>
+								<td>@{{ getCurrentOrder('shipping.method.label') }}</td>
+							</tr>
+							<tr>
+								<td><span class="text-gray-600 dark:text-gray-400">{{ ___('total weight') }} :</span></td>
+								<td>@{{ getCurrentOrder('shipping.total_weight')+'g' }}</td>
+							</tr>
+						</tbody>
 
-					<ul>
-						<li><span class="text-gray-600 dark:text-gray-400">{{ ___('transaction ID') }} :</span> <a class="text-inherit" target="_blank" :href="
-							@if(setting('app.paypal.sandbox'))
-							'https://www.sandbox.paypal.com/activity/payment/'+getCurrentOrder('order.transaction_id')
-							@else
-							'https://www.sandbox.paypal.com/activity/payment/'+getCurrentOrder('order.transaction_id')
-							@endif
-						">@{{ getCurrentOrder('order.transaction_id') }}</a>&nbsp;<x-tabler-brand-paypal class="inline w-5 h-5"/></li>
-						<li><span class="text-gray-600 dark:text-gray-400">{{ ___('order ID') }} :</span> @{{ getCurrentOrder('order.id') }}</li>
-						<li><span class="text-gray-600 dark:text-gray-400">{{ ___('ordered at') }} :</span> @{{ getCurrentOrder('meta.locale.created_date') }}</li>
-						<li><span class="text-gray-600 dark:text-gray-400">{{ ___('shipping method') }} :</span> @{{ getCurrentOrder('shipping.method.label') }}</li>
-						<li><span class="text-gray-600 dark:text-gray-400">{{ ___('total weight') }} :</span> @{{ getCurrentOrder('shipping.total_weight')+'g' }}</li>
-					</ul>
+					</table>
 				</div>
 
 				<div class="w-full">
-					<x-separator first>{{ ___('client data') }}</x-separator>
-					<ul>
-						<li><span class="text-gray-600 dark:text-gray-400">{{ ___('client ID') }} :</span> @{{ getCurrentOrder('payer.id') }}</li>
-						<li><span class="text-gray-600 dark:text-gray-400">{{ ___('client') }} :</span> @{{ getCurrentOrder('payer.full_name') }}</li>
-						<li><span class="text-gray-600 dark:text-gray-400">{{ ___('contact email') }} :</span> <a class="text-inherit" :href="'mailto:'+getCurrentOrder('payer.contact_email')">@{{ getCurrentOrder('payer.contact_email') }}</a></li>
-						<li><span class="text-gray-600 dark:text-gray-400">{{ ___('paypal address') }} :</span> @{{ getCurrentOrder('payer.paypal_address') }}</li>
-						<li v-show="getCurrentOrder('payer.phone_number')"><span class="text-gray-600 dark:text-gray-400">{{ ___('phone number') }} :</span> @{{ getCurrentOrder('payer.phone_number') }}</li>
-					</ul>
+					<table class="big">
+						<thead>
+							<tr>
+								<td colspan="2">{{ ___('client data') }}</td>
+							<tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><span class="text-gray-600 dark:text-gray-400">{{ ___('client ID') }} :</span></td>
+								<td>@{{ getCurrentOrder('payer.id') }}</td>
+							</tr>
+							<tr>
+								<td><span class="text-gray-600 dark:text-gray-400">{{ ___('client') }} :</span></td>
+								<td>@{{ getCurrentOrder('payer.full_name') }}</td>
+							</tr>
+							<tr>
+								<td><span class="text-gray-600 dark:text-gray-400">{{ ___('contact email') }} :</span></td>
+								<td><a class="text-inherit" :href="'mailto:'+getCurrentOrder('payer.contact_email')">@{{ getCurrentOrder('payer.contact_email') }}</a></td>
+							</tr>
+							<tr>
+								<td><span class="text-gray-600 dark:text-gray-400">{{ ___('paypal address') }} :</span></td>
+								<td>@{{ getCurrentOrder('payer.paypal_address') }}</td>
+							</tr>
+							<tr v-show="getCurrentOrder('payer.phone_number')">
+								<td><span class="text-gray-600 dark:text-gray-400">{{ ___('phone number') }} :</span></td>
+								<td>@{{ getCurrentOrder('payer.phone_number') }}</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 				
 				<div class="w-full">
-					<x-separator first>{{ ___('shipping address') }}</x-separator>
-					<ul class="bg-white border-[3px] border-gray-800 text-gray-800 py-4 px-12 text-lg shadow-tight-window">
-						<li class="font-bold">@{{ getCurrentOrder('payer.full_name') }}</li>
-						<li>@{{ getCurrentOrder('shipping.address.line_1') }}</li>
-						<li>@{{ getCurrentOrder('shipping.address.line_2') }}</li>
-						<li>@{{ getCurrentOrder('shipping.address.postcode')+' '+getCurrentOrder('shipping.address.admin_area_2') }}</li>
-						<li>@{{ getCurrentOrder('shipping.address.admin_area_1') }}</li>
-						<li>@{{ getCurrentOrder('shipping.address.country') }}</li>
-					</ul>
+					<table class="big">
+						
+						<thead>
+							<tr>
+								<td>{{ ___('shipping address') }}</td>
+							<tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									<ul class="py-4 px-12 text-lg">
+										<li class="font-bold">@{{ getCurrentOrder('payer.full_name') }}</li>
+										<li>@{{ getCurrentOrder('shipping.address.line_1') }}</li>
+										<li>@{{ getCurrentOrder('shipping.address.line_2') }}</li>
+										<li>@{{ getCurrentOrder('shipping.address.postcode')+' '+getCurrentOrder('shipping.address.admin_area_2') }}</li>
+										<li>@{{ getCurrentOrder('shipping.address.admin_area_1') }}</li>
+										<li>@{{ getCurrentOrder('shipping.address.country') }}</li>
+									</ul>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<x-buttons align="right" class="mt-4">
+						<x-button href="#" :label="___('print label')" class="big" icon="printer" />
+					</x-buttons>
+					
 				</div>
 
 			</div>
