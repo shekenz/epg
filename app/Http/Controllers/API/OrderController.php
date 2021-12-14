@@ -49,6 +49,7 @@ class OrderController extends Controller
 		 */
 		public function show(Order $order)
 		{
+			//$order->load('shippingMethods.priceStops', 'coupons');
 			return new OrderResource($order);
 		}
 

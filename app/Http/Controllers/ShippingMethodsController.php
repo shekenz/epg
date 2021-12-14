@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\ShippingMethod;
 use App\Traits\ShopControls;
 use App\Models\Order;
+use App\Http\Resources\ShippingMethodResource;
 
 class ShippingMethodsController extends Controller
 {
@@ -20,7 +21,12 @@ class ShippingMethodsController extends Controller
 		'info' => ['nullable'],
 	];
 
-    public function add(Request $request) {
+	public function show(string $id) {
+		$shippingMethod = ShippingMethod::with('priceStops')->withTrashed()->findOrFail($id);
+		return new ShippingMethodResource($shippingMethod);
+	}
+
+	public function add(Request $request) {
 		$data = $request->validate($this->validation);
 		ShippingMethod::create($data);
 		return redirect()->route('settings');

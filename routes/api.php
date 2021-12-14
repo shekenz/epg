@@ -9,6 +9,7 @@ use App\Http\Controllers\BooksController;
 use App\Http\Controllers\VariationsController;
 use App\Http\Controllers\API\OrderController;
 use App\Http\Controllers\API\FilterOrderController;
+use App\Http\Controllers\ShippingMethodsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,6 +53,7 @@ Route::middleware('shop')->group(function() {
 });
 
 // Backend API
+Route::get('shippings/{shippingMethod}', [ShippingMethodsController::class, 'show']);
 Route::post('orders/filter', [FilterOrderController::class, 'filter']);
 Route::apiResource('orders', OrderController::class)->only(['index', 'show']);
 

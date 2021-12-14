@@ -100,7 +100,7 @@
 						<td>@{{ order.name }}</td>
 						<td>@{{ order.email }}</td>
 						<td><x-tabler-clipboard-check v-if="order.pre_order" class="text-green-500"/></td>
-						<td><x-captions.order-status /></td>
+						<td><x-captions.order-status status="order.status"/></td>
 						<td>@{{ order.locale.created_date }}</td>
 						<td>{{ ___('actions') }}</td>
 					</tr>
@@ -110,19 +110,19 @@
 		</x-section>
 
 		<x-section return="#" @click.prevent="returnToList" ::title="'{{ ___('order') }} '+getCurrentOrder('order_id')" class="full" v-show="currentOrder">
-			<div class="flex gap-x-8 w-full mb-4">
-				<div class="w-full">
-					<x-separator first>{{ ___('client data') }}</x-separator>
-					<ul>
-						<li><span class="text-gray-600 dark:text-gray-400">{{ ___('client ID') }} :</span> @{{ getCurrentOrder('payer.id') }}</li>
-						<li><span class="text-gray-600 dark:text-gray-400">{{ ___('client') }} :</span> @{{ getCurrentOrder('payer.full_name') }}</li>
-						<li><span class="text-gray-600 dark:text-gray-400">{{ ___('contact email') }} :</span> <a class="text-inherit" :href="'mailto:'+getCurrentOrder('payer.contact_email')">@{{ getCurrentOrder('payer.contact_email') }}</a></li>
-						<li><span class="text-gray-600 dark:text-gray-400">{{ ___('paypal address') }} :</span> @{{ getCurrentOrder('payer.paypal_address') }}</li>
-						<li v-show="getCurrentOrder('payer.phone_number')"><span class="text-gray-600 dark:text-gray-400">{{ ___('phone number') }} :</span> @{{ getCurrentOrder('payer.phone_number') }}</li>
-					</ul>
-				</div>
+
+			<div class="flex gap-x-8 w-full">
+
 				<div class="w-full">
 					<x-separator first>{{ ___('order informations') }}</x-separator>
+
+					<div class="flex items-center gap-x-2 mb-2">
+						<span class="text-gray-600 dark:text-gray-400">{{ ___('status') }} :</span>
+						<div class="w-32 inline">
+							<x-captions.order-status status="getCurrentOrder('order.status')"/>
+						</div>
+					</div>
+
 					<ul>
 						<li><span class="text-gray-600 dark:text-gray-400">{{ ___('transaction ID') }} :</span> <a class="text-inherit" target="_blank" :href="
 							@if(setting('app.paypal.sandbox'))
@@ -133,10 +133,22 @@
 						">@{{ getCurrentOrder('order.transaction_id') }}</a>&nbsp;<x-tabler-brand-paypal class="inline w-5 h-5"/></li>
 						<li><span class="text-gray-600 dark:text-gray-400">{{ ___('order ID') }} :</span> @{{ getCurrentOrder('order.id') }}</li>
 						<li><span class="text-gray-600 dark:text-gray-400">{{ ___('ordered at') }} :</span> @{{ getCurrentOrder('meta.locale.created_date') }}</li>
-						<li><span class="text-gray-600 dark:text-gray-400">{{ ___('shipping method') }} :</span> @{{ getCurrentOrder('shipping.method') }}</li>
+						<li><span class="text-gray-600 dark:text-gray-400">{{ ___('shipping method') }} :</span> @{{ getCurrentOrder('shipping.method.label') }}</li>
 						<li><span class="text-gray-600 dark:text-gray-400">{{ ___('total weight') }} :</span> @{{ getCurrentOrder('shipping.total_weight')+'g' }}</li>
 					</ul>
 				</div>
+
+				<div class="w-full">
+					<x-separator first>{{ ___('client data') }}</x-separator>
+					<ul>
+						<li><span class="text-gray-600 dark:text-gray-400">{{ ___('client ID') }} :</span> @{{ getCurrentOrder('payer.id') }}</li>
+						<li><span class="text-gray-600 dark:text-gray-400">{{ ___('client') }} :</span> @{{ getCurrentOrder('payer.full_name') }}</li>
+						<li><span class="text-gray-600 dark:text-gray-400">{{ ___('contact email') }} :</span> <a class="text-inherit" :href="'mailto:'+getCurrentOrder('payer.contact_email')">@{{ getCurrentOrder('payer.contact_email') }}</a></li>
+						<li><span class="text-gray-600 dark:text-gray-400">{{ ___('paypal address') }} :</span> @{{ getCurrentOrder('payer.paypal_address') }}</li>
+						<li v-show="getCurrentOrder('payer.phone_number')"><span class="text-gray-600 dark:text-gray-400">{{ ___('phone number') }} :</span> @{{ getCurrentOrder('payer.phone_number') }}</li>
+					</ul>
+				</div>
+				
 				<div class="w-full">
 					<x-separator first>{{ ___('shipping address') }}</x-separator>
 					<ul class="bg-white border-[3px] border-gray-800 text-gray-800 py-4 px-12 text-lg shadow-tight-window">
@@ -151,7 +163,30 @@
 
 			</div>
 
-			@{{currentOrder}}
+			<table class="big mt-8">
+				<thead>
+					<tr>
+						<td>{{ ___('title') }}</td>
+						<td>{{ ___('variation') }}</td>
+						<td>{{ ___('author') }}</td>
+						<td>{{ ___('quantity') }}</td>
+						<td>{{ ___('sub-total') }}</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="book in getCurrentOrder('order.books')">
+						<td>@{{ book.title }}</td>
+						<td>@{{ book.variation }}</td>
+						<td>@{{ book.author }}</td>
+						<td>@{{ book.quantity }}</td>
+						<td>@{{ book.total_price }}</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<div class="mt-8">
+				@{{currentOrder}}
+			</div>
 		</x-section>
 
 	<div>

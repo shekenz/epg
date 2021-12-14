@@ -3,6 +3,8 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\OrderCouponResource;
+use App\Http\Resources\OrderBookCollection;
 
 class OrderResource extends JsonResource
 {
@@ -35,7 +37,12 @@ class OrderResource extends JsonResource
 							'country_code' => $this->country_code,
 							'country' => config('countries.'.$this->country_code),
 						],
-						'method' => [],
+						'method' => [
+							'id' => (string) $this->shippingMethods->id,
+							'label' => $this->shippingMethods->label,
+							'rule' => $this->shippingMethods->rule,
+							'price' => findStopPrice((int) $this->total_weight, (float) $this->shippingMethods->price, $this->shippingMethods->priceStops),
+						],
 						'total_weight' => $this->total_weight,
 						'shipped_at' => $this->shipped_at,
 						'tracking_url' => $this->tracking_url,
@@ -45,7 +52,8 @@ class OrderResource extends JsonResource
 						'transaction_id' => $this->transaction_id,
 						'status' => $this->status,
 						'pre_order' => (bool) $this->pre_order,
-						'books' => [],
+						'books' => new OrderBookCollection($this->books),
+						'coupon' => new OrderCouponResource($this->coupons),
 					],
 					'meta' => [
 						'read' => (bool) $this->read,
