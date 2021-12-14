@@ -333,6 +333,11 @@
 			inline-block;
 	}
 
+	.button:hover svg {
+		@apply
+			text-white;
+	}
+
 	.button.icon {
 		@apply
 			py-1
@@ -343,6 +348,7 @@
 			inline-flex
 			mx-0.5;
 	}
+
 
 	.button.big {
 		@apply
