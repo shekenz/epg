@@ -166,6 +166,29 @@ window.vue = new Vue(
 				).then(rJson =>
 					{
 						this.currentOrder = rJson.data;
+
+						// Calculating total price of all books
+						this.currentOrder.order.total = this.currentOrder.order.books.reduce((total, book) => { 
+							return Math.round((total + book.total_price) * 100) / 100;
+						}, 0 );
+
+						// Calculating coupon price depending on type
+						const coupon = this.currentOrder.order.coupon;
+						if(coupon)
+						{
+							if(coupon.fixed)
+							{ // If coupon is a fixed value
+								this.currentOrder.order.coupon_price = coupon.value * -1;
+							} 
+							else 
+							{ // If coupon value is a percentage of total order
+								this.currentOrder.order.coupon_price = Math.round(this.currentOrder.order.total * coupon.value) / -100;
+							}
+						} else {
+							this.currentOrder.order.coupon_price = 0;
+						}
+
+						// Saving currentOrder as a state
 						history.pushState({currentOrder: this.currentOrder}, null, window.location.origin+'/dashboard/order/'+id);
 					}
 				);
@@ -177,17 +200,6 @@ window.vue = new Vue(
 				history.pushState({currentOrder: null}, null, window.location.origin+'/dashboard/orders');
 			},
 
-			getCurrentOrder(prop) {
-
-				if(this.currentOrder)
-				{
-					return eval('this.currentOrder.'+prop);
-				} 
-				else 
-				{
-					return null
-				}
-			}
 		},
 		mounted()
 		{

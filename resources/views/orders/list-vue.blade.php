@@ -109,7 +109,7 @@
 
 		</x-section>
 
-		<x-section return="#" @click.prevent="returnToList" ::title="'{{ ___('order') }} '+getCurrentOrder('order.id')" class="full" v-show="currentOrder">
+		<x-section return="#" @click.prevent="returnToList" ::title="'{{ ___('order') }} '+currentOrder.order.id" class="full" v-if="currentOrder">
 
 			<x-buttons>
 				<x-button icon="truck-delivery" :label="___('dispatch') " href="#" class="big" />
@@ -133,33 +133,33 @@
 						<tbody>
 							<tr>
 								<td class="text-gray-600 dark:text-gray-400">{{ ___('status') }} :</td>
-								<td><x-captions.order-status status="getCurrentOrder('order.status')"/></td>
+								<td><x-captions.order-status status="currentOrder.order.status"/></td>
 							</tr>
 							<tr>
 								<td><span class="text-gray-600 dark:text-gray-400">{{ ___('transaction ID') }} :</span></td>
 								<td><a class="text-inherit" target="_blank" :href="
 								@if(setting('app.paypal.sandbox'))
-								'https://www.sandbox.paypal.com/activity/payment/'+getCurrentOrder('order.transaction_id')
+								'https://www.sandbox.paypal.com/activity/payment/'+currentOrder.order.transaction_id
 								@else
-								'https://www.sandbox.paypal.com/activity/payment/'+getCurrentOrder('order.transaction_id')
+								'https://www.sandbox.paypal.com/activity/payment/'+currentOrder.order.transaction_id
 								@endif
-							">@{{ getCurrentOrder('order.transaction_id') }}</a></td>
+							">@{{ currentOrder.order.transaction_id }}</a></td>
 							</tr>
 							<tr>
 								<td><span class="text-gray-600 dark:text-gray-400">{{ ___('order ID') }} :</span></td>
-								<td>@{{ getCurrentOrder('order.id') }}</td>
+								<td>@{{ currentOrder.id }}</td>
 							</tr>
 							<tr>
 								<td><span class="text-gray-600 dark:text-gray-400">{{ ___('ordered at') }} :</span></td>
-								<td>@{{ getCurrentOrder('meta.locale.created_date') }}</td>
+								<td>@{{ currentOrder.meta.locale.created_date }}</td>
 							</tr>
 							<tr>
 								<td><span class="text-gray-600 dark:text-gray-400">{{ ___('shipping method') }} :</span></td>
-								<td>@{{ getCurrentOrder('shipping.method.label') }}</td>
+								<td>@{{ currentOrder.shipping.method.label }}</td>
 							</tr>
 							<tr>
 								<td><span class="text-gray-600 dark:text-gray-400">{{ ___('total weight') }} :</span></td>
-								<td>@{{ getCurrentOrder('shipping.total_weight')+'g' }}</td>
+								<td>@{{ currentOrder.shipping.total_weight+'g' }}</td>
 							</tr>
 						</tbody>
 
@@ -176,23 +176,23 @@
 						<tbody>
 							<tr>
 								<td><span class="text-gray-600 dark:text-gray-400">{{ ___('client ID') }} :</span></td>
-								<td>@{{ getCurrentOrder('payer.id') }}</td>
+								<td>@{{ currentOrder.payer.id }}</td>
 							</tr>
 							<tr>
 								<td><span class="text-gray-600 dark:text-gray-400">{{ ___('client') }} :</span></td>
-								<td>@{{ getCurrentOrder('payer.full_name') }}</td>
+								<td>@{{ currentOrder.payer.full_name }}</td>
 							</tr>
 							<tr>
 								<td><span class="text-gray-600 dark:text-gray-400">{{ ___('contact email') }} :</span></td>
-								<td><a class="text-inherit" :href="'mailto:'+getCurrentOrder('payer.contact_email')">@{{ getCurrentOrder('payer.contact_email') }}</a></td>
+								<td><a class="text-inherit" :href="'mailto:'+currentOrder.payer.contact_email">@{{ currentOrder.payer.contact_email }}</a></td>
 							</tr>
 							<tr>
 								<td><span class="text-gray-600 dark:text-gray-400">{{ ___('paypal address') }} :</span></td>
-								<td>@{{ getCurrentOrder('payer.paypal_address') }}</td>
+								<td>@{{ currentOrder.payer.paypal_address }}</td>
 							</tr>
-							<tr v-show="getCurrentOrder('payer.phone_number')">
+							<tr v-show="currentOrder.payer.phone_number">
 								<td><span class="text-gray-600 dark:text-gray-400">{{ ___('phone number') }} :</span></td>
-								<td>@{{ getCurrentOrder('payer.phone_number') }}</td>
+								<td>@{{ currentOrder.payer.phone_number }}</td>
 							</tr>
 						</tbody>
 					</table>
@@ -210,12 +210,12 @@
 							<tr>
 								<td>
 									<ul class="py-4 px-12 text-lg">
-										<li class="font-bold">@{{ getCurrentOrder('payer.full_name') }}</li>
-										<li>@{{ getCurrentOrder('shipping.address.line_1') }}</li>
-										<li>@{{ getCurrentOrder('shipping.address.line_2') }}</li>
-										<li>@{{ getCurrentOrder('shipping.address.postcode')+' '+getCurrentOrder('shipping.address.admin_area_2') }}</li>
-										<li>@{{ getCurrentOrder('shipping.address.admin_area_1') }}</li>
-										<li>@{{ getCurrentOrder('shipping.address.country') }}</li>
+										<li class="font-bold">@{{ currentOrder.payer.full_name }}</li>
+										<li>@{{ currentOrder.shipping.address.line_1 }}</li>
+										<li>@{{ currentOrder.shipping.address.line_2 }}</li>
+										<li>@{{ currentOrder.shipping.address.postcode+' '+currentOrder.shipping.address.admin_area_2 }}</li>
+										<li>@{{ currentOrder.shipping.address.admin_area_1 }}</li>
+										<li>@{{ currentOrder.shipping.address.country }}</li>
 									</ul>
 								</td>
 							</tr>
@@ -233,16 +233,28 @@
 						<td>{{ ___('variation') }}</td>
 						<td>{{ ___('author') }}</td>
 						<td>{{ ___('quantity') }}</td>
-						<td>{{ ___('sub-total') }}</td>
+						<td>{{ ___('subtotal') }}</td>
 					</tr>
 				</thead>
 				<tbody>
-					<tr v-for="book in getCurrentOrder('order.books')">
+					<tr v-for="book in currentOrder.order.books">
 						<td>@{{ book.title }}</td>
 						<td>@{{ book.variation }}</td>
 						<td>@{{ book.author }}</td>
 						<td>@{{ book.quantity }}</td>
-						<td>@{{ book.total_price }}</td>
+						<td>@{{ book.total_price }} €</td>
+					</tr>
+					<tr v-if="currentOrder.order.coupon" class="border-t border-primary">
+						<td colspan="4">{{ ___('coupon') }} @{{ currentOrder.order.coupon.label }} ( -@{{ currentOrder.order.coupon.value + ((currentOrder.order.coupon.fixed) ? ' €' : '%') }} )</td>
+						<td>@{{ currentOrder.order.coupon_price }} €</td>
+					</tr>
+					<tr class="border-t border-primary">
+						<td colspan="4">{{ ___('shipping method') }} : @{{ currentOrder.shipping.method.label }}</td>
+						<td>@{{ currentOrder.shipping.method.price }} €</td>
+					</tr>
+					<tr class="border-t border-primary">
+						<td colspan="4">{{ ___('total') }}</td>
+						<td>@{{ currentOrder.order.total + currentOrder.order.coupon_price + currentOrder.shipping.method.price }} €</td>
 					</tr>
 				</tbody>
 			</table>
