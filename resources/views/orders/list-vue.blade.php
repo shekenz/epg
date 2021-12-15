@@ -7,24 +7,12 @@
 		@endif
 	</x-slot>
 
-	@if(request()->routeIs('orders.hidden'))
-	<x-slot name="leftControls">
-		<a href="{{ route('orders') }}" class="mini-button"><x-tabler-chevron-left /></a>
-	</x-slot>
-	@endif
-
 	<x-slot name="scripts">
 		<script src="{{ asset('js/order-vue.js') }}" type="text/javascript" defer></script>
 	</x-slot>
 
-	@if(request()->routeIs('orders'))
-	<x-slot name="controls">
-		<a class="button-shared" href="{{ route('orders.hidden') }}">{{ ___('hidden orders') }}</a>
-		<a class="button-shared" href="{{ route('archive.list') }}">{{ ___('archived orders') }}</a>
-	</x-slot>
-	@endif
-
 	<div id="orders">
+
 		<x-section :title="___('archived orders')" class="full" v-show="!currentOrder">
 
 			<form class="flex flex-col md:flex-row md:gap-x-8 md:items-center">
@@ -100,7 +88,7 @@
 						<td>@{{ order.name }}</td>
 						<td>@{{ order.email }}</td>
 						<td><x-tabler-clipboard-check v-if="order.pre_order" class="text-green-500"/></td>
-						<td><x-captions.order-status status="order.status"/></td>
+						<td><x-captions.order-status-vue status="order.status"/></td>
 						<td>@{{ order.locale.created_date }}</td>
 						<td>{{ ___('actions') }}</td>
 					</tr>
@@ -122,18 +110,16 @@
 			<div class="flex gap-x-8 w-full">
 
 				<div class="w-full">
-					<table class="big">
-						
+					<table class="big">						
 						<thead>
 							<tr>
 								<td colspan="2">{{ ___('order informations') }}</td>
 							<tr>
 						</thead>
-
 						<tbody>
 							<tr>
 								<td class="text-gray-600 dark:text-gray-400">{{ ___('status') }} :</td>
-								<td><x-captions.order-status status="currentOrder.order.status"/></td>
+								<td><x-captions.order-status-vue status="currentOrder.order.status"/></td>
 							</tr>
 							<tr>
 								<td><span class="text-gray-600 dark:text-gray-400">{{ ___('transaction ID') }} :</span></td>
@@ -141,13 +127,13 @@
 								@if(setting('app.paypal.sandbox'))
 								'https://www.sandbox.paypal.com/activity/payment/'+currentOrder.order.transaction_id
 								@else
-								'https://www.sandbox.paypal.com/activity/payment/'+currentOrder.order.transaction_id
+								'https://www.paypal.com/activity/payment/'+currentOrder.order.transaction_id
 								@endif
 							">@{{ currentOrder.order.transaction_id }}</a></td>
 							</tr>
 							<tr>
 								<td><span class="text-gray-600 dark:text-gray-400">{{ ___('order ID') }} :</span></td>
-								<td>@{{ currentOrder.id }}</td>
+								<td>@{{ currentOrder.order.id }}</td>
 							</tr>
 							<tr>
 								<td><span class="text-gray-600 dark:text-gray-400">{{ ___('ordered at') }} :</span></td>
@@ -162,7 +148,6 @@
 								<td>@{{ currentOrder.shipping.total_weight+'g' }}</td>
 							</tr>
 						</tbody>
-
 					</table>
 				</div>
 
@@ -200,7 +185,6 @@
 				
 				<div class="w-full">
 					<table class="big">
-						
 						<thead>
 							<tr>
 								<td>{{ ___('shipping address') }}</td>
@@ -221,7 +205,6 @@
 							</tr>
 						</tbody>
 					</table>
-					
 				</div>
 
 			</div>
@@ -259,9 +242,6 @@
 				</tbody>
 			</table>
 
-			<div class="mt-8">
-				@{{currentOrder}}
-			</div>
 		</x-section>
 
 	<div>
