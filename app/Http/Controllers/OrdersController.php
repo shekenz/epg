@@ -82,7 +82,7 @@ class OrdersController extends Controller
 	 * @return void
 	 */
 	public function display($id) {
-		$order = Order::with(['books', 'coupons', 'shippingMethods'])->where('id', $id)->firstOrFail();
+		$order = Order::with(['books', 'coupons', 'shippingMethods', 'books.bookInfo'])->where('id', $id)->firstOrFail();
 
 		// Decrementing newOrders cache
 		if(!$order->read) {
