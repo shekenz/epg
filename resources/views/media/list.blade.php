@@ -5,7 +5,7 @@
 
 	<x-section :title="___('media')" class="full">
 		<x-buttons>
-			<x-button :href="route('media.create')" class="big" :label="___('upload')" />
+			<x-button icon="file-upload" :href="route('media.create')" class="big" :label="___('upload')" />
 		</x-buttons>
 		<div class="
 			grid

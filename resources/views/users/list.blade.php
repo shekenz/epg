@@ -10,7 +10,7 @@
 
 	<x-section :title="___('users')">
 		<x-buttons>
-			<x-button :href="route('users.invitation')" :label="___('invite')" class="big" />
+			<x-button icon="mail" :href="route('users.invitation')" :label="___('invite')" class="big" />
 		</x-buttons>
 	@foreach($users as $user)
 		<div class="flex flex-row items-center py-2 px-4">

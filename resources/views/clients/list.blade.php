@@ -10,7 +10,7 @@
 
 	<x-section :title="___('client list')">
 		<x-buttons>
-			<x-button :href="route('clients.export')" :label="___('CSV export')" class="big" />
+			<x-button icon="file-download" :href="route('clients.export')" :label="___('CSV export')" class="big" />
 		</x-buttons>
 		<table class="big">
 			<thead>

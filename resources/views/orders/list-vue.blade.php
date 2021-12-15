@@ -135,7 +135,7 @@
 								@else
 								'https://www.sandbox.paypal.com/activity/payment/'+getCurrentOrder('order.transaction_id')
 								@endif
-							">@{{ getCurrentOrder('order.transaction_id') }}</a>&nbsp;<x-tabler-brand-paypal class="inline w-5 h-5"/></td>
+							">@{{ getCurrentOrder('order.transaction_id') }}</a></td>
 							</tr>
 							<tr>
 								<td><span class="text-gray-600 dark:text-gray-400">{{ ___('order ID') }} :</span></td>

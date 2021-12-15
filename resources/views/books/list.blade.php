@@ -11,9 +11,9 @@
 
 	<x-section :title="___('books')" class="full">
 		<x-buttons>
-			<x-button :href="route('books.create')" :label="___('new')" class="big" />
+			<x-button icon="circle-plus" :href="route('books.create')" :label="___('new')" class="big" />
 			@if(!empty($archived))
-			<x-button :href="route('books.archives')" :label="___('archived').' ('.$archived.')'" class="big" />
+			<x-button icon="archive" :href="route('books.archives')" :label="___('archived').' ('.$archived.')'" class="big" />
 			@endif
 		</x-buttons>
 		<table class="big">
