@@ -17,7 +17,7 @@ class OrderController extends Controller
 		 */
 		public function index()
 		{
-			return new OrderCollection(Order::all());
+			return new OrderCollection(Order::with('books.bookInfo')->all());
 		}
 
 		/**
@@ -49,7 +49,8 @@ class OrderController extends Controller
 		 */
 		public function show(Order $order)
 		{
-			//$order->load('shippingMethods.priceStops', 'coupons');
+			// Avoiding N+1 requests on bookInfo
+			$order->load('books.bookInfo');
 			return new OrderResource($order);
 		}
 

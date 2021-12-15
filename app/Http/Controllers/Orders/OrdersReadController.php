@@ -10,7 +10,7 @@ use App\Models\Coupon;
 use App\Models\ShippingMethod;
 use App\Models\Book;
 
-class OrderRessourcesController extends Controller
+class OrdersReadController extends Controller
 {
 		/**
 		 * Display a listing of the resource.
@@ -21,7 +21,7 @@ class OrderRessourcesController extends Controller
 		{
 			$coupons = Coupon::withTrashed()->get();
 			$shippingMethods = ShippingMethod::withTrashed()->orderBy('price', 'ASC')->get();
-			$books = Book::withTrashed()->orderBy('book_info_id', 'ASC')->get();
+			$books = Book::with('bookInfo')->withTrashed()->orderBy('book_info_id', 'ASC')->get();
 			return view('orders.list-vue', compact('coupons', 'shippingMethods', 'books'));
 		}
 

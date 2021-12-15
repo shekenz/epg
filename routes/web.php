@@ -12,7 +12,7 @@ use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\ShippingMethodsController;
 use App\Http\Controllers\CouponsController;
 use App\Http\Controllers\OrdersMassController;
-use App\Http\Controllers\Orders\OrderRessourcesController;
+use App\Http\Controllers\Orders\OrdersReadController;
 use App\Http\Controllers\ArchivedOrdersController;
 use App\Http\Controllers\PriceStopsController;
 use App\Http\Controllers\ClientsController;
@@ -57,7 +57,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function() {
 
 	// Orders
 	Route::name('orders')->group(function() {
-		Route::get('/orders', [OrderRessourcesController::class, 'index']);
+		Route::get('/orders', [OrdersReadController::class, 'index']);
 		Route::get('/order/{id}', [OrdersController::class, 'display'])->name('.display');
 		Route::get('/order/cancel/{order}', [OrdersController::class, 'cancel'])->name('.cancel');
 		Route::get('/order/recycle/{orderID}', [OrdersController::class, 'recycle'])->name('.recycle');
