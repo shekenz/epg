@@ -19,6 +19,7 @@ class OrdersReadController extends Controller
 		 */
 		public function index()
 		{
+			// We need those data to fill up the filter's inputs
 			$coupons = Coupon::withTrashed()->get();
 			$shippingMethods = ShippingMethod::withTrashed()->orderBy('price', 'ASC')->get();
 			$books = Book::with('bookInfo')->withTrashed()->orderBy('book_info_id', 'ASC')->get();

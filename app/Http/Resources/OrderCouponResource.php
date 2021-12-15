@@ -18,7 +18,7 @@ class OrderCouponResource extends JsonResource
 					'id' => (string) $this->id,
 					'label' => $this->label,
 					'value' => $this->value,
-					'fixed' => (bool) $this->type
+					'fixed' => (bool) $this->type,
 				];
     }
 }
