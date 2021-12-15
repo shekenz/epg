@@ -109,7 +109,15 @@
 
 		</x-section>
 
-		<x-section return="#" @click.prevent="returnToList" ::title="'{{ ___('order') }} '+getCurrentOrder('order_id')" class="full" v-show="currentOrder">
+		<x-section return="#" @click.prevent="returnToList" ::title="'{{ ___('order') }} '+getCurrentOrder('order.id')" class="full" v-show="currentOrder">
+
+			<x-buttons>
+				<x-button icon="truck-delivery" :label="___('dispatch') " href="#" class="big" />
+				<div class="flex gap-x-4">
+					<x-button href="#" :label="___('print label')" class="big" icon="printer" />
+					<x-button href="#" :label="___('packaging list')" class="big" icon="file-download" />
+				</div>
+			</x-buttons>
 
 			<div class="flex gap-x-8 w-full">
 
@@ -213,10 +221,6 @@
 							</tr>
 						</tbody>
 					</table>
-
-					<x-buttons align="right" class="mt-4">
-						<x-button href="#" :label="___('print label')" class="big" icon="printer" />
-					</x-buttons>
 					
 				</div>
 
