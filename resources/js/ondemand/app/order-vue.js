@@ -97,9 +97,10 @@ window.vue = new Vue(
 			orders: {},
 			elements:
 			{
-				loader: document.getElementById('save-loader')
+				loader: document.getElementById('save-loader'),
 			},
 			currentOrder: null,
+			selectAll: false,
 		},
 		computed:
 		{
@@ -124,6 +125,8 @@ window.vue = new Vue(
 
 			getOrders()
 			{
+				this.selectAll = false;
+				this.checkAll(this.selectAll);
 				fetch('/api/orders/filter',
 					{
 						method: 'POST',
@@ -199,6 +202,24 @@ window.vue = new Vue(
 				this.currentOrder = null
 				history.pushState({currentOrder: null}, null, window.location.origin+'/dashboard/orders');
 			},
+
+			submit(url)
+			{
+				const selection = document.getElementById('selected-orders');
+				selection.action = window.location.origin+'/dashboard'+url
+				let data = new FormData(document.getElementById('selected-orders'));
+				console.log(data.getAll('selection[]'));
+				selection.submit();
+			},
+
+			checkAll(check = true)
+			{
+				const elements = document.getElementsByName('ids[]');
+				for(let el of elements)
+				{
+					el.checked = check;
+				}
+			}
 
 		},
 		mounted()

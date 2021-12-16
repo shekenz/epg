@@ -1,10 +1,6 @@
 <x-app-layout>
 	<x-slot name="title">
-		@if(request()->routeIs('orders.hidden'))
-			{{ ___('hidden orders') }}
-		@else
 			{{ ___('orders') }}
-		@endif
 	</x-slot>
 
 	<x-slot name="scripts">
@@ -13,7 +9,7 @@
 
 	<div id="orders">
 
-		<x-section :title="___('archived orders')" class="full" v-show="!currentOrder">
+		<x-section :title="___('orders')" class="full" v-show="!currentOrder">
 
 			<form class="flex flex-col md:flex-row md:gap-x-8 md:items-center">
 
@@ -71,29 +67,44 @@
 				</x-select>
 			</form>
 
-			<table class="big mt-4">
-				<thead>
-					<tr>
-						<td>{{ ___('order') }}</td>
-						<td>{{ ___('client') }}</td>
-						<td>{{ ___('email') }}</td>
-						<td>{{ ___('paypal.status.preorder') }}</td>
-						<td>{{ ___('status') }}</td>
-						<td>{{ ___('created at') }}</td>
-						<td>{{ ___('actions') }}</td>
-				</thead>
-				<tbody>
-					<tr v-for="(order, key) in orders" :class="{ 'unread' : !order.read }">
-						<td><a :href="route(order.id)" @click.prevent="getOrder(order.id)">@{{ order.order_id }}</a></td>
-						<td>@{{ order.name }}</td>
-						<td>@{{ order.email }}</td>
-						<td><x-tabler-clipboard-check v-if="order.pre_order" class="text-green-500"/></td>
-						<td><x-captions.order-status-vue status="order.status"/></td>
-						<td>@{{ order.locale.created_date }}</td>
-						<td>{{ ___('actions') }}</td>
-					</tr>
-				</tbody>
-			</table>
+			<div id="selection-menu" class="mt-6 py-2 px-3 flex items-center gap-x-3">
+				<x-tabler-arrow-big-down class="inline" />
+				<x-button icon="eye" class="compact inline" href="#" label="{{ ___('read') }}" />
+				<x-button icon="eye-off" class="compact inline" href="#" label="{{ ___('unread') }}" />
+				<x-button icon="file-download" class="compact inline" href="#" label="{{ ___('CSV export') }}" @click.prevent="submit('/orders/csv')" />
+				<x-button icon="printer" class="compact inline" href="#" label="{{ ___('print PDF') }}" @click.prevent="submit('/orders/print/packaging-list')"/>
+				<x-button icon="printer" class="compact inline" href="#" label="{{ ___('print labels') }}" @click.prevent="submit('/orders/print/labels/preview')"/>
+				<x-button icon="archive" class="compact inline" href="#" label="{{ ___('archive') }}" />
+			</div>
+				
+			<form id="selected-orders" method="POST" action="{{ route('dashboard') }}" enctype="multipart/form-data">
+			@csrf
+				<table class="big">
+					<thead>
+						<tr>
+							<td><x-checkbox label="" name="selection" id="select-all" v-model="selectAll" @change="checkAll(selectAll)"/></td>
+							<td>{{ ___('order') }}</td>
+							<td>{{ ___('client') }}</td>
+							<td>{{ ___('email') }}</td>
+							<td>{{ ___('paypal.status.preorder') }}</td>
+							<td>{{ ___('status') }}</td>
+							<td>{{ ___('created at') }}</td>
+							<td>{{ ___('actions') }}</td>
+					</thead>
+					<tbody>
+						<tr v-for="(order, key) in orders" :class="{ 'unread' : !order.read }">
+							<td><x-checkbox label="" name="ids" array ::id="'select-'+order.id" ::value="order.id" /></td>
+							<td><a :href="route(order.id)" @click.prevent="getOrder(order.id)">@{{ order.order_id }}</a></td>
+							<td>@{{ order.name }}</td>
+							<td>@{{ order.email }}</td>
+							<td><x-tabler-clipboard-check v-if="order.pre_order" class="text-green-500"/></td>
+							<td><x-captions.order-status-vue status="order.status"/></td>
+							<td>@{{ order.locale.created_date }}</td>
+							<td>{{ ___('actions') }}</td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
 
 		</x-section>
 
