@@ -333,6 +333,12 @@
 			inline-block;
 	}
 
+	.button svg {
+		@apply
+			transition-colors
+			duration-200;
+	}
+
 	.button:hover svg {
 		@apply
 			text-white;
@@ -364,6 +370,11 @@
 			dark:text-gray-500
 			dark:bg-gray-600
 			hover:cursor-not-allowed;
+	}
+
+	.button.disabled svg {
+		@apply
+			text-inherit;
 	}
 
 	.button.warning {

@@ -69,12 +69,12 @@
 
 			<div id="selection-menu" class="mt-6 py-2 px-3 flex items-center gap-x-3">
 				<x-tabler-arrow-big-down class="inline" />
-				<x-button icon="eye" class="compact inline" href="#" label="{{ ___('read') }}" />
-				<x-button icon="eye-off" class="compact inline" href="#" label="{{ ___('unread') }}" />
+				<x-button disabled icon="eye" class="compact inline" href="#" label="{{ ___('read') }}" />
+				<x-button disabled icon="eye-off" class="compact inline" href="#" label="{{ ___('unread') }}" />
 				<x-button icon="file-download" class="compact inline" href="#" label="{{ ___('CSV export') }}" @click.prevent="submit('/orders/csv')" />
 				<x-button icon="printer" class="compact inline" href="#" label="{{ ___('print PDF') }}" @click.prevent="submit('/orders/print/packaging-list')"/>
 				<x-button icon="printer" class="compact inline" href="#" label="{{ ___('print labels') }}" @click.prevent="submit('/orders/print/labels/preview')"/>
-				<x-button icon="archive" class="compact inline" href="#" label="{{ ___('archive') }}" />
+				<x-button disabled icon="archive" class="compact inline" href="#" label="{{ ___('archive') }}" />
 			</div>
 				
 			<form id="selected-orders" method="POST" action="{{ route('dashboard') }}" enctype="multipart/form-data">
