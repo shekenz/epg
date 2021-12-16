@@ -39,7 +39,7 @@
 			border
 			focus:ring-0
 			@if(!isset($error))
-			border-gray-300
+			border-gray-400
 			focus:border-primary
 			dark:focus:bg-gray-500
 			dark:focus:border-gray-500
