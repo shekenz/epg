@@ -189,7 +189,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function() {
 
 	// Clients
 	Route::get('/clients', [ClientsController::class, 'list'])->name('clients');
-	Route::get('/export', [ClientsController::class, 'csv'])->name('clients.export');
+	Route::get('/clients/export', [ClientsController::class, 'csv'])->name('clients.export');
 
 	// Misc/Debug/Log
 	Route::get('/mails/log', [MessagesController::class, 'log'])->name('mails.log');
