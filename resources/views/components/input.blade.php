@@ -1,8 +1,4 @@
-@props(['label', 'name', 'type' => 'text', 'inline', 'wrapper-class', 'disabled' => false])
-
-
-
-
+@props(['label', 'id', 'name', 'type' => 'text', 'inline', 'wrapper-class', 'disabled' => false, 'array'])
 
 
 <div {{ $attributes->filter(function($value, $attr) { return ($attr == 'v-show'); }) }}
@@ -21,7 +17,7 @@
 
 	@isset($label)
 		<label @if($attributes->has(':disabled')) :class="{ 'disabled' : {{ $attributes->get(':disabled') }} }" @endif
-			for="{{ $name }}"
+			for="@isset($id){{ $id }}@else{{ $name }}@endif"
 			class="
 			p-1
 			mr-2
@@ -60,8 +56,8 @@
 			dark:text-white
 			bg-white
 		"
-		id="{{ $name }}"
-		name="{{ $name }}"
+		id="@isset($id){{ $id }}@else{{ $name }}@endif"
+		name="{{ $name }}@isset($array)[]@endif"
 		type="{{ $type }}"
 		{{ $attributes->filter(function($value, $attr) { return ($attr != 'v-show'); }) }}
 		@if($disabled) disabled @endif
