@@ -11,6 +11,8 @@ const blueGray = {
 	},
 	secondary: {
 		DEFAULT: 'rgb(145, 234, 255)',
+		highlight: 'rgb(186, 227, 242)',
+		'highlight-dark': 'rgb(70, 118, 136)',
 	},
 	background: {
 		DEFAULT: 'rgb(221, 221, 227)',

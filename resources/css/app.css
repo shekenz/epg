@@ -691,10 +691,12 @@
 
 			border
 			border-gray-300
+			bg-white
 			shadow-sm
 
 			dark:border-4 
 			dark:border-gray-600
+			dark:bg-gray-700
 			dark:shadow-none;
 	}
 
@@ -869,8 +871,8 @@
 	/* -------------------------- Unread row */
 	table tr.unread, table tr.unread:nth-child(2n) {
 		@apply
-			bg-primary-super-light
-			dark:bg-primary-light;
+			bg-secondary-highlight
+			dark:bg-secondary-highlight-dark;
 	}
 
 	/*  -----------------------------------------  ╔════════════╗  */
