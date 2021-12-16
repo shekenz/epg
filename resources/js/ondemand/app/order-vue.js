@@ -205,10 +205,11 @@ window.vue = new Vue(
 
 			submit(url)
 			{
+				console.log(url)
 				const selection = document.getElementById('selected-orders');
-				selection.action = window.location.origin+'/dashboard'+url
+				selection.action = url
 				let data = new FormData(document.getElementById('selected-orders'));
-				console.log(data.getAll('selection[]'));
+				console.log(data.getAll('ids[]'));
 				selection.submit();
 			},
 

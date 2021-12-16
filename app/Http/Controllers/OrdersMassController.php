@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use Illuminate\Support\Carbon;
 use PDF;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class OrdersMassController extends Controller
 {
@@ -81,39 +82,17 @@ class OrdersMassController extends Controller
 
 	
 	/**
-	 * Hides all selected orders
+	 * Set all selected orders as read
 	 *
 	 * @param  \Illuminate\Http\Request $request
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
-	public function hide(Request $request) {
+	public function setReadState(Request $request, bool $read = false) {
 		$data = $request->validate($this->validation);
 			if(!empty($data)) {
 			$orders = Order::find($data['ids']);
-			$orders->each(function($order) {
-				$order->hidden = true;
-				$order->save();
-			});
-		}
-
-		return back();
-	}
-
-
-
-	/**
-	 * Unhides all selected orders
-	 *
-	 * @param  \Illuminate\Http\Request $request
-	 * @return \Illuminate\Http\RedirectResponse
-	 */
-	public function unhide(Request $request) {
-		$data = $request->validate($this->validation);
-		if(!empty($data)) {
-			$orders = Order::find($data['ids']);
-
-			$orders->each(function($order) {
-				$order->hidden = false;
+			$orders->each(function($order) use (&$read) {
+				$order->read = $read;
 				$order->save();
 			});
 		}

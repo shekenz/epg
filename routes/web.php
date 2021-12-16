@@ -62,7 +62,6 @@ Route::middleware('auth')->prefix('dashboard')->group(function() {
 		Route::get('/order/cancel/{order}', [OrdersController::class, 'cancel'])->name('.cancel');
 		Route::get('/order/recycle/{orderID}', [OrdersController::class, 'recycle'])->name('.recycle');
 		Route::post('/order/shipped/{orderID}', [OrdersController::class, 'shipped'])->name('.shipped');
-		Route::get('/orders/hidden', [OrdersController::class, 'hidden'])->name('.hidden');
 		Route::get('/orders/refreshneworders', [OrdersController::class, 'refreshNewOrders'])->name('.refreshNewOrders');
 	});
 	
@@ -71,8 +70,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function() {
 		// Orders mass process
 		Route::name('orders')->group(function() {
 			Route::post('/csv', [OrdersMassController::class, 'csv'])->name('.csv');
-			Route::post('/hide', [OrdersMassController::class, 'hide'])->name('.hide');
-			Route::post('/unhide', [OrdersMassController::class, 'unhide'])->name('.unhide');
+			Route::post('/read/{read?}', [OrdersMassController::class, 'setReadState'])->name('.read');
 
 			Route::prefix('print')->group(function() {
 				Route::post('/{view}', [OrdersMassController::class, 'pdf'])->name('.print');

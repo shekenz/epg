@@ -55,24 +55,11 @@ class OrdersController extends Controller
 	 * @return void
 	 */
 	public function list() {
-		$orders = Order::where('hidden', false)->orderBy('created_at', 'DESC')->get();
+		$orders = Order::orderBy('created_at', 'DESC')->get();
 		$coupons = Coupon::withTrashed()->get();
 		$shippingMethods = ShippingMethod::withTrashed()->orderBy('price', 'ASC')->get();
 		$books = Book::withTrashed()->orderBy('book_info_id', 'ASC')->get();
 		return view('orders.list-vue', compact('orders', 'coupons', 'shippingMethods', 'books'));
-	}
-
-	/**
-	 * List all hidden orders
-	 *
-	 * @return void
-	 */
-	public function hidden() {
-		$orders = Order::with('books')->where('hidden', true)->orderBy('created_at', 'DESC')->get();
-		$coupons = Coupon::withTrashed()->get();
-		$shippingMethods = ShippingMethod::withTrashed()->orderBy('price', 'ASC')->get();
-		$books = Book::withTrashed()->orderBy('label', 'DESC')->get();
-		return view('orders.list', compact('orders', 'coupons', 'shippingMethods', 'books'));
 	}
 	
 	/**
