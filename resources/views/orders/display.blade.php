@@ -18,10 +18,10 @@
 	<x-section :return="route('orders')" :title="___('order').' '.$order->order_id" class="full">
 
 		<x-buttons>
-			<x-button icon="truck-delivery" :label="___('dispatch') " href="#" class="big" />
+			<x-button disabled icon="truck-delivery" :label="___('dispatch') " href="#" class="big" />
 			<div class="flex gap-x-4">
-				<x-button href="#" :label="___('print label')" class="big" icon="printer" />
-				<x-button href="#" :label="___('packaging list')" class="big" icon="file-download" />
+				<x-button disabled href="#" :label="___('print label')" class="big" icon="printer" />
+				<x-button disabled href="#" :label="___('packaging list')" class="big" icon="file-download" />
 			</div>
 		</x-buttons>
 

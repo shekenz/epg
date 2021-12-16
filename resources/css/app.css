@@ -339,7 +339,7 @@
 			duration-200;
 	}
 
-	.button:hover svg {
+	.button:hover svg, .button:hover.warning svg {
 		@apply
 			text-white;
 	}

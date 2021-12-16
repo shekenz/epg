@@ -24,15 +24,15 @@
         @endif
 
 	<x-buttons class="items-center">
-		<x-button disabled :label="___('previous')" href="#" class="big" />
+		<x-button disabled icon="arrow-big-left" :label="___('previous')" href="#" class="big" />
 		<form action="{{ route('media.update', $medium->id) }}" method="POST" class="flex items-center gap-x-4">
 			@csrf
 			@method('patch')
 			<x-input inline name="name" value="{{ old('name') ?? $medium->name }}" maxlength="64" />
-			<input class="button big cursor-pointer" type="submit" value="{{ ___('rename') }}">
+			<x-button :label="___('rename')" big icon="edit" submit />
 		</form>
-		<x-post :label="___('delete')" :href="route('media.delete', $medium->id)" method="delete" :confirm="__('app.confirmations.delete-media', ['media' => $medium->name.'.'.$medium->extension])" class="big" warning/>
-		<x-button disabled :label="___('next')" href="#" class="big" />
+		<x-post :label="___('delete')" :href="route('media.delete', $medium->id)" method="delete" :confirm="__('app.confirmations.delete-media', ['media' => $medium->name.'.'.$medium->extension])" big icon="trash" warning/>
+		<x-button disabled icon="arrow-big-right" icon-right :label="___('next')" href="#" class="big" />
 	</x-buttons>
 
 	@if(Storage::disk('public')->exists('uploads/'.$medium->filename))
