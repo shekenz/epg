@@ -73,9 +73,9 @@
 
 			<div id="selection-menu" class="mt-6 py-2 px-3 flex items-center gap-x-3">
 				<x-tabler-arrow-big-down class="inline" />
-				<x-button icon="eye" class="compact inline" href="#" label="{{ ___('read') }}" @click.prevent="submit('{{ route('orders.read', true) }}')" />
-				<x-button icon="eye-off" class="compact inline" href="#" label="{{ ___('unread') }}" @click.prevent="submit('{{ route('orders.read') }}')" />
-				<x-button icon="file-download" class="compact inline" href="#" label="{{ ___('CSV export') }}" @click.prevent="submit('{{ route('orders.csv')}}')" />
+				<x-button icon="eye" class="compact inline" href="#" label="{{ ___('set as read') }}" @click.prevent="submit('{{ route('orders.read', true) }}')" />
+				<x-button icon="eye-off" class="compact inline" href="#" label="{{ ___('set as unread') }}" @click.prevent="submit('{{ route('orders.read') }}')" />
+				<x-button icon="file-download" class="compact inline" href="#" label="{{ ___('export to CSV') }}" @click.prevent="submit('{{ route('orders.csv')}}')" />
 				<x-button icon="printer" class="compact inline" href="#" label="{{ ___('print PDF') }}" @click.prevent="submit('{{ route('orders.print', 'packaging-list')}}')"/>
 				<x-button icon="printer" class="compact inline" href="#" label="{{ ___('print labels') }}" @click.prevent="submit('{{ route('orders.labelsPreview')}}')"/>
 				<x-button disabled icon="archive" class="compact inline" href="#" label="{{ ___('archive') }}" />

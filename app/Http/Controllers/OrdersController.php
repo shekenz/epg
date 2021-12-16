@@ -55,6 +55,10 @@ class OrdersController extends Controller
 	 * @return void
 	 */
 	public function list() {
+		if(!Cache::has('newOrders'))
+		{
+			$this->refreshNewOrders();
+		}
 		$orders = Order::orderBy('created_at', 'DESC')->get();
 		$coupons = Coupon::withTrashed()->get();
 		$shippingMethods = ShippingMethod::withTrashed()->orderBy('price', 'ASC')->get();
@@ -73,10 +77,6 @@ class OrdersController extends Controller
 
 		// Decrementing newOrders cache
 		if(!$order->read) {
-			if(!Cache::has('newOrders'))
-			{
-				$this->refreshNewOrders();
-			}
 			Cache::decrement('newOrders');
 			$order->read = 1;
 			$order->save();
@@ -93,6 +93,7 @@ class OrdersController extends Controller
 	public function refreshNewOrders() {
 		$count = Order::where('read', 0)->count();
 		Cache::put('newOrders', $count);
+		return redirect()->route('orders');
 	}
 		
 	/**

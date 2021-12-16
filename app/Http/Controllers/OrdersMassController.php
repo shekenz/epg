@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use Illuminate\Support\Carbon;
 use PDF;
-use phpDocumentor\Reflection\Types\Boolean;
+use Illuminate\Support\Facades\Cache;
 
 class OrdersMassController extends Controller
 {
@@ -92,6 +92,8 @@ class OrdersMassController extends Controller
 			if(!empty($data)) {
 			$orders = Order::find($data['ids']);
 			$orders->each(function($order) use (&$read) {
+				if($read && !$order->read) { Cache::decrement('newOrders'); }
+				if(!$read && $order->read) { Cache::increment('newOrders'); }
 				$order->read = $read;
 				$order->save();
 			});
