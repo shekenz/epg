@@ -91,7 +91,6 @@ class OrderFactory extends Factory
 			'status' => $status,
 			'pre_order' => 0,
 			'read' => $this->faker->numberBetween(0, 1),
-			'hidden' => 0,
 			'created_at' => $this->faker->dateTimeBetween($startDate = '-1 years', $endDate = 'now', $timezone = null)
 		];
 	}
