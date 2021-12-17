@@ -158,32 +158,6 @@
 			m-6;
 	}
 
-	/*  ------------------------- Misc. Sections */
-	div.color-chart {
-		@apply
-			m-6;
-	}
-
-	div.color-chart > h2 {
-		@apply
-			m-0
-			px-2
-			py-1;
-	}
-
-	div.color-chart div.wrapper {
-		@apply
-			border
-			border-black;
-	}
-
-	div.color-chart div.wrapper > div {
-		@apply
-			w-full
-			px-2
-			py-1;
-	}
-
 	/*  -----------------------------------------  ╔═════════════════╗  */
 	/*  -----------------------------------------  ║ Links & buttons ║  */
 	/*  -----------------------------------------  ╚═════════════════╝  */

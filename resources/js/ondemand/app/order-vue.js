@@ -101,6 +101,7 @@ window.vue = new Vue(
 			},
 			currentOrder: null,
 			selectAll: false,
+			popup: false,
 		},
 		computed:
 		{

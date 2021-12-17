@@ -266,7 +266,11 @@
 			</table>
 
 		</x-section>
+		
+		{{-- Pop Up --}}
+		<x-popups.default v-show="popup" :close="'popup = false'"/>
 
 	<div>
+
 
 </x-app-layout>
