@@ -1,6 +1,6 @@
 @props(['full'])
 
-<svg width="128px" height="128px" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" {{ $attributes->merge(['class']) }}>
+<svg width="128px" height="128px" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" {{ $attributes }}>
 	@isset($full)		
 		<circle cx="50" cy="50" r="32" fill="currentColor" opacity="1">
 			<animate attributeType="XML" attributeName="opacity" values="0.8;0;0.8" dur="2s" repeatCount="indefinite"/>
