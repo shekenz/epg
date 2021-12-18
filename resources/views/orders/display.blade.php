@@ -60,6 +60,12 @@
 							<td><span class="text-gray-600 dark:text-gray-400">{{ ___('shipping method') }} :</span></td>
 							<td>{{ $order->shippingMethods->label }}</td>
 						</tr>
+						@if($order->tracking_url)
+						<tr>
+							<td><span class="text-gray-600 dark:text-gray-400">{{ ___('tracking URL') }} :</span></td>
+							<td>{{ $order->tracking_url }}</td>
+						</tr>
+						@endif
 						<tr>
 							<td><span class="text-gray-600 dark:text-gray-400">{{ ___('total weight') }} :</span></td>
 							<td>{{ $order->total_weight.'g' }}</td>
