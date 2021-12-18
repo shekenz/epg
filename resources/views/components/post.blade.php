@@ -1,5 +1,5 @@
 
-@props(['href', 'label', 'icon', 'icon-right', 'title' => 'no title', 'warning', 'disabled', 'big', 'compact'])
+@props(['href', 'method', 'label', 'icon', 'icon-right', 'title' => 'no title', 'warning', 'disabled', 'big', 'compact'])
 
 <form
 	action="{{ $href }}"
@@ -12,6 +12,8 @@
 	@isset($method)
 		@method($method)
 	@endif
+
+	@if($slot->isNotEmpty()) {{ $slot }} @endif
 
 	<button
 		{{-- Merge class conditionaly --}}
