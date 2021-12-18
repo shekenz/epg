@@ -125,8 +125,12 @@
 			<x-buttons>
 				<x-button disabled icon="truck-delivery" :label="___('dispatch') " href="#" class="big" />
 				<div class="flex gap-x-4">
-					<x-button disabled href="#" :label="___('print label')" class="big" icon="printer" />
-					<x-button disabled href="#" :label="___('packaging list')" class="big" icon="file-download" />
+					<x-post :href="route('orders.labelsPreview')" :label="___('print label')" class="big" icon="printer">
+						<input type="hidden" name="ids[]" v-model="currentOrder.id" />
+					</x-post>
+					<x-post :href="route('orders.print', 'packaging-list')" :label="___('packaging list')" class="big" icon="file-download">
+						<input type="hidden" name="ids[]" v-model="currentOrder.id" />
+					</x-post>
 				</div>
 			</x-buttons>
 
