@@ -268,7 +268,7 @@
 					</tr>
 					<tr class="border-t border-primary">
 						<td colspan="4">{{ ___('total') }}</td>
-						<td>@{{ currentOrder.order.total + currentOrder.order.coupon_price + currentOrder.shipping.method.price }} €</td>
+						<td>@{{ Math.round((currentOrder.order.total + currentOrder.order.coupon_price + currentOrder.shipping.method.price) * 100 ) / 100 }} €</td>
 					</tr>
 				</tbody>
 			</table>
