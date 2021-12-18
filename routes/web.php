@@ -61,7 +61,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function() {
 		Route::get('/order/{id}', [OrdersController::class, 'display'])->name('.display');
 		Route::get('/order/cancel/{order}', [OrdersController::class, 'cancel'])->name('.cancel');
 		Route::get('/order/recycle/{orderID}', [OrdersController::class, 'recycle'])->name('.recycle');
-		Route::post('/order/shipped/{orderID}', [OrdersController::class, 'shipped'])->name('.shipped');
+		Route::post('/order/shipped/{id}', [OrdersController::class, 'shipped'])->name('.shipped');
 		Route::get('/orders/refreshneworders', [OrdersController::class, 'refreshNewOrders'])->name('.refreshNewOrders');
 	});
 	

@@ -1,4 +1,4 @@
-@props(['close'])
+@props(['title' => 'no title', 'next-label' => 'ok'])
 
 <div
 	id="pop-up-wrapper"
@@ -15,7 +15,7 @@
 		h-full
 		z-[9001]
 	" {{ $attributes }}>
-	<div id="pop-up" class="pop-up rounded-md shadow-lg max-w-[640px] m-auto mt-[30vh]">
+	<div id="pop-up" class="pop-up shadow-lg max-w-[640px] m-auto mt-[30vh] rounded-md">
 		<h2 class="
 			h-[2.5rem]
 			bg-primary
@@ -25,13 +25,14 @@
 			dark:shadow-dark
 			flex
 			items-center
-		"><a @isset($close) @click.prevent="{{ $close }}" @endif>x</a></h2>
-		<div id="pop-inner-wrapper" class="bg-white dark:bg-gray-700 border">
+			px-4
+		">{{ $title }}</h2>
+		<div id="pop-inner-wrapper" class="bg-white dark:bg-gray-700 p-8 rounded-b-md">
 			<div id="pop-content">{{ $slot }}</div>
-			<x-buttons>
-				<x-button href="#" :label=" __('Close')" id="pop-up-close" />
-				<x-loader class="w-8 h-8 text-primary"/>
-				<x-button href="#" :label="__('OK')" id="pop-up-button" />
+			<x-buttons bottom>
+				<a href="#" id="pop-up-close" class="button" @if($attributes->has('close'))@click.prevent="{{ $attributes->get('close')}}" @endif>{{ ___('cancel') }}</a>
+				<x-loader id="pop-up-loader" class="w-8 h-8 text-primary hidden"/>
+				<a id="pop-up-button" class="button" @if($attributes->has('next'))@click.prevent="{{ $attributes->get('next')}}" @endif>{{ $nextLabel }}</a>
 			</x-buttons>
 		</div>
 	</div>

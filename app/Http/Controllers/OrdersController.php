@@ -576,9 +576,13 @@ class OrdersController extends Controller
 	 * @param  mixed $orderID
 	 * @return void
 	 */
-	public function shipped(Request $request, $orderID) {
-		$order = Order::where('order_id', $orderID)->first();
-		if($order->status == 'COMPLETED') {
+	public function shipped(Request $request, $id) {
+		$order = Order::findOrFail($id);
+
+		//TODO try catch maybe ?
+		// Also
+		if($order->status == 'COMPLETED')
+		{
 			$data = $request->validate([
 				'tracking_url' => ['nullable', 'string'],
 			]);
@@ -592,19 +596,16 @@ class OrdersController extends Controller
 			} else {
 				Mail::to($order->email_address)->send(new OrderShipped($order));
 			}
+
+			$order->save();
 		} else {
-			$order->status = 'COMPLETED';
-			$order->shipped_at = null;
- 			$order->tracking_url = null;
+			response()->setStatusCode(422, 'Status is not complete');
 		}
 		
-		$order->save();
+	
 
 		if($request->wantsJson()) {
-			return [
-				'id' => $order->id,
-				'status' => $order->status
-			];
+			return response()->noContent();
 		} else {
 			return back();
 		}
