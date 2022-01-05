@@ -1,7 +1,8 @@
 <x-index-layout lang="FR_fr">
 
 	<x-slot name="scripts">
-		<script src="https://www.paypal.com/sdk/js?client-id={{ setting('app.paypal.client-id') }}&currency=EUR&disable-funding=credit,card,bancontact,blik,eps,giropay,ideal,mercadopago,mybank,p24,sepa,sofort,venmo"></script>
+		<script src="https://www.paypal.com/sdk/js?client-id={{ setting('app.paypal.client-id') }}&currency=EUR"></script>
+		{{-- Original disable-funding=credit,card,bancontact,blik,eps,giropay,ideal,mercadopago,mybank,p24,sepa,sofort,venmo --}}
 		<script src="{{ asset('js/cart.js') }}" defer></script>
 	</x-slot>
 
