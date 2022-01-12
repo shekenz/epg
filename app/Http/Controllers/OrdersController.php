@@ -24,8 +24,25 @@ class OrdersController extends Controller
 {
 	protected $credentials;
 	protected $provider;
-	
+	private $startTime;
+
+	private function _elapsed() {
+		return round((microtime(true) - $this->startTime) * 1000, 2);
+	}
+
+	protected function speedTest() {
+		if(isset($this->startTime)) {
+			$elapsed = $this->_elapsed();
+			if($elapsed > 1000) {
+				Log::warning('Script took more than 1 second to execute (Took '.$elapsed.' ms)');
+			}
+		}
+	}
+
 	public function __construct() {
+
+		$this->startTime = microtime(true);
+
 		$this->credentials = [
 			'mode'    => (setting('app.paypal.sandbox')) ? 'sandbox' : 'live',
 			'sandbox' => [
@@ -602,7 +619,7 @@ class OrdersController extends Controller
 			response()->setStatusCode(422, 'Status is not complete');
 		}
 		
-	
+		$this->speedTest();
 
 		if($request->wantsJson()) {
 			return response()->noContent();
