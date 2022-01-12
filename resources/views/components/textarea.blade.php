@@ -11,7 +11,7 @@
 			border-none
 			focus:border-none
 			@else
-			border-gray-300
+			border-gray-400
 			focus:border-primary
 			@endif
 			dark:border-gray-600

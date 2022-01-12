@@ -49,6 +49,7 @@ class SettingsController extends Controller
 			],
 		]);
 
+		/*
 		// String to upper to array
 		$allowedCountries = explode(',', strtoupper($data['shipping-allowed-countries']));
 		// Filter out empty items
@@ -63,6 +64,8 @@ class SettingsController extends Controller
 		$allowedCountries = array_values($allowedCountries);
 
 		setting(['app.shipping.allowed-countries' => $allowedCountries ]);
+
+		*/
 		setting(['app.paypal.client-id' => $data['paypal-client-id']]);
 		setting(['app.paypal.secret' => $data['paypal-secret']]);
 		setting(['app.paypal.sandbox' => isset($data['paypal-sandbox']) ]);

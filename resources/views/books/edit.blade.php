@@ -24,7 +24,7 @@
 
 			<div class="flex flex-col md:grid md:grid-cols-4 md:gap-x-8">
 
-			<x-input name="title" type="text" :label="___('title')" wrapper-class="md:row-start-2" value="{{ old('title') ?? $bookInfo->title }}" maxlength="128">@error('title'){{$message}}@enderror</x-input>
+				<x-input name="title" type="text" :label="___('title')" wrapper-class="md:row-start-2" value="{{ old('title') ?? $bookInfo->title }}" maxlength="128">@error('title'){{$message}}@enderror</x-input>
 				<x-input name="author" type="text" :label="___('author')" wrapper-class="md:row-start-3" value="{{ old('author') ?? $bookInfo->author }}" maxlength="64">@error('author'){{$message}}@enderror</x-input>
 				<x-input name="year" type="text" :label="___('year')" wrapper-class="md:row-start-4" value="{{ old('year') ?? $bookInfo->year }}" min="0" max="{{ now()->addYear(1)->year }}" >@error('year'){{$message}}@enderror</x-input>
 				<x-input name="copies" type="number" :label="___('copies')" wrapper-class="md:row-start-5" value="{{ old('copies') ?? $bookInfo->copies }}" min="0">@error('copies'){{$message}}@enderror</x-input>
