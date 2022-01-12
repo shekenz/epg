@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import debounce from 'lodash.debounce';
 import VueI18n from 'vue-i18n';
+import { isThursday } from 'date-fns';
 Vue.use(VueI18n);
 
 const locale = document.documentElement.lang.slice(0,2) || 'en';
@@ -74,6 +75,7 @@ window.vue = new Vue(
 		i18n,
 		el: '#orders',
 		data: {
+			csrfToken: document.getElementsByName('csrf-token')[0].getAttribute('content'),
 			filters:
 			{
 				method: null,
@@ -101,6 +103,7 @@ window.vue = new Vue(
 			},
 			currentOrder: null,
 			selectAll: false,
+			popup: false,
 		},
 		computed:
 		{
@@ -199,17 +202,15 @@ window.vue = new Vue(
 
 			returnToList()
 			{
-				this.currentOrder = null
+				this.currentOrder = null;
 				history.pushState({currentOrder: null}, null, window.location.origin+'/dashboard/orders');
 			},
 
 			submit(url)
 			{
-				console.log(url)
 				const selection = document.getElementById('selected-orders');
 				selection.action = url
 				let data = new FormData(document.getElementById('selected-orders'));
-				console.log(data.getAll('ids[]'));
 				selection.submit();
 			},
 
@@ -220,6 +221,35 @@ window.vue = new Vue(
 				{
 					el.checked = check;
 				}
+			},
+
+			submitForm(formID, loaderID = '')
+			{
+				let loader = null;
+				if(loaderID) {
+					loader = document.getElementById(loaderID);
+					loader.classList.remove('hidden');
+				}
+				const form = document.getElementById(formID);
+				const url = form.action;
+				const formData = new FormData(form);
+				for(let entry of formData.entries()) {
+					console.log(entry);
+				}
+				fetch(url, 
+					{
+						method: 'POST',
+						headers: {
+							//'X-CSRF-TOKEN': this.csrfToken,
+							'Accept': 'application/json',
+						},
+						body: formData,
+					}
+				).then(r => {
+					if(loader) loader.classList.add('hidden');
+					this.popup = false;
+					if(r.ok) this.currentOrder.order.status = 'SHIPPED';
+				});
 			}
 
 		},
@@ -232,6 +262,7 @@ window.vue = new Vue(
 		{
 			window.addEventListener('popstate', e => {
 				window.vue.currentOrder = e.state.currentOrder;
+				this.popup = false;
 		 });
 		}
 	}

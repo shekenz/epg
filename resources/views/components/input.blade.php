@@ -22,6 +22,7 @@
 			p-1
 			mr-2
 			block
+			whitespace-nowrap
 			@if($disabled)
 			text-gray-400
 			dark:text-gray-500

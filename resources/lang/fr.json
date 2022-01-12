@@ -73,6 +73,7 @@
 	"delete user": "supprimer l'utilisateur",
 	"description": "description",
 	"dispatch": "expédier",
+	"dispatch order": "expédier la commande",
 	"download": "télécharger",
 	"download PDF": "télécharger le PDF",
 	"edit": "éditer",

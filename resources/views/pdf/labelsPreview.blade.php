@@ -34,7 +34,7 @@
 					<div class="ml-20 text-[1.25rem] leading-6">
 						<span class="font-bold">{{ $order->full_name }}</span><br>
 						{{ $order->address_line_1 }}<br>
-						@isset($order->address_line_2) {
+						@isset($order->address_line_2)
 						{{ $order->address_line_2 }}<br>
 						@endif
 						{{ $order->postal_code.', '.$order->admin_area_2 }}<br>

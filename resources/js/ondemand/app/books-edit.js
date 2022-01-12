@@ -15,14 +15,37 @@ for(let button of refreshButtons) {
 const saveLoader = document.getElementById('save-loader');
 const thumbs = document.getElementsByClassName('hover-thumb');
 const imgPopup = document.getElementById('img-popup-wrapper');
+const imgLoader = document.getElementById('img-popup-loader');
 const title = document.getElementById('img-popup-title');
 const closeImgPopupButton = document.getElementById('close-img-popup');
 const nextImgButton = document.getElementById('next-img-popup');
 const previousImgButton = document.getElementById('previous-img-popup');
 const imgPopupContent = document.getElementById('img-popup-content');
-const loaderSrc = imgPopupContent.src;
 let imgCollection;
 let currentIndex;
+
+// Loading image function
+
+const loadImage = (url, imgEl, loaderEl) => {
+
+	const tempImg = new Image();
+	tempImg.src = url;
+
+	if(tempImg.complete) {
+		imgEl.src = tempImg.src
+	} else {
+		imgEl.classList.add('hidden');
+		if(loaderEl.classList.contains('hidden')) {
+			loaderEl.classList.remove('hidden');
+		}
+		tempImg.addEventListener('load', e => {
+			imgPopupContent.src = e.currentTarget.src;
+			loaderEl.classList.add('hidden');
+			imgEl.classList.remove('hidden');
+		});
+	}
+}
+
 
 // imgPopup Events handlers
 
@@ -34,24 +57,12 @@ const moveImgSlide = (inverseDirection = false) => {
 	}
 	title.innerHTML = imgCollection[currentIndex].dataset.title;
 
-	const imgPopupContentTemp = new Image();
-	imgPopupContentTemp.src = imgCollection[currentIndex].dataset.fullSrc;
-
-	// Loading image
-	if(imgPopupContentTemp.complete) {
-		imgPopupContent.src = imgPopupContentTemp.src
-	} else {
-		imgPopupContent.src = loaderSrc;
-		imgPopupContentTemp.addEventListener('load', e => {
-			imgPopupContent.src = e.currentTarget.src;
-		});
-	}
+	loadImage(imgCollection[currentIndex].dataset.fullSrc, imgPopupContent, imgLoader);
 
 }
 
 const closePopup = e => {
 	e.preventDefault();
-	imgPopupContent.src = loaderSrc;
 	imgPopup.classList.add('hidden');
 }
 
@@ -76,8 +87,8 @@ for(const thumb of thumbs) {
 	thumb.addEventListener('click', e => {
 		imgCollection = e.currentTarget.parentElement.children;
 		currentIndex = parseInt(e.currentTarget.dataset.index);
-		imgPopupContent.src = e.currentTarget.dataset.fullSrc;
 		title.innerHTML = e.currentTarget.dataset.title;
+		loadImage(e.currentTarget.dataset.fullSrc, imgPopupContent, imgLoader);
 		imgPopup.classList.remove('hidden');
 	});
 }

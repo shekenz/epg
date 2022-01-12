@@ -123,10 +123,14 @@
 		<x-section return="#" @click.prevent="returnToList" ::title="'{{ ___('order') }} '+currentOrder.order.id" class="full" v-if="currentOrder">
 
 			<x-buttons>
-				<x-button disabled icon="truck-delivery" :label="___('dispatch') " href="#" class="big" />
-				<div class="flex gap-x-4">
-					<x-button disabled href="#" :label="___('print label')" class="big" icon="printer" />
-					<x-button disabled href="#" :label="___('packaging list')" class="big" icon="file-download" />
+				<x-button icon="truck-delivery" :label="___('dispatch') " href="#" class="big" @click.prevent="popup = true"/>
+				<div class="flex gap-x-4 justify-self-end">
+					<x-post :href="route('orders.labelsPreview')" :label="___('print label')" class="big" icon="printer">
+						<input type="hidden" name="ids[]" v-model="currentOrder.id" />
+					</x-post>
+					<x-post :href="route('orders.print', 'packaging-list')" :label="___('packaging list')" class="big" icon="file-download">
+						<input type="hidden" name="ids[]" v-model="currentOrder.id" />
+					</x-post>
 				</div>
 			</x-buttons>
 
@@ -165,6 +169,10 @@
 							<tr>
 								<td><span class="text-gray-600 dark:text-gray-400">{{ ___('shipping method') }} :</span></td>
 								<td>@{{ currentOrder.shipping.method.label }}</td>
+							</tr>
+							<tr v-show="currentOrder.shipping.tracking_url">
+								<td><span class="text-gray-600 dark:text-gray-400">{{ ___('tracking URL') }} :</span></td>
+								<td>@{{ currentOrder.shipping.tracking_url }}</td>
 							</tr>
 							<tr>
 								<td><span class="text-gray-600 dark:text-gray-400">{{ ___('total weight') }} :</span></td>
@@ -260,13 +268,22 @@
 					</tr>
 					<tr class="border-t border-primary">
 						<td colspan="4">{{ ___('total') }}</td>
-						<td>@{{ currentOrder.order.total + currentOrder.order.coupon_price + currentOrder.shipping.method.price }} €</td>
+						<td>@{{ Math.round((currentOrder.order.total + currentOrder.order.coupon_price + currentOrder.shipping.method.price) * 100 ) / 100 }} €</td>
 					</tr>
 				</tbody>
 			</table>
 
 		</x-section>
+		
+		{{-- Pop Up --}}
+		<x-popups.default v-if="currentOrder" :title="___('dispatch order')" v-show="popup" close="popup = false" :next-label="___('dispatch')" next="submitForm('dispatch-form', 'pop-up-loader')">
+			<form id="dispatch-form" :action="'{{ route('dashboard') }}/order/shipped/'+currentOrder.id" method="POST" enctype="multipart/form-data">
+				@csrf
+				<x-input type="text" :label="___('tracking URL')" inline name="tracking_url" />
+			</form>
+		</x-popups.default>
 
 	<div>
+
 
 </x-app-layout>

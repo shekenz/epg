@@ -200,4 +200,6 @@
 
 	</x-section>
 
+	<x-popups.image />
+
 </x-app-layout>

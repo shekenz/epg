@@ -20,8 +20,12 @@
 		<x-buttons>
 			<x-button disabled icon="truck-delivery" :label="___('dispatch') " href="#" class="big" />
 			<div class="flex gap-x-4">
-				<x-button disabled href="#" :label="___('print label')" class="big" icon="printer" />
-				<x-button disabled href="#" :label="___('packaging list')" class="big" icon="file-download" />
+				<x-post :href="route('orders.labelsPreview')" :label="___('print label')" class="big" icon="printer">
+					<input type="hidden" name="ids[]" value="{{ $order->id }}" />
+				</x-post>
+				<x-post :href="route('orders.print', 'packaging-list')" :label="___('packaging list')" class="big" icon="file-download">
+					<input type="hidden" name="ids[]" value="{{ $order->id }}" />
+				</x-post>
 			</div>
 		</x-buttons>
 
@@ -56,6 +60,12 @@
 							<td><span class="text-gray-600 dark:text-gray-400">{{ ___('shipping method') }} :</span></td>
 							<td>{{ $order->shippingMethods->label }}</td>
 						</tr>
+						@if($order->tracking_url)
+						<tr>
+							<td><span class="text-gray-600 dark:text-gray-400">{{ ___('tracking URL') }} :</span></td>
+							<td>{{ $order->tracking_url }}</td>
+						</tr>
+						@endif
 						<tr>
 							<td><span class="text-gray-600 dark:text-gray-400">{{ ___('total weight') }} :</span></td>
 							<td>{{ $order->total_weight.'g' }}</td>
