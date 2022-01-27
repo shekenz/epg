@@ -37,13 +37,13 @@
 		<link rel="prefetch" href="{{ asset('img/frog_logo_error.svg') }}" as="image">
 		
 		{{-- //TODO Fix the connection_refused error when deployed on VPS --}}
-        {{-- @if(config('app.env') == 'local') --}}
+      {{-- @if(config('app.env') == 'local') --}}
       <link rel="stylesheet" href="{{ asset('css/index.css') }}">
 			<script src="{{ asset('js/index.js') }}" defer></script>
-        {{-- @else {{-- Cache bustin in production DISBLED BECAUSE OF CONNECTION REFUSED ERROR WHEN DEPLOYED ON VPS 
-            <link rel="stylesheet" href="{{ asset(mix('css/index.css'), true) }}">
+      {{-- @else {{-- Cache bustin in production DISBLED BECAUSE OF CONNECTION REFUSED ERROR WHEN DEPLOYED ON VPS 
+        <link rel="stylesheet" href="{{ asset(mix('css/index.css'), true) }}">
 			<script src="{{ asset(mix('js/index.js'), true) }}" defer></script>
-        @endif --}}
+    @endif --}}
 		@auth
 			<script src="{{ asset('js/user-menu.js') }}" defer></script>
 		@endauth
