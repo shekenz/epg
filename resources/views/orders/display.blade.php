@@ -140,6 +140,7 @@
 					<td>{{ ___('title') }}</td>
 					<td>{{ ___('variation') }}</td>
 					<td>{{ ___('author') }}</td>
+					<td>{{ ___('paypal.status.preorder') }}</td>
 					<td>{{ ___('quantity') }}</td>
 					<td>{{ ___('subtotal') }}</td>
 				</tr>
@@ -154,6 +155,7 @@
 					<td>{{ $book->bookInfo->title }}</td>
 					<td>{{ $book->label }}</td>
 					<td>{{ $book->bookInfo->author }}</td>
+					<td>@if($book->pre_order)<x-tabler-clipboard-check v-if="book.pre_order" class="text-green-500"/>@endif</td>
 					<td>{{ $book->pivot->quantity }}</td>
 					<td>{{ round($book->price * $book->pivot->quantity, 2) }} €</td>
 				</tr>
@@ -168,16 +170,16 @@
 					}
 				@endphp
 				<tr v-if="currentOrder.order.coupon" class="border-t border-primary">
-					<td colspan="4">{{ ___('coupon') }} {{ $order->coupons->label }} ( -{{ $order->coupons->value.(($order->coupons->type) ? ' €' : '%') }} )</td>
+					<td colspan="5">{{ ___('coupon') }} {{ $order->coupons->label }} ( -{{ $order->coupons->value.(($order->coupons->type) ? ' €' : '%') }} )</td>
 					<td>{{ $couponPrice }} €</td>
 				</tr>
 				@endif
 				<tr class="border-t border-primary">
-					<td colspan="4">{{ ___('shipping method') }} : {{ $order->shippingMethods->label }}</td>
+					<td colspan="5">{{ ___('shipping method') }} : {{ $order->shippingMethods->label }}</td>
 					<td>{{ $shippingPrice }} €</td>
 				</tr>
 				<tr class="border-t border-primary">
-					<td colspan="4">{{ ___('total') }}</td>
+					<td colspan="5">{{ ___('total') }}</td>
 					<td>{{ $total + $couponPrice + $shippingPrice }} €</td>
 				</tr>
 				

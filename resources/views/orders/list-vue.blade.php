@@ -246,6 +246,7 @@
 						<td>{{ ___('title') }}</td>
 						<td>{{ ___('variation') }}</td>
 						<td>{{ ___('author') }}</td>
+						<td>{{ ___('paypal.status.preorder') }}</td>
 						<td>{{ ___('quantity') }}</td>
 						<td>{{ ___('subtotal') }}</td>
 					</tr>
@@ -255,19 +256,20 @@
 						<td>@{{ book.title }}</td>
 						<td>@{{ book.variation }}</td>
 						<td>@{{ book.author }}</td>
+						<td><x-tabler-clipboard-check v-if="book.pre_order" class="text-green-500"/></td>
 						<td>@{{ book.quantity }}</td>
 						<td>@{{ book.total_price }} €</td>
 					</tr>
 					<tr v-if="currentOrder.order.coupon" class="border-t border-primary">
-						<td colspan="4">{{ ___('coupon') }} @{{ currentOrder.order.coupon.label }} ( -@{{ currentOrder.order.coupon.value + ((currentOrder.order.coupon.fixed) ? ' €' : '%') }} )</td>
+						<td colspan="5">{{ ___('coupon') }} @{{ currentOrder.order.coupon.label }} ( -@{{ currentOrder.order.coupon.value + ((currentOrder.order.coupon.fixed) ? ' €' : '%') }} )</td>
 						<td>@{{ currentOrder.order.coupon_price }} €</td>
 					</tr>
 					<tr class="border-t border-primary">
-						<td colspan="4">{{ ___('shipping method') }} : @{{ currentOrder.shipping.method.label }}</td>
+						<td colspan="5">{{ ___('shipping method') }} : @{{ currentOrder.shipping.method.label }}</td>
 						<td>@{{ currentOrder.shipping.method.price }} €</td>
 					</tr>
 					<tr class="border-t border-primary">
-						<td colspan="4">{{ ___('total') }}</td>
+						<td colspan="5">{{ ___('total') }}</td>
 						<td>@{{ Math.round((currentOrder.order.total + currentOrder.order.coupon_price + currentOrder.shipping.method.price) * 100 ) / 100 }} €</td>
 					</tr>
 				</tbody>
