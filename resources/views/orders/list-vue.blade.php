@@ -13,7 +13,22 @@
 
 			{{--------------------------------------------- Filter ---------------------------------------------}}
 
-			<form class="flex flex-col md:flex-row md:gap-x-8 md:items-center">
+			<form class="
+				flex
+				flex-col
+				md:flex-row
+				md:gap-x-8
+				md:items-center
+				bg-gray-200 
+				dark:bg-gray-600
+				bg-opacity-30
+				dark:bg-opacity-30
+				border
+				border-gray-300
+				dark:border-gray-600
+				px-4
+				py-2
+			">
 
 				{{-- Method input --}}
 				<x-select :label="___('filter by')" type="text" name="method" v-model="filters.method" @change="filters.data = ''; getOrders()">
@@ -71,7 +86,7 @@
 
 			{{--------------------------------------------- Actions ---------------------------------------------}}
 
-			<div id="selection-menu" class="mt-6 py-2 px-3 flex items-center gap-x-3">
+			<div id="selection-menu" class="mt-4 py-2 px-3 flex items-center gap-x-3">
 				<x-tabler-arrow-big-down class="inline" />
 				<x-button icon="eye" class="compact inline" href="#" label="{{ ___('set as read') }}" @click.prevent="submit('{{ route('orders.read', true) }}')" />
 				<x-button icon="eye-off" class="compact inline" href="#" label="{{ ___('set as unread') }}" @click.prevent="submit('{{ route('orders.read') }}')" />
