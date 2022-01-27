@@ -27,7 +27,8 @@
 				<x-input name="weight" type="number" :label="___('weight').' (g)'" value="{{ old('weight') }}" min="0">@error('weight'){{$message}}@enderror</x-input>
 
 				<div>
-					<x-input name="stock" type="number" :label="___('stock')" value="{{ old('stock') }}" min="0">@error('stock'){{$message}}@enderror</x-input>
+					<x-input name="stock" type="number" :label="___('stock')" value="{{ old('stock')  ?? 0 }}" min="0">@error('stock'){{$message}}@enderror</x-input>
+					<input id="stock-hidden" name="stock" type="hidden" disabled="true" value="0">
 					<x-checkbox name="pre_order" :checked="(old('pre_order'))" :label="___('pre-order')" value="1"/>
 				</div>
 

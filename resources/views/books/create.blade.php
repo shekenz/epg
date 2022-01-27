@@ -6,6 +6,7 @@
 
 	<x-slot name="scripts">
 		<script src="{{ asset('js/media-library-dragdrop.js') }}" type="text/javascript" defer></script>
+		<script src="{{ asset('js/variations-create.js') }}" type="text/javascript" defer></script>
 	</x-slot>
 	
 	<x-section :title="___('new book')" :return="route('books')" class="full">
@@ -49,8 +50,9 @@
 				<x-input name="weight" type="number" :label="___('weight').' (g)'" value="{{ old('weight') }}" min="0">@error('weight'){{$message}}@enderror</x-input>
 
 				<div>
-					<x-input name="stock" type="number" :label="___('stock')" value="{{ old('stock') }}" min="0">@error('stock'){{$message}}@enderror</x-input>
-					<x-checkbox name="pre-order" :checked="(old('pre_order'))" :label="___('pre-order')"/>
+					<x-input name="stock" type="number" :label="___('stock')" value="{{ old('stock') ?? 0 }}" min="0">@error('stock'){{$message}}@enderror</x-input>
+					<input id="stock-hidden" name="stock" type="hidden" disabled="true" value="0">
+					<x-checkbox name="pre_order" :checked="(old('pre_order'))" :label="___('pre-order')" value="1"/>
 				</div>
 
 				<x-input name="price" type="number" :label="___('price')" value="{{ old('price') }}" min="0" step="0.01">@error('price'){{$message}}@enderror</x-input>

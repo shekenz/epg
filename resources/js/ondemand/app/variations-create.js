@@ -23,8 +23,6 @@ let togglePreOrder = test => {
 	}
 }
 
-console.log(preOrderInitValue);
-
 togglePreOrder(preOrderInitValue);
 
 preOrderCheckbox.addEventListener('input', e => {
@@ -46,4 +44,5 @@ preOrderCheckbox.addEventListener('input', e => {
 
 stockInput.addEventListener('input', e => {
 	stockHiddenInput.value = e.target.value
+	stockInitValue = e.target.value
 });
