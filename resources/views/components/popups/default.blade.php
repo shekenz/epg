@@ -1,8 +1,8 @@
-@props(['title' => 'no title', 'next-label' => 'ok'])
+@props(['title' => 'no title', 'nextLabel' => 'ok'])
 
 <div
 	id="pop-up-wrapper"
-	class="
+	{{ $attributes->merge(['class' => '
 		bg-opacity-80
 		dark:bg-opacity-80
 		bg-white
@@ -14,9 +14,10 @@
 		w-full
 		h-full
 		z-[9001]
-	" {{ $attributes }}>
+	']); }}
+	{{ $attributes }}>
 	<div id="pop-up" class="pop-up shadow-lg max-w-[640px] m-auto mt-[30vh] rounded-md">
-		<h2 class="
+		<h2 id="pop-up-title" class="
 			h-[2.5rem]
 			bg-primary
 			rounded-t-md

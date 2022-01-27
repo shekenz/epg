@@ -3,7 +3,7 @@
 export function popUp(message, callback = function() {}) {
 	document.getElementById('pop-up-message').innerHTML = message;
 	document.getElementById('pop-up-wrapper').classList.toggle('hidden');
-	let closeHandler = () => {
+	const closeHandler = () => {
 		document.getElementById('pop-up-wrapper').classList.toggle('hidden');
 		callback();
 		document.getElementById('pop-up-close').removeEventListener('click', closeHandler);
@@ -32,18 +32,21 @@ export function popUp(message, callback = function() {}) {
  * @param {run} Callback Fills up the popup's main wrapper.
  * @param {buttonCallback} Callback Called on accept button click.
  */
-export function popUpPlus(run = (el, button) => {}, buttonCallback = (returned) => {}) {
-	let button = document.getElementById('pop-up-button');
-	let innerWrapper = document.getElementById('pop-inner-wrapper');
-	let returned = run(innerWrapper, button);
+export function popUpPlus(run = (el, title, button) => {}, buttonCallback = (returned) => {}) {
+	const button = document.getElementById('pop-up-button');
+	const innerWrapper = document.getElementById('pop-content');
+	const title = document.getElementById('pop-up-title');
+
+	const returned = run(innerWrapper, title, button);
+
 	document.getElementById('pop-up-wrapper').classList.toggle('hidden');
 
-	let closeRoutine = () => {
+	const closeRoutine = () => {
 		document.getElementById('pop-up-wrapper').classList.toggle('hidden');
 		innerWrapper.innerHTML = '';
 	}
 
-	let buttonHandler = e => {
+	const buttonHandler = e => {
 		if(!e.target.hasAttribute('disabled')) {
 			new Promise(() => {
 				buttonCallback(returned);
@@ -55,7 +58,7 @@ export function popUpPlus(run = (el, button) => {}, buttonCallback = (returned) 
 	}
 	button.addEventListener('click', buttonHandler);
 
-	let closeHandler = () => {
+	const closeHandler = () => {
 		closeRoutine();
 		document.getElementById('pop-up-close').removeEventListener('click', closeHandler);
 	}

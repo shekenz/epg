@@ -1,6 +1,6 @@
 
 // Globals (we need them in variations-edit.js)
-window.preOrderCheckbox = document.getElementById('pre-order');
+window.preOrderCheckbox = document.getElementById('pre_order');
 window.preOrderInitValue = preOrderCheckbox.checked;
 
 // Elements

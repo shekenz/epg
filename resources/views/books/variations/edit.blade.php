@@ -43,7 +43,7 @@
 				<div>
 					<x-input name="stock" type="number" :label="___('stock')" value="{{ old('stock') ?? $book->stock }}" />
 					<input id="stock-hidden" name="stock" type="hidden" disabled="true" value="{{ old('stock') ?? $book->stock }}">
-					<x-checkbox name="pre-order" :checked="(old('pre_order') ?? $book->pre_order)" :label="___('pre-order')"/>
+					<x-checkbox name="pre_order" :checked="(old('pre_order') ?? $book->pre_order)" :label="___('pre-order')" value="1"/>
 				</div>
 
 				<div>
@@ -103,5 +103,8 @@
 		</form>
 
 	</x-section>
+
+	<x-popups.default class="hidden">
+	</x-popups.default>
 	
 </x-app-layout>
