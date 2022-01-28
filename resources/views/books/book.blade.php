@@ -113,7 +113,7 @@
 						</span>
 					</a><br>
 
-					<div class="italic @if(empty($bookInfo->books->first()->extra)) {{ 'hidden' }} @endif" id="extra-info-{{ $glideIndex }}"><br><span>{{ $bookInfo->books->first()->extra }}</span><br></div>
+					<div class="@if(empty($bookInfo->books->first()->extra)) {{ 'hidden' }} @endif" id="extra-info-{{ $glideIndex }}"><br><span>{{ $bookInfo->books->first()->extra }}</span><br></div>
 
 				@endif
 				<br>

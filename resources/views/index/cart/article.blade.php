@@ -20,7 +20,7 @@
 		{{ ___('pre-order') }}<br>	
 		@endif
 		@if($article->extra)
-		<span class="italic">{{ $article->extra }}</span><br>
+		<span>{{ $article->extra }}</span><br>
 		@endif
 		@if($article->pre_order || $article->extra)
 		<br>
