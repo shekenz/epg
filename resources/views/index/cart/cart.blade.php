@@ -160,7 +160,7 @@
 					</h5>
 					@if(setting('app.paypal.client-id') && setting('app.paypal.secret') && $totalWeight <= 5000)
 					<div class="my-10 flex justify-end">
-						<div class="w-48" id="paypal-checkout-button"></div>
+						<div class="w-full" id="paypal-checkout-button"></div>
 					</div>
 					@endif
 				</div>
