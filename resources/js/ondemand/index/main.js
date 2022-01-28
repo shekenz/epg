@@ -111,6 +111,15 @@ for(let input of variationInput) {
 		// We replace the link's href no matter what, since it's always the same and it's deactivated by 'out' class
 		addToCart.href = addToCart.href.replace(/\/[0-9]+$/, '/'+variationData.id);
 
+		// Updating info
+		const extra = document.getElementById('extra-info-' + glideIndex);
+		if(variationData.extra !== null) {
+			extra.classList.remove('hidden');
+			extra.firstElementChild.nextElementSibling.innerHTML = variationData.extra;
+		} else {
+			extra.classList.add('hidden');
+		}
+
 		const allLoaded = () => {
 
 			// Cleaning slides

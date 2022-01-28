@@ -11,7 +11,7 @@ $shippingPrice = findStopPrice($order->total_weight, $order->shippingMethods->pr
 @endphp
 @foreach ($order->books as $book)
 	@php $total += $book->pivot->quantity * $book->price; @endphp
-	{{ $book->bookInfo->title }}@if($book->bookInfo->books->count() > 1){{ ' - '.$book->label }}@endif X {{ $book->pivot->quantity }} : {{ round($book->pivot->quantity * $book->price, 2) }} €@if(!$loop->last)<br>@endif
+	{{ $book->bookInfo->title }}@if($book->bookInfo->books->count() > 1){{ ' - '.$book->label }}@endif X {{ $book->pivot->quantity }} : {{ round($book->pivot->quantity * $book->price, 2) }} € @if($book->pre_order)[{{ ___('pre-order') }}]@endif @if($book->extra)({{ $book->extra }})@endif @if(!$loop->last)<br>@endif
 @endforeach
 @isset($order->coupons)
 <br>----------------------------------------------------<br>

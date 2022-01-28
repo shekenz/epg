@@ -35,6 +35,10 @@
 				<x-input name="price" type="number" :label="___('price')" value="{{ old('price') }}" min="0" step="0.01">@error('price'){{$message}}@enderror</x-input>
 
 			</div>
+
+			<div>
+				<x-input name="extra" :label="___('extra informations')" maxlength="128" :value="old('extra')"/>
+			</div>
 				
 			@if( $media->isNotEmpty() )
 				<x-separator>{{ ___('media') }}</x-separator>

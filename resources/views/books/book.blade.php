@@ -84,7 +84,8 @@
 											'media' => $variation->media->map(function($item) { return 'storage/'.$item->preset('hd'); }),
 											'price' => $variation->price,
 											'preorder' => $variation->pre_order,
-											'stock' => $variation->stock
+											'stock' => $variation->stock,
+											'extra' => $variation->extra
 										];
 									@endphp
 									<option value="{{ json_encode($variationData) }}">{{ $variation->label }}</option>
@@ -99,18 +100,21 @@
 				@if( !empty($bookInfo->books->first()->price) && setting('app.shop.enabled'))
 					<br><span id="price-{{ $glideIndex }}">{{ $bookInfo->books->first()->price }}</span> €<br>
 					
-						<br>
-						<a id="add-to-cart-{{ $glideIndex }}" href="{{ route('cart.api.add', $bookInfo->books->first()->id)}}" class="add-to-cart-button button-lg @if($bookInfo->books->first()->stock <= 0 && !$bookInfo->books->first()->pre_order) {{ 'out' }} @endif">
-							<span data-label-add="{{ ___('add to cart') }}" data-label-pre="{{ ___('pre-order') }}" data-label-out="{{ ___('out of stock') }}">
-								@if( $bookInfo->books->first()->stock > 0)
-									{{ ___('add to cart') }}
-								@elseif( $bookInfo->books->first()->pre_order)
-									{{ ___('pre-order') }}
-								@else
-									{{ ___('out of stock') }}
-								@endif
-							</span>
-						</a><br>
+					<br>
+					<a id="add-to-cart-{{ $glideIndex }}" href="{{ route('cart.api.add', $bookInfo->books->first()->id)}}" class="add-to-cart-button button-lg @if($bookInfo->books->first()->stock <= 0 && !$bookInfo->books->first()->pre_order) {{ 'out' }} @endif">
+						<span data-label-add="{{ ___('add to cart') }}" data-label-pre="{{ ___('pre-order') }}" data-label-out="{{ ___('out of stock') }}">
+							@if( $bookInfo->books->first()->stock > 0)
+								{{ ___('add to cart') }}
+							@elseif( $bookInfo->books->first()->pre_order)
+								{{ ___('pre-order') }}
+							@else
+								{{ ___('out of stock') }}
+							@endif
+						</span>
+					</a><br>
+
+					<div class="italic @if(empty($bookInfo->books->first()->extra)) {{ 'hidden' }} @endif" id="extra-info-{{ $glideIndex }}"><br><span>{{ $bookInfo->books->first()->extra }}</span><br></div>
+
 				@endif
 				<br>
 				@auth

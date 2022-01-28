@@ -33,7 +33,7 @@
 				<x-input name="cover" type="text" :label="___('cover')" wrapper-class="md:row-start-4 md:col-start-2" value="{{ old('cover') ?? $bookInfo->cover }}" maxlength="32">@error('cover'){{$message}}@enderror</x-input>
 				<x-input name="pages" type="number" :label="___('pages')" wrapper-class="md:row-start-5 md:col-start-2" value="{{ old('pages') ?? $bookInfo->pages }}" min="0">@error('pages'){{$message}}@enderror</x-input>
 
-				<x-textarea name="description" :label="___('description')" wrapper-class="col-start-3 col-span-2 row-start-2 row-span-4">
+				<x-textarea name="description" :label="___('description')" wrapper-class="col-start-3 col-span-2 row-start-2 row-span-4" class="h-72">
 					@error('description')
 					<x-slot name="error">
 						{{ $message }}

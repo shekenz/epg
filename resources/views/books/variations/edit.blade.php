@@ -57,6 +57,10 @@
 				</div>
 
 			</div>
+
+			<div>
+				<x-input name="extra" :label="___('extra informations')" maxlength="128" :value="$book->extra" />
+			</div>
 			
 			{{-- Media Library --}}
 			@if( $media->isNotEmpty() )

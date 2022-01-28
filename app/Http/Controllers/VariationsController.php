@@ -39,6 +39,7 @@ class VariationsController extends Controller
 		'media' => ['nullable', 'array'],
 		'files' => ['required_without:media', 'array'],
 		'files.*' => ['nullable', 'file', 'mimes:jpg,gif,png'],
+		'extra' => ['nullable', 'string', 'max:128'],
 	];
 
 

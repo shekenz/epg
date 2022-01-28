@@ -16,6 +16,15 @@
 			&nbsp;
 		@endif
 		<br><br>
+		@if($article->pre_order)
+		{{ ___('pre-order') }}<br>	
+		@endif
+		@if($article->extra)
+		<span class="italic">{{ $article->extra }}</span><br>
+		@endif
+		@if($article->pre_order || $article->extra)
+		<br>
+		@endif
 		{{ ___('quantity') }} : <span class="quantity-for-id-{{ $article->id }}">{{ $article->cartQuantity }}</span>
 		<a class="qte-button square-button ml-2" href="{{ route('cart.api.add', $article->id) }}">
 			<svg viewbox="0 0 100 100">
