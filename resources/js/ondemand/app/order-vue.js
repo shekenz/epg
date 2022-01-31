@@ -96,6 +96,7 @@ window.vue = new Vue(
 				'shipping',				
 			],
 			methodsTextDataType: ['all', 'order', 'name', 'email'],
+			filtered: 0,
 			orders: {},
 			elements:
 			{
@@ -149,6 +150,7 @@ window.vue = new Vue(
 				).then(rJson =>
 					{
 						this.orders = rJson.data;
+						this.filtered = this.orders.length;
 					}
 				);
 			},

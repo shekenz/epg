@@ -82,6 +82,9 @@
 					<option :value="false">{{ ___('regular orders') }}</option>
 					<option :value="true">{{ ___('pre-orders') }}</option>
 				</x-select>
+
+				<span v-if="filtered !== 0">(@{{filtered}})</span>
+
 			</form>
 
 			{{--------------------------------------------- Actions ---------------------------------------------}}
