@@ -475,6 +475,13 @@ if(document.getElementById('cart-wrapper')) {
 											}
 										} else {
 											//--------------------------------------------------------- ERROR AT CREATING ORDER
+											fetch('/api/report/', {
+												method: 'POST',
+												headers: {
+													'Content-Type': 'application/json'
+												},
+												body: JSON.stringify(createResponseJSON)
+											});
 											console.error(createResponseJSON);
 											popUp('An internal error has occured while creating your order. Our team has been warned and we will work on it as soon as possible. Please try to purchase your goods later. We are sorry for the inconvenience.');
 										}

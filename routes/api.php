@@ -10,6 +10,7 @@ use App\Http\Controllers\VariationsController;
 use App\Http\Controllers\API\OrderController;
 use App\Http\Controllers\API\FilterOrderController;
 use App\Http\Controllers\ShippingMethodsController;
+use App\Http\Controllers\API\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,3 +60,5 @@ Route::apiResource('orders', OrderController::class)->only(['index', 'show']);
 
 Route::post('/books/reorder', [BooksController::class, 'reorder']);
 Route::post('/variations/{bookInfo}/reorder', [VariationsController::class, 'reorder']);
+
+Route::post('/report', [ReportController::class, 'mail'])->name('report');
