@@ -574,19 +574,31 @@ class OrdersController extends Controller
 	/**
 	 * recycle
 	 *
-	 * @param  strig $orderID
+	 * @param  string $orderID
 	 */
-	public function recycle(string $orderID) {
+	public function recycle(Request $request, string $orderID) {
 		$details = $this->details($orderID);
 		if(isset($details['error']) || (isset($details['status']) && $details['status'] === 'CREATED')) {
 			$order = Order::where('order_id', $orderID)->first();
-			$this->cancel(request(), $order);
-			return redirect()->route('orders');
+			$this->cancel($request, $order);
+			if($request->wantsJson()) {
+				return ['status' => 'success'];
+			} else {
+				return redirect()->route('orders');
+			}
 		} else {
-			return redirect()->route('orders')->with([
-				'flash' => __('flash.paypal.recycle'),
-				'flash-type' => 'warning'
-			]);;
+			if($request->wantsJson()) {
+				$message = [
+					['status' => 'error'],
+					['error' => 'Cannot recycle order'],
+				];
+				return response()->json($message, 422);
+			} else {
+				return redirect()->route('orders')->with([
+					'flash' => __('flash.paypal.recycle'),
+					'flash-type' => 'warning'
+				]);
+			}
 		}	
 	}
 	

@@ -127,6 +127,13 @@ window.vue = new Vue(
 				}
 			, 300),
 
+			isRecyclable(order)
+			{
+				const elapsed = new Date() - new Date(order.created_at);
+				// If order is older than 15 min, and is CREATED or FAILED
+				return (elapsed >= 15*60*1000 && (order.status === 'CREATED' || order.status === 'FAILED'));
+			},
+
 			getOrders()
 			{
 				this.selectAll = false;
@@ -198,6 +205,29 @@ window.vue = new Vue(
 
 						// Saving currentOrder as a state
 						history.pushState({currentOrder: this.currentOrder}, null, window.location.origin+'/dashboard/order/'+id);
+					}
+				);
+			},
+
+			recycleOrder(order_id, index)
+			{
+				fetch('/dashboard/order/recycle/'+order_id, 
+					{
+						method: 'GET',
+						headers: {
+							'Accept': 'application/json',
+						}
+					}
+				).then(r =>
+					{
+						if(r.ok)
+						{
+							return r.json()
+						}
+					}
+				).then(rJson =>
+					{
+						this.$delete(this.orders, index);
 					}
 				);
 			},

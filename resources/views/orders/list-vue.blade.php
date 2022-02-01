@@ -124,7 +124,7 @@
 							<td><x-tabler-clipboard-check v-if="order.pre_order" class="text-green-500"/></td>
 							<td><x-captions.order-status-vue status="order.status"/></td>
 							<td>@{{ order.locale.created_date }}</td>
-							<td>{{ ___('actions') }}</td>
+							<td class="text-right"><x-post v-if="isRecyclable(order)" href="#" class="archive-action" icon="recycle" @click.prevent="recycleOrder(order.order_id, key)" /></td>
 						</tr>
 					</tbody>
 				</table>
