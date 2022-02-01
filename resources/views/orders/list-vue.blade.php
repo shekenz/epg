@@ -118,7 +118,7 @@
 					<tbody>
 						<tr v-for="(order, key) in orders" :class="{ 'unread' : !order.read }">
 							<td><x-checkbox label="" name="ids" array ::id="'select-'+order.id" ::value="order.id" /></td>
-							<td><a :href="route(order.id)" @click.prevent="getOrder(order.id)">@{{ order.order_id }}</a></td>
+							<td><a :href="route(order.id)" @click.prevent="getOrder(order.id, key)">@{{ order.order_id }}</a></td>
 							<td>@{{ order.name }}</td>
 							<td>@{{ order.email }}</td>
 							<td><x-tabler-clipboard-check v-if="order.pre_order" class="text-green-500"/></td>

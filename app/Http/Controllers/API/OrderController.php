@@ -7,6 +7,7 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\OrderCollection;
+use Illuminate\Support\Facades\Cache;
 
 class OrderController extends Controller
 {
@@ -51,6 +52,13 @@ class OrderController extends Controller
 		{
 			// Avoiding N+1 requests on bookInfo
 			$order->load('books.bookInfo');
+			if(!$order->read) {
+				$order->read = true;
+				$order->save();
+				if(Cache::has('newOrders')) {
+					Cache::decrement('newOrders');
+				}
+			}
 			return new OrderResource($order);
 		}
 

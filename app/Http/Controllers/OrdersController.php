@@ -530,6 +530,12 @@ class OrdersController extends Controller
 			});
 			// Detaching books
 			$order->books()->detach();
+			// Updating cache of newOrders if order is unread
+			if(!$order->read) {
+				if(Cache::has('newOrders')) {
+					Cache::decrement('newOrders');
+				}
+			}
 			// Deleting order
 			$order->delete();
 

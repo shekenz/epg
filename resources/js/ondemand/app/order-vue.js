@@ -162,7 +162,7 @@ window.vue = new Vue(
 				);
 			},
 
-			getOrder(id)
+			getOrder(id, key)
 			{
 				fetch('/api/orders/'+id, 
 					{
@@ -180,6 +180,7 @@ window.vue = new Vue(
 					}
 				).then(rJson =>
 					{
+						if(!this.orders[key].read) this.orders[key].read = true;
 						this.currentOrder = rJson.data;
 
 						// Calculating total price of all books
