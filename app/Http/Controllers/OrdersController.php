@@ -108,7 +108,7 @@ class OrdersController extends Controller
 	 * @return void
 	 */
 	public function refreshNewOrders() {
-		$count = Order::where('read', 0)->count();
+		$count = Order::where('read', 0)->whereIn('status', ['COMPLETED', 'SHIPPED'])->count();
 		Cache::put('newOrders', $count);
 		return redirect()->route('orders');
 	}
@@ -286,27 +286,28 @@ class OrdersController extends Controller
 			]
 		]);
 
-		try {
-			$order = Order::create([
+		$commonData = [
+			'phone_number' => (isset($data['phone_number'])) ? $data['phone_number'] : '',
+			'contact_email' => $data['contact_email'],
+			'shipping_method_id' => $shippingMethod->id,
+			'total_weight' => $totalWeight,
+			'pre_order' => ($preOrder),
+			'read' => 1,
+			'coupon_id' => ($couponID !== 0) ? $couponID : null,
+		];
+
+		try
+		{
+			$order = Order::create(array_merge([
 				'order_id' => $paypalOrder['id'],
 				'status' => $paypalOrder['status'],
-				'phone_number' => (isset($data['phone_number'])) ? $data['phone_number'] : '',
-				'contact_email' => $data['contact_email'],
-				'shipping_method_id' => $shippingMethod->id,
-				'total_weight' => $totalWeight,
-				'pre_order' => ($preOrder),
-				'coupon_id' => ($couponID !== 0) ? $couponID : null,
-			]);
-		} catch(Exception $e) {
-			$order = Order::create([
+			], $commonData));
+		}
+		catch(Exception $e)
+		{
+			$order = Order::create(array_merge([
 				'status' => 'FAILED',
-				'phone_number' => (isset($data['phone_number'])) ? $data['phone_number'] : '',
-				'contact_email' => $data['contact_email'],
-				'shipping_method_id' => $shippingMethod->id,
-				'total_weight' => $totalWeight,
-				'pre_order' => ($preOrder),
-				'coupon_id' => ($couponID !== 0) ? $couponID : null,
-			]);
+			], $commonData));
 			
 			$customMessage = 'Can\'t create order! The Esteban error!';
 			$fullMessage = $customMessage."\n\t".
@@ -418,7 +419,17 @@ class OrdersController extends Controller
 						Mail::to($admin->email)->send(new NewOrder());
 					});
 
-					//Notify client
+					// Set order to unread
+					$order->read = 0;
+
+					// Incrementing newOrders cache
+					if(Cache::has('newOrders')) {
+						Cache::increment('newOrders');
+					} else {
+						$this->refreshNewOrders();
+					}
+
+					// Notify client
 					if($order->contact_email) {
 						Mail::to($order->contact_email)->send(new OrderConfirmation($order));
 					} else {
@@ -458,13 +469,6 @@ class OrdersController extends Controller
 				} finally {
 					// Saving order in database
 					$order->save();
-
-					// Incrementing newOrders cache
-					if(Cache::has('newOrders')) {
-						Cache::increment('newOrders');
-					} else {
-						$this->refreshNewOrders();
-					}
 				}
 			} else {
 				Throw new Exception($paypalOrder['error']['name']);
