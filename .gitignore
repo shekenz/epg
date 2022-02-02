@@ -22,3 +22,4 @@ resources/js/ondemand/app/media-library-dragdrop-custom.js
 *.backup
 resources/img/sources/favicons.ai
 public/mix-manifest.json
+jmeter.log
