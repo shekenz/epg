@@ -442,7 +442,7 @@ if(document.getElementById('cart-wrapper')) {
 							let needUpdating = false;
 							for(const bookInCart of Object.values(cartCheckResponseJSON)) {
 								//console.log(bookInCart);
-								if(!(document.getElementsByClassName(`quantity-for-id-${bookInCart.id}`)[0].firstChild.nodeValue === bookInCart.cartQuantity.toString())) {
+								if(!(document.getElementById(`quantity-for-id-${bookInCart.id}`).firstChild.nodeValue === bookInCart.cartQuantity.toString())) {
 									needUpdating = true;
 								}
 							}
