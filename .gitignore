@@ -23,3 +23,4 @@ resources/js/ondemand/app/media-library-dragdrop-custom.js
 resources/img/sources/favicons.ai
 public/mix-manifest.json
 jmeter.log
+.env.testing
