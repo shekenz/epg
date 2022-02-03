@@ -69,7 +69,7 @@ class BookFactory extends Factory
 			}
 
 			$book->save();
-			$book->media()->attach($this->faker->randomElements($this->mediaIDs, rand(2, 10)));
+			$book->media()->attach($this->faker->randomElements($this->mediaIDs, rand(1, count($this->mediaIDs))));
 
 		});
 	}
