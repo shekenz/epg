@@ -1,4 +1,4 @@
-@props(['label', 'id', 'name', 'type' => 'text', 'inline', 'wrapper-class', 'disabled' => false, 'array'])
+@props(['label', 'id', 'name', 'type' => 'text', 'inline', 'wrapper-class', 'disabled' => false, 'array', 'required' => false])
 
 
 <div {{ $attributes->filter(function($value, $attr) { return ($attr == 'v-show'); }) }}
@@ -30,7 +30,7 @@
 			@if($attributes->has('label-class'))
 			{{ $labelClass }}
 			@endif
-		">{{ $label }} : </label>
+		">{{ $label }} : @if($required)<span class="text-red-500 italic text-sm">({{ __('required') }})</span>@endif</label>
 	@endif
 
 	<div class="@if($slot->isNotEmpty() && !$disabled) border bg-red-400 border-red-400 @endif @isset($inline) w-full @endif">
