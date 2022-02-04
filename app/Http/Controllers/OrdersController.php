@@ -160,8 +160,10 @@ class OrdersController extends Controller
 		$preOrder = false;
 		$totalWeight = 0;
 
+		//------------------------ Triggered a lot in production. Could be where the issue of cart reajustmeent issue is.
+
 		if(!$request->session()->has('cart')) {
-			Log::channel('paypal')->notice('Cart not found');
+			Log::channel('paypal')->critical('Cart not found. Contact client : '.$data['contact_email']);
 			return response()->json()->setStatusCode(404, 'Cart not found');
 		}
 
