@@ -8,6 +8,7 @@ use App\Http\Controllers\CouponsController;
 use App\Http\Controllers\BooksController;
 use App\Http\Controllers\VariationsController;
 use App\Http\Controllers\API\OrderController;
+use App\Http\Controllers\API\OrderDigestController;
 use App\Http\Controllers\API\FilterOrderController;
 use App\Http\Controllers\ShippingMethodsController;
 use App\Http\Controllers\API\ReportController;
