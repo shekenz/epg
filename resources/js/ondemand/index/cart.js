@@ -19,6 +19,7 @@ Sentry.init({
 });
 
 const debug = false;
+const newOrders = false;
 
 // If cart is not empty
 if(document.getElementById('cart-wrapper')) {
@@ -452,7 +453,12 @@ if(document.getElementById('cart-wrapper')) {
 								const shippingAddress = new FormData(document.getElementById('shipping-address-form'));
 								// TODO Refractor chaining and catching errors when we'll have a better understanding of promises
 								// Chain needs to be broken and stop Paypal error ID expected
-								return fetch(`/api/order/create/${shippingMethod}/${couponId}`, {
+								if(newOrders) {
+									shippingAddress.append('shipping_method', shippingMethod);
+									shippingAddress.append('coupon', couponId);
+								}
+								const createURL = (newOrders) ? '/api/order/new/create' : `/api/order/create/${shippingMethod}/${couponId}`;
+								return fetch(createURL, {
 									method: 'post',
 									headers: {
 										'accept': 'application/json'
