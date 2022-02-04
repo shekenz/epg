@@ -42,6 +42,7 @@ Route::middleware('shop')->group(function() {
 	// Order (Paypal)
 	Route::prefix('order')->group(function() {
 		Route::post('/create/{shippingMethod}/{couponID}', [OrdersController::class, 'createOrder']);
+		Route::post('/new/create/', [OrderDigestController::class, 'create']);
 		Route::post('/check-country/{countryCode}', [OrdersController::class, 'checkCountry']);
 		Route::post('/cancel/{order}', [OrdersController::class, 'cancel']);
 		Route::post('/details/{orderID}', [OrdersController::class, 'details']);
