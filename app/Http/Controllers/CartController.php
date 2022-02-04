@@ -36,7 +36,7 @@ class CartController extends Controller
 	 *
 	 * @return Collection Filtered out book collection from cart.
 	 */
-	//TODO Make cart a property of CartController
+	// TODO Make cart a property of CartController
 	public function checkCart() {
 
 		$cart = session()->get('cart', false);
