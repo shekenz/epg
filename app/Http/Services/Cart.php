@@ -80,6 +80,7 @@ class Cart
 					'quantity' => $quantity,
 				];
 			}
+			$this->count += $quantity;
 			$this->save();
 	}
 	
@@ -104,6 +105,8 @@ class Cart
 			{
 				unset($this->cart[$book->id]);
 			}
+			$this->count -= $quantity;
+			if($this->count < 0) { $this->count = 0; }
 			$this->save();
 		}
 	}
