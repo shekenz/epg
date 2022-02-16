@@ -35,8 +35,9 @@ Route::middleware('published')->group(function() {
 	Route::get('/', [BooksController::class, 'index'])->name('index');
 	Route::get('/about', [IndexController::class, 'about'])->name('about');
 	Route::get('/terms', [IndexController::class, 'terms'])->name('terms');
-	Route::view('/contact', 'index.contact')->name('contact');
-	Route::post('/contact', [MessagesController::class, 'forward'])->name('messages.forward');
+	// WARNING Disabled temporary to prevent spam attacks
+	//Route::view('/contact', 'index.contact')->name('contact');
+	//Route::post('/contact', [MessagesController::class, 'forward'])->name('messages.forward');
 
 	// Cart
 	Route::middleware('shop')->prefix('cart')->name('cart')->group(function() {
@@ -44,6 +45,12 @@ Route::middleware('published')->group(function() {
 		Route::get('/clear', [CartController::class, 'clearCart'])->name('.clear');
 		Route::get('/success', [CartController::class, 'success'])->name('.success');
 		Route::view('/checkout', 'index.cart.shipping')->name('.checkout');
+		Route::get('/dump', function() {
+			$cart = new App\Http\Services\Cart;
+			$cart->remove(App\Models\Book::find(3), 11);
+
+			dd($cart->getCart());
+		})->name('.dump');
 	});
 
 });
