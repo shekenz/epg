@@ -161,6 +161,17 @@ return [
 
 		'archives_version' => env('APP_ARCHIVES_VERSION', 1),
 
+		/*
+    |--------------------------------------------------------------------------
+    | reCaptcha credential
+    |--------------------------------------------------------------------------
+    */
+
+		'recaptcha' => [
+			'site' => env('RECAPTCHA_SITE_KEY'),
+			'rsecret' => env('RECAPTCHA_SECRET_KEY'),
+		],
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
