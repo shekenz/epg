@@ -1,7 +1,13 @@
 <x-index-layout>
+
 	<x-slot name="title">
 		{{ ___('contact') }}
 	</x-slot>
+
+	<x-slot name="scripts">
+		<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+	</x-slot>
+
 	<form id="contact-form" action="{{ route('messages.forward') }}" method="post" enctype="multipart/form-data" autocomplete="off">
 		@csrf
 		@if ($errors->any())
@@ -34,6 +40,19 @@
 			<p class="error-info my-1 text-red-500 text-sm italic">{{$error}}</p>
 			@endif
 		</div>
+
+		{{-- reCaptcha --}}
+		<div class="input-wrapper text-right">
+			<div class="g-recaptcha inline-block" data-sitekey="{{ config('app.recaptcha.site') }}"></div>
+		
+			@if($errors->has('g-recaptcha-response'))
+				@foreach ($errors->get('g-recaptcha-response') as $error)
+					
+				@endforeach
+			<p class="error-info my-1 text-red-500 text-sm italic">{{$error}}</p>
+			@endif
+		</div>
+
 		<div class="text-right w-full">
 			<button class="button">{{ ___('send') }}</button>
 		</div>

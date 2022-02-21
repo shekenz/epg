@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Mail as MailModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use App\Rules\Recaptcha;
 
 class MessagesController extends Controller
 {
@@ -16,6 +17,7 @@ class MessagesController extends Controller
 	}
 
 	public function forward(Request $request) {
+
 		$data = $request->validate([
 			'email' => ['max:256', 'required', 'email'],
 			'subject' => ['max:256', 'required'],
@@ -27,6 +29,7 @@ class MessagesController extends Controller
 					}
 				}
 			],
+			'g-recaptcha-response' => [new Recaptcha]
 		]);
 
 		$users = User::where('role', 'admin')->orWhere('role', 'postmaster')->get();
