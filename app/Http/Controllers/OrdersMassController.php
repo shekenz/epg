@@ -44,7 +44,7 @@ class OrdersMassController extends Controller
 				'Expires'             => '0'
 			);
 
-			$columns = ['id','name', 'email', 'address_1', 'address_2', 'city', 'region', 'postcode', 'country', 'delivery', 'tracking'];
+			$columns = ['id','name', 'email', 'address_1', 'address_2', 'city', 'region', 'postcode', 'country', 'delivery', 'tracking', 'date'];
 
 			$callback = function() use($orders, $columns) {
 				$file = fopen('php://output', 'w');
@@ -62,8 +62,9 @@ class OrdersMassController extends Controller
 							$order->admin_area_1,
 							$order->postal_code,
 							$order->country_code,
-							$order->shipping_method,
-							$order->tracking_url
+							$order->shippingMethods->label,
+							$order->tracking_url,
+							$order->created_at->locale(config('app.locale'))->isoFormat('L'),
 						],
 						';'
 					);
