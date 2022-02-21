@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="{{ config('app.locale') }}">
     <head>
-		<!--
+		{{--
 		<script>
 			// On page load or when changing themes, best to add inline in `head` to avoid FOUC
 			// If theme = dark in storage OR (if no theme in storage AND os is in darkmode)
@@ -11,7 +11,8 @@
 				document.documentElement.classList.remove('dark')
 			}
 		</script>
-		-->
+		--}}
+		<!-- Meta -->
 		<title>
 				{{ config('app.name') }}
 				@if(isset($title)) | {{ $title }} @endif
@@ -24,11 +25,11 @@
 		<!-- Pre loading assets -->
 		<link rel="preload" href="{{ asset('fonts/MonumentGroteskTrial-Regular.woff') }}" as="font" type="font/woff" crossorigin>
 		<link rel="preload" href="{{ asset('fonts/MonumentGroteskTrial-Italic.woff') }}" as="font" type="font/woff" crossorigin>
-		<!--
+		{{--
 		<link rel="preload" href="{{ asset('fonts/MonumentGroteskTrial-Medium.woff') }}" as="font" type="font/woff" crossorigin>
 		<link rel="preload" href="{{ asset('fonts/MonumentGroteskTrial-Bold.woff') }}" as="font" type="font/woff" crossorigin>
 		<link rel="preload" href="{{ asset('fonts/MonumentGroteskTrial-MediumItalic.woff') }}" as="font" type="font/woff" crossorigin>
-		-->
+		--}}
 		<link rel="prefetch" href="{{ asset('img/tiny_loader.svg') }}" as="image">
 		<link rel="prefetch" href="{{ asset('img/frog_logo.svg') }}" as="image">
 		<link rel="prefetch" href="{{ asset('img/frog_logo_books.svg') }}" as="image">
@@ -36,20 +37,26 @@
 		<link rel="prefetch" href="{{ asset('img/frog_logo_warning.svg') }}" as="image">
 		<link rel="prefetch" href="{{ asset('img/frog_logo_error.svg') }}" as="image">
 		
+		
 		{{-- //TODO Fix the connection_refused error when deployed on VPS --}}
       {{-- @if(config('app.env') == 'local') --}}
+			<!-- Style -->
       <link rel="stylesheet" href="{{ asset('css/index.css') }}">
+			<!-- Main script -->
 			<script src="{{ asset('js/index.js') }}" defer></script>
       {{-- @else {{-- Cache bustin in production DISBLED BECAUSE OF CONNECTION REFUSED ERROR WHEN DEPLOYED ON VPS 
         <link rel="stylesheet" href="{{ asset(mix('css/index.css'), true) }}">
 			<script src="{{ asset(mix('js/index.js'), true) }}" defer></script>
     @endif --}}
 		@auth
+			<!-- User menu script -->
 			<script src="{{ asset('js/user-menu.js') }}" defer></script>
 		@endauth
-		@if(isset($scripts))
+		@isset($scripts)
+			<!-- Scripts from view -->
 			{{ $scripts }}
 		@endif
+		<!-- Extras -->
     </head>
     <body class="text-custom-sm md:text-custom">
 		@if(session('flash'))

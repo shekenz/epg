@@ -35,9 +35,8 @@ Route::middleware('published')->group(function() {
 	Route::get('/', [BooksController::class, 'index'])->name('index');
 	Route::get('/about', [IndexController::class, 'about'])->name('about');
 	Route::get('/terms', [IndexController::class, 'terms'])->name('terms');
-	// WARNING Disabled temporary to prevent spam attacks
-	//Route::view('/contact', 'index.contact')->name('contact');
-	//Route::post('/contact', [MessagesController::class, 'forward'])->name('messages.forward');
+	Route::view('/contact', 'index.contact')->name('contact');
+	Route::post('/contact', [MessagesController::class, 'forward'])->name('messages.forward');
 
 	// Cart
 	Route::middleware('shop')->prefix('cart')->name('cart')->group(function() {
