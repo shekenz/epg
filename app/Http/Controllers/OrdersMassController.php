@@ -44,7 +44,7 @@ class OrdersMassController extends Controller
 				'Expires'             => '0'
 			);
 
-			$columns = ['id','name', 'email', 'address_1', 'address_2', 'city', 'region', 'postcode', 'country', 'delivery', 'tracking', 'date'];
+			$columns = ['order', 'transaction' ,'name', 'email', 'address_1', 'address_2', 'city', 'region', 'postcode', 'country', 'delivery', 'tracking', 'date'];
 
 			$callback = function() use($orders, $columns) {
 				$file = fopen('php://output', 'w');
@@ -54,6 +54,7 @@ class OrdersMassController extends Controller
 						$file,
 						[
 							$order->order_id,
+							$order->transaction_id,
 							$order->full_name,
 							$order->email_address,
 							$order->address_line_1,
