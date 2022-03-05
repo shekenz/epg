@@ -29,32 +29,31 @@ use App\Http\Controllers\VariationsController;
 |
 */
 
-Route::middleware('published')->group(function() {
+Route::middleware('published')->group(function () {
 
 	// Main index route
 	Route::get('/', [BooksController::class, 'index'])->name('index');
 	Route::get('/about', [IndexController::class, 'about'])->name('about');
 	Route::get('/terms', [IndexController::class, 'terms'])->name('terms');
-	Route::view('/contact', 'index.contact')->name('contact');
-	Route::post('/contact', [MessagesController::class, 'forward'])->name('messages.forward');
+	//Route::view('/contact', 'index.contact')->name('contact');
+	//Route::post('/contact', [MessagesController::class, 'forward'])->name('messages.forward');
 
 	// Cart
-	Route::middleware('shop')->prefix('cart')->name('cart')->group(function() {
+	Route::middleware('shop')->prefix('cart')->name('cart')->group(function () {
 		Route::get('/', [CartController::class, 'viewCart']);
 		Route::get('/clear', [CartController::class, 'clearCart'])->name('.clear');
 		Route::get('/success', [CartController::class, 'success'])->name('.success');
 		Route::view('/checkout', 'index.cart.shipping')->name('.checkout');
-		Route::get('/dump', function() {
+		Route::get('/dump', function () {
 			$cart = new App\Http\Services\Cart;
 			$cart->remove(App\Models\Book::find(3), 11);
 
 			dd($cart->getCart());
 		})->name('.dump');
 	});
-
 });
 
-Route::middleware('auth')->prefix('dashboard')->group(function() {
+Route::middleware('auth')->prefix('dashboard')->group(function () {
 
 	// Dashboard
 	Route::get('/', function () {
@@ -62,7 +61,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function() {
 	})->name('dashboard');
 
 	// Orders
-	Route::name('orders')->group(function() {
+	Route::name('orders')->group(function () {
 		Route::get('/orders', [OrdersReadController::class, 'index']);
 		Route::get('/order/{id}', [OrdersController::class, 'display'])->name('.display');
 		Route::get('/order/cancel/{order}', [OrdersController::class, 'cancel'])->name('.cancel');
@@ -70,15 +69,15 @@ Route::middleware('auth')->prefix('dashboard')->group(function() {
 		Route::post('/order/shipped/{id}', [OrdersController::class, 'shipped'])->name('.shipped');
 		Route::get('/orders/refreshneworders', [OrdersController::class, 'refreshNewOrders'])->name('.refreshNewOrders');
 	});
-	
-	Route::prefix('orders')->group(function() {
+
+	Route::prefix('orders')->group(function () {
 
 		// Orders mass process
-		Route::name('orders')->group(function() {
+		Route::name('orders')->group(function () {
 			Route::post('/csv', [OrdersMassController::class, 'csv'])->name('.csv');
 			Route::post('/read/{read?}', [OrdersMassController::class, 'setReadState'])->name('.read');
 
-			Route::prefix('print')->group(function() {
+			Route::prefix('print')->group(function () {
 				Route::post('/{view}', [OrdersMassController::class, 'pdf'])->name('.print');
 				Route::post('/labels/preview', [OrdersMassController::class, 'labelsPreview'])->name('.labelsPreview');
 				Route::post('/labels/{extra?}', [OrdersMassController::class, 'labels'])->name('.labels');
@@ -86,16 +85,15 @@ Route::middleware('auth')->prefix('dashboard')->group(function() {
 		});
 
 		// Archived Orders
-		Route::name('archive')->group(function() {
+		Route::name('archive')->group(function () {
 			Route::post('/archive/{order}', [ArchivedOrdersController::class, 'archive'])->name('.order');
 			Route::get('/archived/{archivedOrder}', [ArchivedOrdersController::class, 'display'])->name('.display');
 			Route::get('/archived', [ArchivedOrdersController::class, 'list'])->name('.list');
 		});
-
 	});
 
 	// Shipping methods
-	Route::prefix('shipping-methods')->name('shippingMethods')->group(function() {
+	Route::prefix('shipping-methods')->name('shippingMethods')->group(function () {
 		Route::post('/add', [ShippingMethodsController::class, 'add'])->name('.add');
 		Route::post('/add-stop/{shippingMethod}', [PriceStopsController::class, 'add'])->name('.addStop');
 		// TODO Should be post or delete method, but I'm too lazy to create a form in the blade view
@@ -107,7 +105,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function() {
 	});
 
 	// Users
-	Route::name('users')->group(function() {
+	Route::name('users')->group(function () {
 		Route::get('/users', [UsersController::class, 'list']);
 		Route::get('/user/{user}', [UsersController::class, 'display'])->name('.display');
 		Route::get('/user/edit/{user}', [UsersController::class, 'edit'])->name('.edit');
@@ -118,16 +116,16 @@ Route::middleware('auth')->prefix('dashboard')->group(function() {
 	});
 
 	// Books
-	Route::prefix('books')->name('books')->group(function() {
+	Route::prefix('books')->name('books')->group(function () {
 
-		Route::prefix('archives')->name('.archives')->group(function() {
+		Route::prefix('archives')->name('.archives')->group(function () {
 			Route::get('/', [BooksController::class, 'archived']);
 			Route::get('/{bookInfo}', [BooksController::class, 'archive'])->name('.store');
 			Route::post('/delete/all', [BooksController::class, 'deleteAll'])->name('.delete.all');
 			Route::post('/delete/{bookInfo}', [BooksController::class, 'delete'])->name('.delete');
 			Route::get('/restore/{id}', [BooksController::class, 'restore'])->name('.restore');
 		});
-		
+
 		Route::get('/', [BooksController::class, 'list']);
 		Route::get('/create', [BooksController::class, 'create'])->name('.create');
 		Route::post('/', [BooksController::class, 'store'])->name('.store');
@@ -138,7 +136,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function() {
 	});
 
 	//Variation
-	Route::prefix('books/variations')->name('variations')->group(function() {
+	Route::prefix('books/variations')->name('variations')->group(function () {
 		Route::get('/{bookInfo}/add', [VariationsController::class, 'create'])->name('.create');
 		Route::post('/{bookInfo}/add', [VariationsController::class, 'store'])->name('.store');
 		Route::get('/restore/{id}', [VariationsController::class, 'restore'])->name('.restore');
@@ -149,7 +147,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function() {
 	});
 
 	// Media
-	Route::prefix('media')->name('media')->group(function() {
+	Route::prefix('media')->name('media')->group(function () {
 		Route::get('/', [MediaController::class, 'list']);
 		Route::post('/', [MediaController::class, 'store'])->name('.store');
 		Route::get('/create', [MediaController::class, 'create'])->name('.create');
@@ -164,17 +162,17 @@ Route::middleware('auth')->prefix('dashboard')->group(function() {
 	});
 
 	// Settings
-	Route::prefix('settings')->group(function() {
+	Route::prefix('settings')->group(function () {
 
 		// Coupons
-		Route::prefix('coupon')->name('coupons')->group(function() {
+		Route::prefix('coupon')->name('coupons')->group(function () {
 			Route::post('/add', [CouponsController::class, 'add'])->name('.add');
 			// TODO Should be post or delete method, but I'm too lazy to create a form in the blade view
 			Route::get('/delete/{coupon}', [CouponsController::class, 'delete'])->name('.delete');
 		});
 
 		// Settings
-		Route::name('settings')->group(function() {
+		Route::name('settings')->group(function () {
 
 			Route::get('/', [SettingsController::class, 'main']);
 			Route::patch('/', [SettingsController::class, 'update'])->name('.update');
@@ -182,12 +180,11 @@ Route::middleware('auth')->prefix('dashboard')->group(function() {
 			Route::post('/toggleshop', [SettingsController::class, 'toggleShop'])->name('.toggleShop');
 
 			// Acronyms
-			Route::prefix('acronyms')->group(function() {
+			Route::prefix('acronyms')->group(function () {
 				Route::post('/add', [SettingsController::class, 'addAcronym'])->name('.addAcronym');
 				// TODO Should be post or delete method, but I'm too lazy to create a form in the blade view
 				Route::get('/delete/{acronym}', [SettingsController::class, 'deleteAcronym'])->name('.deleteAcronym');
 			});
-			
 		});
 	});
 
@@ -197,10 +194,9 @@ Route::middleware('auth')->prefix('dashboard')->group(function() {
 
 	// Misc/Debug/Log
 	Route::get('/mails/log', [MessagesController::class, 'log'])->name('mails.log');
-	Route::get('/phpinfo', function() {
+	Route::get('/phpinfo', function () {
 		return view('other.phpinfo');
 	})->name('phpinfo');
-
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
